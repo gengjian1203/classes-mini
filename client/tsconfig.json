@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "lib",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "@root": ["./*"],
+			"@/*": ["./src/*"],
+			"@/api/*": ["./src/api/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/components-vp/*": ["./src/components-vp/*"],
+			"@/config/*": ["./src/config/*"],
+			"@/hooks/*": ["./src/hooks/*"],
+			"@/images/*": ["./src/images/*"],
+			"@/pages/*": ["./src/pages/*"],
+			"@/redux/*": ["./src/redux/*"],
+			"@/less/*": ["./src/less/*"],
+			"@/services/*": ["./src/services/*"],
+			"@/utils/*": ["./src/utils/*"]
+		},
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "global.d.ts"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "compileOnSave": false
+}

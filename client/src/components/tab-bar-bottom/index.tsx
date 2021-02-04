@@ -1,0 +1,35 @@
+import Taro from '@tarojs/taro'
+import React, { Fragment, useEffect, useState } from 'react'
+import { View } from '@tarojs/components'
+import PanelBottom from '@/components/panel-bottom'
+import { AtTabBar } from 'taro-ui'
+
+import './index.less'
+
+interface ITabbarBottomProps {
+	arrTabBarList: Array<any>
+	nTabBarCurrent: number
+	onTabBarSelect: (any?: any) => void
+}
+
+export default function TabBarBottom(props: ITabbarBottomProps) {
+	const { arrTabBarList = [], nTabBarCurrent = 0, onTabBarSelect } = props
+
+	const handleTabbarSelect = current => {
+		if (current === nTabBarCurrent) {
+			return
+		}
+		onTabBarSelect && onTabBarSelect(current)
+	}
+
+	return (
+		<PanelBottom fixed isSafeBottom>
+			<AtTabBar
+				fixed
+				tabList={arrTabBarList}
+				current={nTabBarCurrent}
+				onClick={handleTabbarSelect}
+			/>
+		</PanelBottom>
+	)
+}

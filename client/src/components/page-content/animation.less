@@ -1,0 +1,119 @@
+// 动画公共样式
+
+// 底部移入动画
+.fade-in-from-bottom {
+	animation: FadeInFromBottom 0.2s forwards;
+}
+
+// 底部移出动画
+.fade-out-from-bottom {
+	animation: FadeOutFromBottom 0.2s forwards;
+}
+
+// 缩放移入动画
+.fade-in-from-scale {
+	animation: FadeInFromScale 0.3s forwards;
+}
+
+// 缩放移出动画
+.fade-out-from-scale {
+	animation: FadeOutFromScale 0.3s forwards;
+}
+
+// 缩放黑白渐入动画
+.fade-in-from-grayscale {
+	animation: FadeInFromGrayScale 0.8s forwards;
+}
+
+// 缩放黑白渐出动画
+.fade-out-from-grayscale {
+	animation: FadeOutFromGrayScale 0.8s forwards;
+}
+
+@keyframes FadeInFromBottom {
+	0% {
+		transform: translate3d(0, 100%, 0);
+	}
+	100% {
+		transform: none;
+	}
+}
+
+@keyframes FadeOutFromBottom {
+	0% {
+		transform: none;
+	}
+	100% {
+		transform: translate3d(0, 100%, 0);
+	}
+}
+
+@keyframes FadeInFromScale {
+	0% {
+		transform: scale(0);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes FadeOutFromScale {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(0);
+	}
+}
+
+@keyframes FadeInFromGrayScale {
+	0% {
+		transform: scale(1);
+		filter: grayscale(100%);
+	}
+	20% {
+		transform: scale(1.3);
+		filter: grayscale(75%);
+	}
+	50% {
+		transform: scale(1.5);
+		filter: grayscale(50%);
+	}
+	80% {
+		transform: scale(1.3);
+		filter: grayscale(25%);
+	}
+	100% {
+		transform: scale(1);
+		filter: grayscale(0%);
+	}
+}
+
+@keyframes FadeOutFromGrayScale {
+	0% {
+		transform: scale(1);
+		filter: grayscale(0%);
+	}
+	20% {
+		transform: scale(1.3);
+		filter: grayscale(25%);
+	}
+	50% {
+		transform: scale(1.5);
+		filter: grayscale(50%);
+	}
+	80% {
+		transform: scale(1.3);
+		filter: grayscale(75%);
+	}
+	100% {
+		transform: scale(1);
+		filter: grayscale(100%);
+	}
+}
