@@ -50,12 +50,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
 						`button-iconfont-content `
 					}
 					style={
-						`background-image: ` +
-						`linear-gradient( ` +
-						`135deg, ` +
-						`${color}, ` +
-						`80%, ` +
-						`var(--color-white, #ffffff)); ` +
+						`background-image: linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff)); ` +
 						`font-size: ${Taro.pxTransform(size)}; ` +
 						`${customStyle}; `
 					}

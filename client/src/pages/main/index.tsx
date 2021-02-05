@@ -34,8 +34,6 @@ export default function Main() {
 
 	// 监听底部导航数据变化
 	const watchTabBarCurrent = async () => {
-		console.log('watchTabBarCurrent')
-		// TODO:
 		setNavigationTitle(tabBarInfo?.tabList[nTabBarCurrent].title)
 		setAppTabBarCurrentId(tabBarInfo?.tabList[nTabBarCurrent].id)
 		switch (tabBarInfo?.tabList[nTabBarCurrent].contentType) {

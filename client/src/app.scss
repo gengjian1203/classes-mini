@@ -5,3 +5,7 @@ $color-brand-dark: var(--color-primary);
 
 // 改变taro-ui的默认样式
 @import 'taro-ui/dist/style/index.scss';
+
+.flex__item--selected {
+	background-color: $color-brand !important;
+}

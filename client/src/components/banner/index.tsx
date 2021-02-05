@@ -8,19 +8,17 @@ import './index.less'
 
 interface IBannerProps {
 	isLoadComplete?: boolean
-	showModuleValView?: Array<any>
-	onBannerClick?: (any?: any) => void
+	arrBannerList?: Array<any>
+	onBannerClick?: (...arg: any) => any
 }
 
 export default function Banner(props: IBannerProps) {
-	const { isLoadComplete = true, showModuleValView = [], onBannerClick } = props
+	const { isLoadComplete = true, arrBannerList = [], onBannerClick } = props
 
 	const handleBannerClick = item => {
 		console.log('handleBannerClick', item)
 		onBannerClick && onBannerClick(item)
 	}
-
-	console.log('Banner', showModuleValView)
 
 	return (
 		<Skeleton
@@ -33,10 +31,10 @@ export default function Banner(props: IBannerProps) {
 				indicatorColor='var(--color-gray-2)'
 				indicatorActiveColor='var(--color-primary)'
 				circular
-				indicatorDots={showModuleValView.length > 1}
+				indicatorDots={arrBannerList.length > 1}
 				autoplay
 			>
-				{showModuleValView.map((item, index) => {
+				{arrBannerList.map((item, index) => {
 					return (
 						<SwiperItem key={index}>
 							<View
@@ -46,7 +44,7 @@ export default function Banner(props: IBannerProps) {
 								<Image
 									className='banner-image'
 									src={item.url}
-									mode='aspectFit'
+									mode='aspectFill'
 								/>
 							</View>
 						</SwiperItem>
