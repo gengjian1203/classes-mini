@@ -3,7 +3,7 @@ import CloudFetch from '@/services/CloudFetch'
 /**
  * 查询APP级别底部导航
  */
-const queryAppTabBar = async () => {
+const queryAppTabBar = async (objParams?: any) => {
 	const params = {
 		type: 'QUERY_APP_TAB_BAR',
 	}

@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { View } from '@tarojs/components'
 import NavigationHeader from '@/components/navigation-header'
+import LayoutLogin from '@/components/layout-login'
 
 import './animation.less'
 import './base.less'
@@ -56,6 +57,8 @@ export default function PageContent(props: IPageContentParam) {
 			/>
 			{/* 渲染对应内容 */}
 			{children}
+			{/* 弹窗 */}
+			<LayoutLogin />
 		</View>
 	)
 }

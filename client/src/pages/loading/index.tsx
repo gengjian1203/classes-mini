@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import useActions from '@/hooks/useActions'
 import api from '@/api'
 import appInfoActions from '@/redux/actions/appInfo'
+import memberInfoActions from '@/redux/actions/memberInfo'
 import PageContent from '@/components/page-content'
 
 import './index.less'
@@ -11,6 +12,7 @@ export default function Loading() {
 	const { params } = useRouter()
 
 	const { setAppConfigInfo, setAppTabBarInfo } = useActions(appInfoActions)
+	const { setMemberInfo } = useActions(memberInfoActions)
 
 	const jumpPage = () => {
 		Taro.navigateTo({
@@ -20,11 +22,20 @@ export default function Loading() {
 
 	const onLoad = async () => {
 		Taro.hideShareMenu()
-		const res = await api.cloud.app.queryAppTabBar()
+
+		const [resQueryAppTabBar, resLoginMember] = await Promise.all([
+			api.cloud.app.queryAppTabBar(),
+			api.cloud.member.loginMember(),
+		])
+
+		console.log('Loading', resQueryAppTabBar, resLoginMember)
+
 		setAppTabBarInfo({
-			tabList: res,
+			tabList: resQueryAppTabBar,
 			strCurrentId: '',
 		})
+		setMemberInfo(resLoginMember)
+
 		jumpPage()
 	}
 
@@ -35,7 +46,7 @@ export default function Loading() {
 	return (
 		<PageContent
 			isShowLeftIcon={false}
-			strNavigationTitle='Hello World'
+			strNavigationTitle=''
 			customClass='loading-page-wrap'
 		>
 			Hello World

@@ -26,7 +26,9 @@ export default function Main() {
 
 	// 底部导航
 	const { tabBarInfo } = useSelector(state => state.appInfo)
-	const { setAppTabBarCurrentId } = useActions(appInfoActions)
+	const { setAppTabBarCurrentId, setShowLayoutLogin } = useActions(
+		appInfoActions
+	)
 
 	const onLoad = async () => {
 		Taro.hideShareMenu()
@@ -59,11 +61,6 @@ export default function Main() {
 
 	useQueryPageList(res => {}, null, {})
 
-	// 测试按钮
-	const handleBtnTestClick = () => {
-		setLoadComplete(!isLoadComplete)
-	}
-
 	// 切换底部导航
 	const handleTabbarBottomSelect = current => {
 		if (nTabBarCurrent === current) {
@@ -71,6 +68,16 @@ export default function Main() {
 		}
 		setTabBarCurrent(current)
 		setLoadComplete(false)
+	}
+
+	// 测试按钮
+	const handleBtnTestClick = () => {
+		setLoadComplete(!isLoadComplete)
+	}
+
+	// 测试按钮
+	const handleBtnLoginClick = () => {
+		setShowLayoutLogin(true)
 	}
 
 	const renderVPage = () => {
@@ -83,12 +90,7 @@ export default function Main() {
 				/>
 			),
 			// 我的
-			HOME: (
-				<VpHome
-					isLoadComplete={isLoadComplete}
-					title={tabBarInfo?.tabList[nTabBarCurrent].title}
-				/>
-			),
+			HOME: <VpHome isLoadComplete={isLoadComplete} />,
 			// 我的
 			MINE: (
 				<VpMine
@@ -116,7 +118,7 @@ export default function Main() {
 			<ButtonIcon
 				value='iconselect'
 				color='var(--color-primary)'
-				onClick={handleBtnTestClick}
+				onClick={handleBtnLoginClick}
 			/>
 			{/* 底部导航 */}
 			<TabbarBottom

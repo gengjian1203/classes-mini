@@ -2,6 +2,7 @@ import {
 	SET_APP_CONFIG_INFO,
 	SET_APP_TAB_BAR_INFO,
 	SET_APP_TAB_BAR_CURRENT_ID,
+	SET_SHOW_LAYOUT_LOGIN,
 } from '@/redux/constants/appInfo'
 
 const appInfoActions = dispatch => {
@@ -24,6 +25,13 @@ const appInfoActions = dispatch => {
 		setAppTabBarCurrentId: payload => {
 			dispatch({
 				type: SET_APP_TAB_BAR_CURRENT_ID,
+				payload,
+			})
+		},
+		// 设置登录弹窗状态
+		setShowLayoutLogin: payload => {
+			dispatch({
+				type: SET_SHOW_LAYOUT_LOGIN,
 				payload,
 			})
 		},
