@@ -49,7 +49,7 @@ const updateMemberInfo = async (db, strMemberId, objMemberData) => {
 	return objResult
 }
 
-async function queryLoginInfo(event, db, strMemberId) {
+async function loginMember(event, db, strMemberId) {
 	let objResult = {}
 	let objMemberData = null
 	let objMemberInfo = {}
@@ -70,4 +70,4 @@ async function queryLoginInfo(event, db, strMemberId) {
 	return objResult
 }
 
-module.exports = queryLoginInfo
+module.exports = loginMember

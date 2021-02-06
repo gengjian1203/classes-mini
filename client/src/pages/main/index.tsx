@@ -77,7 +77,15 @@ export default function Main() {
 
 	// 测试按钮
 	const handleBtnLoginClick = () => {
-		setShowLayoutLogin(true)
+		// setShowLayoutLogin(true)
+		api.cloud.classInfo.addClass({
+			logo:
+				'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg',
+			title: '测试一班',
+			describe:
+				'汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。',
+			address: '洛水畔',
+		})
 	}
 
 	const renderVPage = () => {

@@ -24,8 +24,8 @@ export default function Loading() {
 		Taro.hideShareMenu()
 
 		const [resQueryAppTabBar, resLoginMember] = await Promise.all([
-			api.cloud.app.queryAppTabBar(),
-			api.cloud.member.loginMember(),
+			api.cloud.appInfo.queryAppTabBar(),
+			api.cloud.memberInfo.loginMember(),
 		])
 
 		console.log('Loading', resQueryAppTabBar, resLoginMember)

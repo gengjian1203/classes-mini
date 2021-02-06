@@ -1,5 +1,7 @@
 import CloudFetch from '@/services/CloudFetch'
 
+const CLOUD_NAME = 'memberInfo'
+
 /**
  * 注册成员
  */
@@ -8,7 +10,7 @@ const addMember = async (objParams?: any) => {
 		type: 'ADD_MEMBER',
 		data: objParams,
 	}
-	const res = await CloudFetch.callFunction('member', params)
+	const res = await CloudFetch.callFunction(CLOUD_NAME, params)
 	console.log('addMember', res)
 	return res.data
 }
@@ -20,7 +22,7 @@ const loginMember = async (objParams?: any) => {
 	const params = {
 		type: 'LOGIN_MEMBER',
 	}
-	const res = await CloudFetch.callFunction('member', params)
+	const res = await CloudFetch.callFunction(CLOUD_NAME, params)
 	console.log('loginMember', res)
 	return res.data
 }

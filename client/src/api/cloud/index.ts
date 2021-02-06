@@ -1,7 +1,9 @@
-import app from './app'
-import member from './member'
+import appInfo from './appInfo'
+import classInfo from './classInfo'
+import memberInfo from './memberInfo'
 
 export default {
-	app,
-	member,
+	appInfo,
+	classInfo,
+	memberInfo,
 }

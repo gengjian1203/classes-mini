@@ -137,7 +137,7 @@ async function addMemberInfo(data, db, strMemberId) {
 	}
 
 	if (objMemberInfo) {
-		// 已经注册过注册
+		// 已经注册角色
 		objResult = {
 			data: objMemberInfo.data,
 		}

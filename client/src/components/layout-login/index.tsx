@@ -36,7 +36,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
 			objUserInfo.share_sourceID = shareInfo.sourceID
 			objUserInfo.share_shareType = shareInfo.shareType
 			objUserInfo.share_sharePath = shareInfo.sharePath
-			const res = await api.cloud.member.addMember(objUserInfo)
+			const res = await api.cloud.memberInfo.addMember(objUserInfo)
 			// console.log('handleGetUserInfo addMemberInfo', res)
 			setMemberInfo(res)
 			setLogining(false)
