@@ -65,7 +65,7 @@ const useQueryPageList = (
 	 * @param res
 	 */
 	const dealFetchResult = (res: any) => {
-		const data = res?.res.data || res?.res
+		const data = res
 		const list = data?.dataList ? data?.dataList : []
 		const totalCount =
 			data?.totalCount === undefined

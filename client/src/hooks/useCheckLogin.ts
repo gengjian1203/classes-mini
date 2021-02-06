@@ -4,6 +4,8 @@
  */
 import Taro from '@tarojs/taro'
 import { useRef, useEffect, useCallback } from 'react'
+import appInfoActions from '@/redux/actions/appInfo'
+import useActions from '@/hooks/useActions'
 import useIsLogin from '@/hooks/useIsLogin'
 
 interface IThrottleRef {
@@ -15,6 +17,7 @@ export function useCheckLogin(funCallback = (any?: any) => any) {
 		funCallback: () => true,
 	})
 	const isLogin = useIsLogin()
+	const { setShowLayoutLogin } = useActions(appInfoActions)
 
 	useEffect(() => {
 		current.funCallback = funCallback
@@ -26,9 +29,7 @@ export function useCheckLogin(funCallback = (any?: any) => any) {
 			if (isLogin) {
 				current.funCallback.call(this, ...args)
 			} else {
-				Taro.navigateTo({
-					url: '/pages/login/index',
-				})
+				setShowLayoutLogin(true)
 			}
 		},
 		[isLogin]

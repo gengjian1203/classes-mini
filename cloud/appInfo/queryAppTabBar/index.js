@@ -20,7 +20,7 @@ async function queryAppTabBar(event, db, memberId) {
 			{
 				id: '0000002',
 				title: '班级',
-				contentType: 'CLASS_LIST',
+				contentType: 'CLASSES',
 				iconType: 'iconfont iconactivity',
 				selectedIconType: 'iconfont iconactivity_fill',
 			},

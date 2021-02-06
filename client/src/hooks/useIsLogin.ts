@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 export function useIsLogin(): boolean {
 	const memberInfo = useSelector(state => state.memberInfo)
 
-	return Boolean(memberInfo._id)
+	return Boolean(memberInfo.user_openid)
 }
 
 export default useIsLogin

@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import Skeleton from '@/components/skeleton'
 import Config from '@/config/config'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 
 import './index.less'
 
@@ -15,8 +16,10 @@ export default function VpMine(props: IVpMineParam) {
 	const {
 		title = '', // 标题
 		isLoadComplete = true,
-		onTitleClick = () => {} // 点击标题回调
+		onTitleClick = () => {}, // 点击标题回调
 	} = props
+
+	const memberInfo = useSelector(state => state.memberInfo)
 
 	const [value, setValue] = useState<number>(0)
 
@@ -35,25 +38,23 @@ export default function VpMine(props: IVpMineParam) {
 	}
 
 	return (
-		<View className='vp-mine-wrap'>
-			<Skeleton
-				loading={!isLoadComplete}
-				type='column'
-				title
-				titleWidth={'80%'}
-				avatar
-			>
-				<Fragment>
-					<View className='vp-mine-title' onClick={handleTitleClick}>
-						{title}
-					</View>
-					<View className='vp-mine-content'>
-						<View className='vp-mine-value' onClick={handleValueClick}>
-							{`${value}-${value}-${value}`}
-						</View>
-					</View>
-				</Fragment>
-			</Skeleton>
-		</View>
+		<Skeleton
+			loading={!isLoadComplete}
+			type='column'
+			avatar
+			title
+			customClass='flex-start-v vp-mine-wrap'
+		>
+			<Fragment>
+				<Image
+					src={memberInfo?.user_avatarUrl}
+					mode='scaleToFill'
+					className='mine-logo'
+				/>
+				<View className='vp-mine-title' onClick={handleTitleClick}>
+					{memberInfo?.user_nickName}
+				</View>
+			</Fragment>
+		</Skeleton>
 	)
 }
