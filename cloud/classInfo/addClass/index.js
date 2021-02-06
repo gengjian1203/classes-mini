@@ -71,6 +71,7 @@ async function addClass(data, db, strMemberId) {
 
 	// 创建班级
 	objResult = await createClass(data, db, strMemberId, date, time)
+	// 更新班级列表冗余
 
 	return objResult
 }

@@ -39,9 +39,12 @@ export default function Main() {
 		setNavigationTitle(tabBarInfo?.tabList[nTabBarCurrent].title)
 		setAppTabBarCurrentId(tabBarInfo?.tabList[nTabBarCurrent].id)
 		switch (tabBarInfo?.tabList[nTabBarCurrent].contentType) {
+			case 'CLASS_LIST':
+				break
+			case 'HOME':
+				break
 			case 'MINE':
 				break
-			case 'CLASS_LIST':
 			default:
 				break
 		}
@@ -59,7 +62,21 @@ export default function Main() {
 		watchTabBarCurrent()
 	}, [tabBarInfo?.tabList, nTabBarCurrent])
 
-	useQueryPageList(res => {}, null, {})
+	useQueryPageList(
+		{
+			CLASS_LIST: res => {
+				const { state, list, totalCount } = res
+			},
+			HOME: res => {},
+			MINE: res => {},
+		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+		{
+			CLASS_LIST: null,
+			HOME: null,
+			MINE: null,
+		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+		{}
+	)
 
 	// 切换底部导航
 	const handleTabbarBottomSelect = current => {
@@ -81,11 +98,25 @@ export default function Main() {
 		api.cloud.classInfo.addClass({
 			logo:
 				'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg',
-			title: '测试一班',
+			title: `测试${Math.random()}班`,
 			describe:
 				'汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。',
 			address: '洛水畔',
 		})
+	}
+
+	// 测试按钮
+	const handleBtnTest2Click = async () => {
+		const res = await api.cloud.classInfo.queryClassByKeyTitle({
+			keyTitle: '测试0',
+		})
+		console.log('handleBtnTest2Click', res)
+	}
+
+	// 测试按钮
+	const handleBtnTest3Click = async () => {
+		const res = await api.cloud.classInfo.queryClassByMemberId({})
+		console.log('handleBtnTest3Click', res)
 	}
 
 	const renderVPage = () => {
@@ -127,6 +158,16 @@ export default function Main() {
 				value='iconselect'
 				color='var(--color-primary)'
 				onClick={handleBtnLoginClick}
+			/>
+			<ButtonIcon
+				value='iconselect'
+				color='var(--color-primary)'
+				onClick={handleBtnTest2Click}
+			/>
+			<ButtonIcon
+				value='iconservice'
+				color='var(--color-primary)'
+				onClick={handleBtnTest3Click}
 			/>
 			{/* 底部导航 */}
 			<TabbarBottom

@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import React, { Fragment } from 'react'
 import { View } from '@tarojs/components'
+import Mask from '@/components/mask'
 
 import './index.less'
 
@@ -27,7 +28,7 @@ export default function PanelBottom(props: IPanelBottomProps) {
 
 	return (
 		// {/* 面板 */}
-		<View className='panel-bottom-wrap'>
+		<Mask className='panel-bottom-wrap'>
 			{/* 实际内容 */}
 			{true && (
 				<View
@@ -40,16 +41,16 @@ export default function PanelBottom(props: IPanelBottomProps) {
 			)}
 			{/* 占位内容 */}
 			{fixed && (
-				<Fragment>
-					<View
-						className={`panel-box ` + `${customClass} ` + `hidden-far `}
-						style={`background-color: ${backgroundColor}; ` + `${customStyle}`}
-					>
+				<View
+					className={``}
+					style={`background-color: ${backgroundColor}; ` + `${customStyle}`}
+				>
+					<View className={`panel-box ` + `${customClass} ` + `hidden-far `}>
 						{children}
 					</View>
 					{isSafeBottom && <View className='safe-bottom'></View>}
-				</Fragment>
+				</View>
 			)}
-		</View>
+		</Mask>
 	)
 }

@@ -25,7 +25,7 @@ export default function TabBarBottom(props: ITabbarBottomProps) {
 	return (
 		<PanelBottom fixed isSafeBottom>
 			<AtTabBar
-				fixed
+				fixed={false}
 				tabList={arrTabBarList}
 				current={nTabBarCurrent}
 				onClick={handleTabbarSelect}

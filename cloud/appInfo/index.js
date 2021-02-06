@@ -6,6 +6,10 @@ cloud.init({
 	env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
 })
 
+const objFunction = {
+	QUERY_APP_TAB_BAR: queryAppTabBar, // 查询APP级别底部导航
+}
+
 /**
  * 用以处理APP级相关接口
  * @param {*} event
@@ -19,11 +23,7 @@ exports.main = async (event, context) => {
 	const memberId = `mem-${OPENID}`
 	console.log('请求人:', memberId, type)
 
-	const objFunction = {
-		QUERY_APP_TAB_BAR: await queryAppTabBar(data, db, memberId), // 查询APP级别底部导航
-	}
-
-	let objResult = objFunction[type]
+	let objResult = await objFunction[type](data, db, memberId)
 
 	return objResult
 }

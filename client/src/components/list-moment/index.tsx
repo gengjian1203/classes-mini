@@ -18,7 +18,7 @@ export interface IItemType {
 	images?: Array<string> // 缩略图
 }
 
-interface IListFeedProps {
+interface IListMomentProps {
 	isLoadCompleteList?: boolean // 是否列表加载完毕
 	strType:
 		| 'MOMENTS' // 朋友圈类型
@@ -28,7 +28,7 @@ interface IListFeedProps {
 	onDetailClick: (any: any) => void
 }
 
-export default function ListFeed(props: IListFeedProps) {
+export default function ListMoment(props: IListMomentProps) {
 	const {
 		isLoadCompleteList = true,
 		strType = '',
@@ -61,10 +61,10 @@ export default function ListFeed(props: IListFeedProps) {
 	}
 
 	return (
-		<View className='list-feed-wrap'>
+		<View className='list-moment-wrap'>
 			{readerList()}
 			{showBottomLoadingTip && (
-				<View className='list-feed-loading-tip'>努力加载中...</View>
+				<View className='list-moment-loading-tip'>努力加载中...</View>
 			)}
 		</View>
 	)

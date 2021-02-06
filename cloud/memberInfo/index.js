@@ -7,6 +7,11 @@ cloud.init({
 	env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
 })
 
+const objFunction = {
+	ADD_MEMBER: addMember, // 注册成员
+	LOGIN_MEMBER: loginMember, // 成员登录
+}
+
 /**
  * 用以处理成员的相关接口
  * @param {*} event
@@ -20,12 +25,7 @@ exports.main = async (event, context) => {
 	const memberId = `mem-${OPENID}`
 	console.log('请求人:', memberId, type)
 
-	const objFunction = {
-		ADD_MEMBER: await addMember(data, db, memberId), // 注册成员
-		LOGIN_MEMBER: await loginMember(data, db, memberId), // 成员登录
-	}
-
-	let objResult = objFunction[type]
+	let objResult = await objFunction[type](data, db, memberId)
 
 	return objResult
 }

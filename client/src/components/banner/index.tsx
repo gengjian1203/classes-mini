@@ -25,9 +25,9 @@ export default function Banner(props: IBannerProps) {
 			loading={!isLoadComplete}
 			row={1}
 			rowProps={{ width: '100%', height: 300 }}
+			customClass='banner-wrap'
 		>
 			<Swiper
-				className='banner-wrap'
 				indicatorColor='var(--color-gray-2)'
 				indicatorActiveColor='var(--color-primary)'
 				circular

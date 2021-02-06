@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { View } from '@tarojs/components'
-import ListFeed from '@/components/list-feed'
+import ListMoment from '@/components/list-moment'
 import Skeleton from '@/components/skeleton'
 
 import './index.less'
@@ -55,7 +55,7 @@ export default function Tab(props: ITabParam) {
 				>
 					{showModuleValView.map((item, index) => (
 						<AtTabsPane current={tabCurrent} index={index} key={index}>
-							<ListFeed
+							<ListMoment
 								isLoadCompleteList={isLoadCompleteList}
 								strType={'MOMENTS'}
 								arrList={arrList}
