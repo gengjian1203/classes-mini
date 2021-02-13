@@ -29,13 +29,9 @@ export default function VpClasses(props: IVpClassesParam) {
 		console.log('handleSearchActionClick', e)
 		Taro.showLoading()
 		const params = {
-			pageName: 0,
-			pageSize: 20,
 			keyTitle: valueSearch.current,
 		}
-		const res = await api.cloud.classInfo.queryClassByKeyTitle(params)
-		Taro.hideLoading()
-		onClassListSearch && onClassListSearch(res.dataList)
+		onClassListSearch && onClassListSearch(params)
 	}
 	return (
 		<View className='vp-classes-wrap'>

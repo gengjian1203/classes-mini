@@ -26,6 +26,9 @@ export default function Main() {
 	const [nTabBarCurrent, setTabBarCurrent] = useState<number>(0)
 
 	// 班级列表
+	const [paramQueryClassByKeyTitle, setQueryClassByKeyTitle] = useState({
+		keyTitle: '',
+	})
 	const [arrClassList, setClassList] = useState<Array<any>>([])
 
 	// 底部导航
@@ -88,6 +91,7 @@ export default function Main() {
 							})
 						)
 						setLoadComplete(true)
+						Taro.hideLoading()
 						break
 				}
 			},
@@ -95,12 +99,12 @@ export default function Main() {
 			MINE: res => {},
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
 		{
-			CLASSES: api.cloud.classInfo.queryClassByMemberId,
+			CLASSES: api.cloud.classInfo.queryClassByKeyTitle,
 			HOME: null,
 			MINE: null,
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
 		{
-			CLASSES: {},
+			CLASSES: paramQueryClassByKeyTitle,
 			HOME: {},
 			MINE: {},
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType]
@@ -115,19 +119,8 @@ export default function Main() {
 		setLoadComplete(false)
 	}
 
-	const handleClassListSearch = list => {
-		console.log('handleClassListSearch', list)
-		setClassList(
-			list.map(item => {
-				return {
-					...item,
-					logo: item.data_logo,
-					title: item.data_title,
-					desc: item.data_describe,
-					owner: '张三',
-				}
-			})
-		)
+	const handleClassListSearch = param => {
+		setQueryClassByKeyTitle(param)
 	}
 
 	// 测试按钮
@@ -149,28 +142,6 @@ export default function Main() {
 		console.log('handleBtnLoginClick', res)
 		Taro.showToast({
 			title: '创建社区',
-			icon: 'none',
-		})
-	}
-
-	// 查询社区列表按钮
-	const handleBtnTest2Click = async () => {
-		const res = await api.cloud.classInfo.queryClassByKeyTitle({
-			keyTitle: '测试0',
-		})
-		console.log('handleBtnTest2Click', res)
-		Taro.showToast({
-			title: '查询社区',
-			icon: 'none',
-		})
-	}
-
-	// 查询社区列表按钮
-	const handleBtnTest3Click = async () => {
-		const res = await api.cloud.classInfo.queryClassByMemberId({})
-		console.log('handleBtnTest3Click', res)
-		Taro.showToast({
-			title: '查询社区',
 			icon: 'none',
 		})
 	}
@@ -216,16 +187,6 @@ export default function Main() {
 				color='var(--color-primary)'
 				onClick={handleBtnLoginClick}
 			/>
-			{/* <ButtonIcon
-				value='iconselect'
-				color='var(--color-primary)'
-				onClick={handleBtnTest2Click}
-			/>
-			<ButtonIcon
-				value='iconservice'
-				color='var(--color-primary)'
-				onClick={handleBtnTest3Click}
-			/> */}
 			{/* 底部导航 */}
 			<TabbarBottom
 				arrTabBarList={tabBarInfo.tabList}
