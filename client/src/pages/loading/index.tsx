@@ -1,5 +1,6 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import React, { Fragment, useEffect, useState } from 'react'
+import { Image } from '@tarojs/components'
 import useActions from '@/hooks/useActions'
 import api from '@/api'
 import appInfoActions from '@/redux/actions/appInfo'
@@ -47,9 +48,15 @@ export default function Loading() {
 		<PageContent
 			isShowLeftIcon={false}
 			strNavigationTitle=''
-			customClass='loading-page-wrap'
+			colorBackgroud='transparent'
+			isTransparent
+			customClass='flex-center-v loading-page-wrap'
 		>
-			Hello World
+			<Image
+				src='https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2045442301,3285918522&fm=26&gp=0.jpg'
+				mode='aspectFill'
+				style='width: 100%; height: 100%;'
+			/>
 		</PageContent>
 	)
 }

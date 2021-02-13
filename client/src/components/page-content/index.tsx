@@ -43,10 +43,7 @@ export default function PageContent(props: IPageContentParam) {
 	}; `
 
 	return (
-		<View
-			className={`page-content-wrap ${customClass}`}
-			style={`${themeStyle} ${customStyle}`}
-		>
+		<View className={`flex-center-v page-content-wrap`} style={`${themeStyle}`}>
 			{/* 顶部导航 */}
 			<NavigationHeader
 				isShowLeftIcon={isShowLeftIcon}
@@ -56,7 +53,12 @@ export default function PageContent(props: IPageContentParam) {
 				colorTitle={colorTitle}
 			/>
 			{/* 渲染对应内容 */}
-			{children}
+			<View
+				className={`page-content-children ${customClass}`}
+				style={`${customStyle}`}
+			>
+				{children}
+			</View>
 			{/* 弹窗 */}
 			<LayoutLogin />
 		</View>
