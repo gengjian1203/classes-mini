@@ -7,7 +7,11 @@ import appInfoActions from '@/redux/actions/appInfo'
 import memberInfoActions from '@/redux/actions/memberInfo'
 import PageContent from '@/components/page-content'
 
+import regCom from '@/pages/page-abc/components'
+
 import './index.less'
+
+regCom()
 
 export default function Loading() {
 	const { params } = useRouter()

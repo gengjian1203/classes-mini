@@ -7,6 +7,10 @@ export default {
 			root: 'pages/main', // 首页
 			pages: ['index'],
 		},
+		{
+			root: 'pages/page-abc', // 公共组件页
+			pages: ['index'],
+		},
 	],
 	preloadRule: {},
 	window: {

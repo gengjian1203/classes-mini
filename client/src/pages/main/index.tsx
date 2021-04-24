@@ -16,9 +16,16 @@ import VpClasses from '@/components-vp/vp-classes/index'
 import VpHome from '@/components-vp/vp-home/index'
 import VpMine from '@/components-vp/vp-mine/index'
 
+import comPulbic from '@/pages/page-abc/components/simple'
+import PanelCell from '@/pages/page-abc/components/panelCell'
+
+import WXCloud from '../../sdk/WXCloud'
+
 import './index.less'
 
 export default function Main() {
+	const { PanelApple } = comPulbic
+
 	const {} = useRouter()
 
 	const [isLoadComplete, setLoadComplete] = useState<boolean>(false) // 加载完毕
@@ -39,6 +46,12 @@ export default function Main() {
 
 	const onLoad = async () => {
 		Taro.hideShareMenu()
+		const params = {
+			nPageNum: 0,
+			nPageSize: 10,
+		}
+		const res = await WXCloud.articleInfo.queryArticleList(params)
+		console.log('onLoad', res)
 	}
 
 	// 监听底部导航数据变化
@@ -125,7 +138,10 @@ export default function Main() {
 
 	// 测试按钮
 	const handleBtnTestClick = useCheckLogin(() => {
-		setLoadComplete(!isLoadComplete)
+		// setLoadComplete(!isLoadComplete)
+		Taro.navigateTo({
+			url: '/pages/page-abc/index',
+		})
 	})
 
 	// 测试按钮
@@ -187,6 +203,8 @@ export default function Main() {
 				color='var(--color-primary)'
 				onClick={handleBtnLoginClick}
 			/>
+			<PanelApple title='111' />
+			<PanelCell title='222' />
 			{/* 底部导航 */}
 			<TabbarBottom
 				arrTabBarList={tabBarInfo.tabList}
