@@ -42,6 +42,7 @@
 		"@tarojs/react": "3.0.14",
 		"@tarojs/runtime": "3.0.14",
 		"@tarojs/taro": "3.2.13",
+		"blueimp-md5": "^2.18.0",
 		"immer": "^8.0.1",
 		"react": "^16.10.0",
 		"react-dom": "^16.10.0",
