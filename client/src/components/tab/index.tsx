@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { View } from '@tarojs/components'
-import ListMoment from '@/components/list-moment'
-import Skeleton from '@/components/skeleton'
+import ListMoment from '@/components/ListMoment'
+import Skeleton from '@/components/Skeleton'
 
 import './index.less'
 

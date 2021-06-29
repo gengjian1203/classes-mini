@@ -1,9 +1,9 @@
-import appInfo from './appInfo'
-import classInfo from './classInfo'
-import memberInfo from './memberInfo'
+import fetchAppInfo from "./fetchAppInfo";
+import fetchGroupInfo from "./fetchGroupInfo";
+import fetchMemberInfo from "./fetchMemberInfo";
 
 export default {
-	appInfo,
-	classInfo,
-	memberInfo,
-}
+  fetchAppInfo,
+  fetchGroupInfo,
+  fetchMemberInfo,
+};

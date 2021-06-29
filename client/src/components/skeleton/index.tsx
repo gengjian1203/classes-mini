@@ -1,7 +1,7 @@
+import React, { Fragment } from 'react'
+import classnames from 'classnames'
 import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import classnames from 'classnames'
-import React, { Fragment } from 'react'
 import './index.less'
 
 /**

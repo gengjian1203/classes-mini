@@ -1,31 +1,23 @@
-import Taro from '@tarojs/taro'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import useActions from '@/hooks/useActions'
-import appInfoActions from '@/redux/actions/appInfo'
+import Taro,{ useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import api from '@/api'
+import useActions from '@/hooks/useActions'
 import useQueryPageList from '@/hooks/useQueryPageList'
 import useCheckLogin from '@/hooks/useCheckLogin'
-import { useRouter } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import ButtonIcon from '@/components/button-icon'
-import PageContent from '@/components/page-content'
-import TabbarBottom from '@/components/tab-bar-bottom'
+import ButtonIcon from '@/components/ButtonIcon'
+import PageContent from '@/components/PageContent'
+import TabbarBottom from '@/components/TabBarBottom'
+import VpClasses from '@/componentsVp/VpClasses/index'
+import VpHome from '@/componentsVp/VpHome/index'
+import VpMine from '@/componentsVp/VpMine/index'
 
-import VpClasses from '@/components-vp/vp-classes/index'
-import VpHome from '@/components-vp/vp-home/index'
-import VpMine from '@/components-vp/vp-mine/index'
-
-import comPulbic from '@/pages/page-abc/components/simple'
-import PanelCell from '@/pages/page-abc/components/panelCell'
-
-import WXCloud from '../../sdk/WXCloud'
+import appInfoActions from '@/redux/actions/appInfo'
 
 import './index.less'
 
 export default function Main() {
-	const { PanelApple } = comPulbic
-
 	const {} = useRouter()
 
 	const [isLoadComplete, setLoadComplete] = useState<boolean>(false) // 加载完毕
@@ -50,8 +42,8 @@ export default function Main() {
 			nPageNum: 0,
 			nPageSize: 10,
 		}
-		const res = await WXCloud.articleInfo.queryArticleList(params)
-		console.log('onLoad', res)
+		// const res = await WXCloud.articleInfo.queryArticleList(params)
+		// console.log('onLoad', res)
 	}
 
 	// 监听底部导航数据变化
@@ -59,7 +51,7 @@ export default function Main() {
 		setNavigationTitle(tabBarInfo?.tabList[nTabBarCurrent].title)
 		setAppTabBarCurrentId(tabBarInfo?.tabList[nTabBarCurrent].id)
 		switch (tabBarInfo?.tabList[nTabBarCurrent].contentType) {
-			case 'CLASSES':
+			case 'GROUP':
 				return
 				break
 			case 'HOME':
@@ -85,7 +77,7 @@ export default function Main() {
 
 	useQueryPageList(
 		{
-			CLASSES: res => {
+			GROUP: res => {
 				const { state, list, totalCount } = res
 				console.log('Main useQueryPageList', state, list, totalCount)
 				switch (state) {
@@ -96,9 +88,9 @@ export default function Main() {
 							list.map(item => {
 								return {
 									...item,
-									logo: item.data_logo,
-									title: item.data_title,
-									desc: item.data_describe,
+									logo: item.dataLogo,
+									title: item.dataTitle,
+									desc: item.dataDescribe,
 									owner: '张三',
 								}
 							})
@@ -112,12 +104,12 @@ export default function Main() {
 			MINE: res => {},
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
 		{
-			CLASSES: api.cloud.classInfo.queryClassByKeyTitle,
+			GROUP: api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
 			HOME: null,
 			MINE: null,
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType],
 		{
-			CLASSES: paramQueryClassByKeyTitle,
+			GROUP: paramQueryClassByKeyTitle,
 			HOME: {},
 			MINE: {},
 		}[tabBarInfo?.tabList[nTabBarCurrent].contentType]
@@ -147,7 +139,7 @@ export default function Main() {
 	// 测试按钮
 	const handleBtnLoginClick = async () => {
 		// setShowLayoutLogin(true)
-		const res = await api.cloud.classInfo.addClass({
+		const res = await api.cloud.fetchGroupInfo.addGroup({
 			logo:
 				'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg',
 			title: `测试${Math.random()}班`,
@@ -165,7 +157,7 @@ export default function Main() {
 	const renderVPage = () => {
 		return {
 			// 班级
-			CLASSES: (
+			GROUP: (
 				<VpClasses
 					isLoadComplete={isLoadComplete}
 					arrClassList={arrClassList}
@@ -203,8 +195,6 @@ export default function Main() {
 				color='var(--color-primary)'
 				onClick={handleBtnLoginClick}
 			/>
-			<PanelApple title='111' />
-			<PanelCell title='222' />
 			{/* 底部导航 */}
 			<TabbarBottom
 				arrTabBarList={tabBarInfo.tabList}

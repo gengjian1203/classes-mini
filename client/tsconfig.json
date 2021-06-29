@@ -20,7 +20,7 @@
 			"@/*": ["./src/*"],
 			"@/api/*": ["./src/api/*"],
       "@/components/*": ["./src/components/*"],
-      "@/components-vp/*": ["./src/components-vp/*"],
+      "@/componentsVp/*": ["./src/componentsVp/*"],
 			"@/config/*": ["./src/config/*"],
 			"@/hooks/*": ["./src/hooks/*"],
 			"@/images/*": ["./src/images/*"],
