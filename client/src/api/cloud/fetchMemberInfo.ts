@@ -23,7 +23,7 @@ const queryMember = async (objParams: any = {}) => {
     type: "QUERY_MEMBER",
     data: objParams,
   };
-  const res = await CloudFetch.callFunction(CLOUD_NAME, params);
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
   console.log("queryMember", res);
   return res.data;
 };

@@ -13,16 +13,13 @@ async function queryMemberInfo(data, db) {
   try {
     objResult = {
       code: 200,
-      data: await db
-        .collection("TB_MEMBER")
-        .doc(data._id)
-        .get()
+      data: await db.collection("TB_MEMBER").doc(data._id).get(),
     };
   } catch (e) {
     // 没有查到。异常。
     objResult = {
       code: 500,
-      data: e
+      msg: "没有查到该用户",
     };
     console.error("queryMemberInfo error", e);
   }

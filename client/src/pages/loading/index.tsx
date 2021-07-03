@@ -30,14 +30,14 @@ export default function Loading() {
     ]);
 
     console.log("Loading", resQueryAppTabBar, resLoginMember);
-
-    setAppTabBarInfo({
-      tabList: resQueryAppTabBar,
-      strCurrentId: "",
-    });
-    setMemberInfo(resLoginMember);
-
-    jumpPage();
+    if (resQueryAppTabBar) {
+      setAppTabBarInfo({
+        tabList: resQueryAppTabBar,
+        strCurrentId: "",
+      });
+      setMemberInfo(resLoginMember);
+      jumpPage();
+    }
   };
 
   useEffect(() => {
