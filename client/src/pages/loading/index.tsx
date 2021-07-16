@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Taro, { useRouter } from "@tarojs/taro";
-import { Image } from '@tarojs/components'
+import { Image } from "@tarojs/components";
 import useActions from "@/hooks/useActions";
 import Api from "@/api";
 import appInfoActions from "@/redux/actions/appInfo";
@@ -12,11 +12,13 @@ import "./index.less";
 export default function Loading() {
   const { params } = useRouter();
 
-  const { setAppConfigInfo, setAppTabBarInfo } = useActions(appInfoActions);
+  const { setAppConfigInfo, setAppHomePage, setAppTabBarInfo } = useActions(
+    appInfoActions
+  );
   const { setMemberInfo } = useActions(memberInfoActions);
 
   const jumpPage = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: `/pages/Main/index`,
     });
   };
@@ -29,6 +31,7 @@ export default function Loading() {
       Api.cloud.fetchMemberInfo.queryMember(),
     ]);
 
+    setAppHomePage("/pages/Main/index");
     console.log("Loading", resQueryAppTabBar, resLoginMember);
     if (resQueryAppTabBar) {
       setAppTabBarInfo({

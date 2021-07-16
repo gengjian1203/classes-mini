@@ -4,6 +4,10 @@ export default {
   ],
   subpackages: [
     {
+      root: "pages/ECharts", // 数据展示页
+      pages: ["Index/index"],
+    },
+    {
       root: "pages/Main", // 首页
       pages: ["index"],
     },
