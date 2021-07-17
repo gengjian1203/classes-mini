@@ -157,7 +157,7 @@ export default function Main() {
   //
   const handleBtnEChartsClick = () => {
     Taro.navigateTo({
-      url: "/pages/ECharts/Index/index",
+      url: "/pages/ECharts/index",
     });
   };
 

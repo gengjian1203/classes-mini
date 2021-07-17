@@ -3,7 +3,7 @@ import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import Api from "@/api";
 import PageContent from "@/components/PageContent";
-import * as echarts from "@/pages/ECharts/components/ec-canvas/echarts.js";
+import * as echarts from "@/componentsWx/ec-canvas/echarts.js";
 // import EChartsNode from "@/pages/ECharts/components/EChartsNode";
 // import EChartsTable from "@/pages/ECharts/components/EChartsTable";
 
@@ -19,7 +19,6 @@ export default function ECharts() {
     Taro.hideShareMenu();
 
     if (!timerRefresh.current) {
-      // clearInterval(timerRefresh.current);
       timerRefresh.current = setInterval(() => {
         console.log("setChartData...");
         const option = setChartData();

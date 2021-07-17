@@ -21,6 +21,7 @@
 			"@/api/*": ["./src/api/*"],
       "@/components/*": ["./src/components/*"],
       "@/componentsVp/*": ["./src/componentsVp/*"],
+      "@/componentsWx/*": ["./src/componentsWx/*"],
 			"@/config/*": ["./src/config/*"],
 			"@/hooks/*": ["./src/hooks/*"],
 			"@/images/*": ["./src/images/*"],
