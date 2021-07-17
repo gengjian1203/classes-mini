@@ -9,11 +9,13 @@ import useCheckLogin from "@/hooks/useCheckLogin";
 import ButtonIcon from "@/components/ButtonIcon";
 import PageContent from "@/components/PageContent";
 import TabbarBottom from "@/components/TabBarBottom";
-import VpClasses from "@/componentsVp/VpClasses/index";
-import VpHome from "@/componentsVp/VpHome/index";
-import VpMine from "@/componentsVp/VpMine/index";
-
 import appInfoActions from "@/redux/actions/appInfo";
+
+import VpClasses from "./componentsVp/VpClasses/index";
+import VpHome from "./componentsVp/VpHome/index";
+import VpMine from "./componentsVp/VpMine/index";
+import VpSatellite from "./componentsVp/VpSatellite/index";
+import VpWave from "./componentsVp/VpWave/index";
 
 import "./index.less";
 
@@ -102,16 +104,22 @@ export default function Main() {
       },
       HOME: (res) => {},
       MINE: (res) => {},
+      WAVE: (res) => {},
+      SATELLITE: (res) => {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
       GROUP: api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
       MINE: null,
+      WAVE: null,
+      SATELLITE: null,
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
       GROUP: paramQueryClassByKeyTitle,
       HOME: {},
       MINE: {},
+      WAVE: {},
+      SATELLITE: {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType]
   );
 
@@ -180,6 +188,18 @@ export default function Main() {
           title={tabBarInfo?.tabList[nTabBarCurrent].title}
         />
       ),
+      WAVE: (
+        <VpWave
+          isLoadComplete={isLoadComplete}
+          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+        />
+      ),
+      SATELLITE: (
+        <VpSatellite
+          isLoadComplete={isLoadComplete}
+          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+        />
+      ),
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType];
   };
 
@@ -192,7 +212,7 @@ export default function Main() {
       {/* 渲染对应内容 */}
       {renderVPage()}
       {/* 测试内容 */}
-      <View>测试</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="http://pic.51yuansu.com/pic3/cover/01/66/10/5957f0b51c503_610.jpg"
         color="var(--color-primary)"
@@ -209,7 +229,7 @@ export default function Main() {
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnEChartsClick}
-      />
+      /> */}
       {/* 底部导航 */}
       <TabbarBottom
         arrTabBarList={tabBarInfo.tabList}

@@ -46,5 +46,8 @@ exports.main = async (event, context) => {
     };
   }
 
+  const code = objResult.errCode || objResult.code;
+  objResult.code = code ? code : 200;
+
   return objResult;
 };
