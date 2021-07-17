@@ -1,38 +1,62 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
-import Api from "@/api";
+import ModuleECharts from "@/components/ModuleECharts";
 import PageContent from "@/components/PageContent";
 import * as echarts from "@/componentsWx/ec-canvas/echarts";
-// import EChartsNode from "@/pages/ECharts/components/EChartsNode";
-// import EChartsTable from "@/pages/ECharts/components/EChartsTable";
 
 import "./index.less";
 
-export default function ECharts() {
-  const { params } = useRouter();
+export default function EChartsDemo() {
+  const {
+    path,
+    params: { id = "" },
+  } = useRouter();
 
-  const chart = useRef<any>(null);
-  const timerRefresh = useRef<NodeJS.Timeout>(null);
-  const [ec, setEC] = useState({});
+  const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 是否加载完毕
+  const [ec1, setEC1] = useState({});
+  const [chart1, setChart1] = useState({});
+  const [option1, setOption1] = useState({});
+  const [ec2, setEC2] = useState({});
+  const [chart2, setChart2] = useState({});
+  const [option2, setOption2] = useState({});
 
-  const onLoad = async () => {
-    Taro.hideShareMenu();
-    setEC({
-      onInit: initChart,
+  // 初始化图表
+  const initChart1 = (canvas, width, height) => {
+    const chartTmp = echarts.init(canvas, null, {
+      width: width,
+      height: height,
     });
-
-    if (!timerRefresh.current) {
-      timerRefresh.current = setInterval(() => {
-        console.log("setChartData...", chart.current);
-        const option = setChartData();
-        option.series[0].data[3] = Math.floor(Math.random() * 1000);
-        chart.current && chart.current.setOption(option);
-      }, 1000);
-    }
+    canvas.setChart(chartTmp);
+    setChart1(chartTmp);
+    console.log("initChart1", chartTmp);
+    return chartTmp;
   };
 
-  const setChartData = () => {
+  const initChart2 = (canvas, width, height) => {
+    const chartTmp = echarts.init(canvas, null, {
+      width: width,
+      height: height,
+    });
+    canvas.setChart(chartTmp);
+    setChart2(chartTmp);
+    console.log("initChart2", chartTmp);
+    return chartTmp;
+  };
+
+  useEffect(() => {
+    Taro.hideShareMenu();
+    setEC1({
+      onInit: initChart1,
+    });
+    setEC2({
+      onInit: initChart2,
+    });
+    setLoadComplete(true);
+  }, []);
+
+  const handleTestClick = () => {
+    console.log("handleTestClick");
     const option = {
       title: {
         text: "堆叠区域图",
@@ -124,53 +148,36 @@ export default function ECharts() {
         },
       ],
     };
-    return option;
-  };
-
-  // 初始化图表
-  const initChart = (canvas, width, height) => {
-    chart.current = echarts.init(canvas, null, {
-      width: width,
-      height: height,
-    });
-    canvas.setChart(chart.current);
-    return chart;
-  };
-
-  useEffect(() => {
-    onLoad();
-    return () => {
-      if (timerRefresh.current) {
-        clearInterval(timerRefresh.current);
-        timerRefresh.current = null;
-      }
-    };
-  }, []);
-
-  const hanldeTestClick = () => {
-    // console.log("hanldeTestClick", refChart);
-  };
-
-  const handleTitleClick = () => {
-    // console.log("handleTitleClick", refChart);
-    // setChartData();
+    setOption1(option);
+    setOption2(option);
   };
 
   return (
     <PageContent
-      strNavigationTitle="单ECharts视图demo"
+      strNavigationTitle="多ECharts视图demo"
       colorBackgroud="transparent"
       isShowLeftIcon
       isTransparent
-      customClass="flex-center-v"
+      customClass="flex-center-v e-charts-demo-wrap"
     >
-      <View onClick={hanldeTestClick}>Test</View>
-      <View onClick={handleTitleClick}>This is Page ECharts.</View>
-      {/* <EChartsNode option={optionECharts} /> */}
-      {/* <EChartsTable /> */}
-      <View className="echartWrap">
-        <ec-canvas id="mychart-dom-area" canvas-id="mychart-area" ec={ec} />
-      </View>
+      {isLoadComplete && (
+        <Fragment>
+          <View onClick={handleTestClick}>EChartsDemo EChartsDemo</View>
+          <ModuleECharts
+            idECharts="mychart-1"
+            ec={ec1}
+            chart={chart1}
+            option={option1}
+          />
+          <View>11111</View>
+          <ModuleECharts
+            idECharts="mychart-2"
+            ec={ec2}
+            chart={chart2}
+            option={option2}
+          />
+        </Fragment>
+      )}
     </PageContent>
   );
 }

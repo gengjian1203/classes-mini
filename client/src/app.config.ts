@@ -8,6 +8,10 @@ export default {
       pages: ["index"],
     },
     {
+      root: "pages/EChartsDemo", // 数据组件展示demo
+      pages: ["index"],
+    },
+    {
       root: "pages/Main", // 首页
       pages: ["index"],
     },
