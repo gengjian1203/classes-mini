@@ -39,7 +39,9 @@ export default function Main() {
   );
 
   const onLoad = async () => {
-    Taro.hideShareMenu();
+    if (process.env.TARO_ENV === "weapp") {
+      Taro.hideShareMenu();
+    }
     const params = {
       nPageNum: 0,
       nPageSize: 10,

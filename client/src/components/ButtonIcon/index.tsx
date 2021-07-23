@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { AtButton } from "taro-ui";
 import { View, Image } from "@tarojs/components";
+import GlobalManager from "@/services/GlobalManager";
 import "./index.less";
 
 interface IButtonIconParam {
@@ -35,9 +36,18 @@ export default function ButtonIcon(props: IButtonIconParam) {
     <AtButton
       className="button-icon-wrap"
       customStyle={
-        `width: ${Taro.pxTransform(width)}; ` +
-        `height: ${Taro.pxTransform(height)}; ` +
-        `border-radius: ${Taro.pxTransform(radius)}; `
+        `width: ${Taro.pxTransform(
+          width,
+          GlobalManager.systemInfo.screenWidth
+        )}; ` +
+        `height: ${Taro.pxTransform(
+          height,
+          GlobalManager.systemInfo.screenWidth
+        )}; ` +
+        `border-radius: ${Taro.pxTransform(
+          radius,
+          GlobalManager.systemInfo.screenWidth
+        )}; `
       }
       onClick={handleIconClick}
     >
@@ -51,7 +61,10 @@ export default function ButtonIcon(props: IButtonIconParam) {
           }
           style={
             `background-image: linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff)); ` +
-            `font-size: ${Taro.pxTransform(size)}; ` +
+            `font-size: ${Taro.pxTransform(
+              size,
+              GlobalManager.systemInfo.screenWidth
+            )}; ` +
             `${customStyle}; `
           }
         ></View>

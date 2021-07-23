@@ -5,6 +5,7 @@ import { View } from "@tarojs/components";
 import Config from "@/config";
 
 import Navigation from "@/components/navigation";
+import GlobalManager from "@/services/GlobalManager";
 
 import "./index.less";
 
@@ -36,7 +37,10 @@ export default function NavigationHeader(props: INavigationHeaderProps) {
         <View
           style={
             `width: 100%; ` +
-            `height: ${Taro.pxTransform(systemInfo.statusBarHeight * 2)}; ` +
+            `height: ${Taro.pxTransform(
+              systemInfo.statusBarHeight * 2,
+              GlobalManager.systemInfo.screenWidth
+            )}; ` +
             `background-color: ${
               isTransparent ? "transparent" : colorBackgroud
             };`
@@ -55,7 +59,10 @@ export default function NavigationHeader(props: INavigationHeaderProps) {
           <View
             style={
               `width: 100%; ` +
-              `height: ${Taro.pxTransform(systemInfo.statusBarHeight * 2)}; ` +
+              `height: ${Taro.pxTransform(
+                systemInfo.statusBarHeight * 2,
+                GlobalManager.systemInfo.screenWidth
+              )}; ` +
               `background-color: ${
                 isTransparent ? "transparent" : colorBackgroud
               };`

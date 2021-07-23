@@ -24,7 +24,9 @@ export default function Loading() {
   };
 
   const onLoad = async () => {
-    Taro.hideShareMenu();
+    if (process.env.TARO_ENV === "weapp") {
+      Taro.hideShareMenu();
+    }
 
     const [resQueryAppTabBar, resLoginMember] = await Promise.all([
       Api.cloud.fetchAppInfo.queryAppTabBar(),

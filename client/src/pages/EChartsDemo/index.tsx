@@ -45,7 +45,9 @@ export default function EChartsDemo() {
   };
 
   useEffect(() => {
-    Taro.hideShareMenu();
+    if (process.env.TARO_ENV === "weapp") {
+      Taro.hideShareMenu();
+    }
     setEC1({
       onInit: initChart1,
     });
