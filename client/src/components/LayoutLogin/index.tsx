@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
 import { AtButton, AtFloatLayout } from "taro-ui";
-import { View } from "@tarojs/components";
+import { View, Text } from "@tarojs/components";
 import api from "@/api";
 import useActions from "@/hooks/useActions";
 import appInfoActions from "@/redux/actions/appInfo";
@@ -62,13 +62,20 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
           objUserInfo.shareSharePath = shareInfo.sharePath;
           const res = await api.cloud.fetchMemberInfo.addMember(objUserInfo);
           console.log("handleGetUserInfo addMemberInfo", res);
-          setMemberInfo(res.data);
           setLogining(false);
           setShowLayoutLogin(false);
-          Taro.showToast({
-            title: "登录成功",
-            icon: "success",
-          });
+          if (res && res.data) {
+            setMemberInfo(res.data);
+            Taro.showToast({
+              title: "登录成功",
+              icon: "success",
+            });
+          } else {
+            Taro.showToast({
+              title: "登录失败",
+              icon: "none",
+            });
+          }
         }
       },
     });
@@ -79,17 +86,29 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
       isOpened={isShowLayoutLogin}
       onClose={handleLayoutLoginClose}
     >
-      <AtButton
-        className="layout-login-btn"
-        openType="getUserInfo"
-        type="primary"
-        circle
-        loading={isLogining}
-        // onGetUserInfo={handleGetUserInfo}
-        onClick={handleBtnLoginClick}
-      >
-        微信快捷登录
-      </AtButton>
+      <View className="layout-login-panel">
+        <View className="layout-login-title">
+          <Text className="iconfont iconpeople_fill layout-login-icon"></Text>
+          <Text className="layout-login-title-text">班级圈圈</Text>
+        </View>
+        <AtButton
+          openType="getUserInfo"
+          type="primary"
+          circle
+          className="layout-login-btn"
+          loading={isLogining}
+          // onGetUserInfo={handleGetUserInfo}
+          onClick={handleBtnLoginClick}
+        >
+          微信快捷登录
+        </AtButton>
+        <View
+          className="flex-center-v layout-login-cancel"
+          onClick={handleLayoutLoginClose}
+        >
+          <Text className="layout-login-cancel-text">暂不登录</Text>
+        </View>
+      </View>
     </AtFloatLayout>
   );
 }

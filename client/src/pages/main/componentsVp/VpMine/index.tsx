@@ -41,6 +41,7 @@ export default function VpMine(props: IVpMineParam) {
   return (
     <View className="vp-mine-wrap">
       <MainModuleHeader
+        memberId={memberInfo?._id}
         logoUrl={memberInfo?.userAvatarUrl}
         title={memberInfo?.userNickName}
       />

@@ -10,7 +10,7 @@ const queryAppTabBar = async (objParams: any = {}) => {
     type: "QUERY_APP_TAB_BAR",
     data: objParams,
   };
-  const res = await CloudFetch.callFunction(CLOUD_NAME, params);
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
   console.log("queryAppTabBar", res);
   return res.data;
 };

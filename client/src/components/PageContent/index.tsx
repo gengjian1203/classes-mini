@@ -36,11 +36,14 @@ export default function PageContent(props: IPageContentParam) {
   // console.log('PageContent', configInfo)
 
   const colorPrimary = "#60b968";
+  const colorPrimaryL = "";
+  const colorPrimaryD = "";
 
   // 样式规范
-  const themeStyle = `--color-primary: ${
-    colorPrimary ? colorPrimary : "#60b968"
-  }; `;
+  const themeStyle =
+    `--color-primary: ${colorPrimary ? colorPrimary : "#60b968"}; ` +
+    `--color-primary-light: ${colorPrimaryL ? colorPrimaryL : "#80d988"};` +
+    `--color-primary-dark: ${colorPrimaryD ? colorPrimaryD : "#409948"};`;
 
   return (
     <View className={`flex-center-v page-content-wrap`} style={`${themeStyle}`}>

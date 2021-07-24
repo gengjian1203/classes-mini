@@ -15,6 +15,7 @@ import VpClasses from "./componentsVp/VpClasses/index";
 import VpHome from "./componentsVp/VpHome/index";
 import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
+import VpTest from "./componentsVp/VpTest/index";
 import VpWave from "./componentsVp/VpWave/index";
 
 import "./index.less";
