@@ -45,9 +45,6 @@ export default function MainModuleHeader(props: IMainModuleHeaderParam) {
             <View className="module-header-rigt-up">{title}</View>
             <View className="module-header-rigt-down">{title}</View>
           </View>
-          <View className="flex-center-h module-header-absolute">
-            <View className="iconfont iconscan icon-absolute"></View>
-          </View>
         </View>
       </View>
       <View className="module-header-block" />

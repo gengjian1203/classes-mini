@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: var(--padding-xs);
+  padding: var(--padding-sm);
   overflow: hidden;
   width: 100%;
   border-radius: var(--border-radius-lg);
@@ -13,16 +13,40 @@
 }
 
 .module-card-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  margin-bottom: var(--margin-base);
   position: relative;
   width: 100%;
-  height: 70px;
+  height: 40px;
+}
+
+.module-card-title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--padding-sm));
+  width: 40px;
+  height: 40px;
+  background-image: linear-gradient(
+    90deg,
+    var(--color-primary),
+    1%,
+    var(--color-white)
+  );
+}
+
+.module-card-title::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--padding-sm));
+  width: 8px;
+  height: 40px;
+  background-color: var(--color-primary);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
 }
 
 .module-card-title-text {
+  z-index: 1;
   flex: 0 0 auto;
   font-size: 30px;
   font-weight: 500;

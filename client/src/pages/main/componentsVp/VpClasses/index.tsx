@@ -40,7 +40,12 @@ export default function VpClasses(props: IVpClassesParam) {
         onChange={handleSearchChange}
         onActionClick={handleSearchActionClick}
       />
-      <ListClass isLoadComplete={isLoadComplete} arrClassList={arrClassList} />
+      <View className="flex-start-v vp-classes-content">
+        <ListClass
+          isLoadComplete={isLoadComplete}
+          arrClassList={arrClassList}
+        />
+      </View>
     </View>
   );
 }

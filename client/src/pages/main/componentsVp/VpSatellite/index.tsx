@@ -29,8 +29,10 @@ export default function VpSatellite(props: IVpSatelliteParam) {
   }, []);
 
   return (
-    <View className="flex-start-v vp-satellite-wrap">
-      <View>星站页面</View>
+    <View className="vp-satellite-wrap">
+      <View className="flex-start-v vp-satellite-content">
+        <View>星站页面</View>
+      </View>
     </View>
   );
 }

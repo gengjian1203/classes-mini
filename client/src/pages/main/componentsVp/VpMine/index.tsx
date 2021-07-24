@@ -39,27 +39,27 @@ export default function VpMine(props: IVpMineParam) {
   };
 
   return (
-    <View className="flex-start-v vp-mine-wrap">
+    <View className="vp-mine-wrap">
       <MainModuleHeader
         logoUrl={memberInfo?.userAvatarUrl}
         title={memberInfo?.userNickName}
       />
-      <View className="vp-mine-content">
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+      <View className="flex-start-v vp-mine-content">
+        <ModuleCard title="" customClass="vp-mine-module-card">
           <View>22222</View>
           <View>22222</View>
           <View>22222</View>
           <View>22222</View>
           <View>22222</View>
         </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
+        <ModuleCard title="" customClass="vp-mine-module-card" isEnableFold>
+          <View>555</View>
+          <View>666</View>
+          <View>7</View>
+          <View>8</View>
+          <View>222922</View>
         </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+        <ModuleCard title="111" customClass="vp-mine-module-card">
           <View>22222</View>
           <View>22222</View>
           <View>22222</View>

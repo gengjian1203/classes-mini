@@ -29,8 +29,10 @@ export default function VpWave(props: IVpWaveParam) {
   }, []);
 
   return (
-    <View className="flex-start-v vp-wave-wrap">
-      <View>中波页面</View>
+    <View className="vp-wave-wrap">
+      <View className="flex-start-v vp-wave-content">
+        <View>中波页面</View>
+      </View>
     </View>
   );
 }

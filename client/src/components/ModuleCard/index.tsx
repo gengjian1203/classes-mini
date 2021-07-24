@@ -45,19 +45,24 @@ export default function ModuleCard(props: IModuleCardProps) {
   return (
     <View className={`module-card-wrap ${customClass} `} style={customStyle}>
       {/* 标题区域 */}
-      <View className="module-card-title" onClick={handleFoldClick}>
-        <View className="module-card-title-text">{title}</View>
-        <View className="module-card-title-extend">{renderTitleExtend}</View>
-        {isEnableFold && (
-          <View
-            className={`module-card-title-fold ${
-              isShowContent ? "" : "rotate-90"
-            } `}
-          >
-            <View className="down-arrow" />
-          </View>
-        )}
-      </View>
+      {(title || isEnableFold) && (
+        <View
+          className="flex-between-h module-card-title"
+          onClick={handleFoldClick}
+        >
+          <View className="module-card-title-text">{title}</View>
+          <View className="module-card-title-extend">{renderTitleExtend}</View>
+          {isEnableFold && (
+            <View
+              className={`module-card-title-fold ${
+                isShowContent ? "" : "rotate-90"
+              } `}
+            >
+              <View className="down-arrow" />
+            </View>
+          )}
+        </View>
+      )}
       {/* 内容区域 */}
       {!isLockHiddenContent && isShowContent && (
         <View className="module-card-content">{children}</View>
