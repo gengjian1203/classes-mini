@@ -210,6 +210,16 @@ export default function Main() {
       isShowLeftIcon={false}
       isTransparent={false}
       strNavigationTitle={strNavigationTitle}
+      colorBackgroud={
+        ["MINE"].includes(tabBarInfo?.tabList[nTabBarCurrent].contentType)
+          ? "transparent"
+          : "#ffffff"
+      }
+      colorTitle={
+        ["MINE"].includes(tabBarInfo?.tabList[nTabBarCurrent].contentType)
+          ? "transparent"
+          : "#000000"
+      }
     >
       {/* 渲染对应内容 */}
       {renderVPage()}

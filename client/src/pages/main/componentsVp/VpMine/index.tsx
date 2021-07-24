@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Skeleton from "@/components/skeleton";
+import ModuleCard from "@/components/ModuleCard";
 import { View, Image } from "@tarojs/components";
 
-import ModuleHeader from "../../components/ModuleHeader";
+import MainModuleHeader from "../../components/MainModuleHeader";
 
 import "./index.less";
 
@@ -40,11 +40,61 @@ export default function VpMine(props: IVpMineParam) {
 
   return (
     <View className="flex-start-v vp-mine-wrap">
-      <ModuleHeader
-        isLoadComplete={isLoadComplete}
+      <MainModuleHeader
         logoUrl={memberInfo?.userAvatarUrl}
         title={memberInfo?.userNickName}
       />
+      <View className="vp-mine-content">
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+          <View>22222</View>
+        </ModuleCard>
+      </View>
     </View>
   );
 }

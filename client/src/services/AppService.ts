@@ -26,7 +26,7 @@ export default class AppInitDataService {
 
   init() {
     console.log("AppInitService init start.");
-    GlobalManager.systemInfo = Taro.getSystemInfoSync();
+    // GlobalManager.systemInfo = Taro.getSystemInfoSync();
     this.initCloudInfo();
     console.log("AppInitService init done.", GlobalManager);
   }

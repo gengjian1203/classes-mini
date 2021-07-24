@@ -39,7 +39,7 @@ export default function NavigationHeader(props: INavigationHeaderProps) {
             `width: 100%; ` +
             `height: ${Taro.pxTransform(
               systemInfo.statusBarHeight * 2,
-              GlobalManager.systemInfo.screenWidth
+              systemInfo.screenWidth
             )}; ` +
             `background-color: ${
               isTransparent ? "transparent" : colorBackgroud
@@ -61,7 +61,7 @@ export default function NavigationHeader(props: INavigationHeaderProps) {
               `width: 100%; ` +
               `height: ${Taro.pxTransform(
                 systemInfo.statusBarHeight * 2,
-                GlobalManager.systemInfo.screenWidth
+                systemInfo.screenWidth
               )}; ` +
               `background-color: ${
                 isTransparent ? "transparent" : colorBackgroud

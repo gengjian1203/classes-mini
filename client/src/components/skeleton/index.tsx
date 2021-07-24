@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import classnames from "classnames";
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
-import GlobalManager from "@/services/GlobalManager";
+import Config from "@/config";
 import "./index.less";
 
 /**
@@ -143,6 +143,7 @@ export default function Skeleton(props: SkeletonProps) {
     customClass = "",
     children,
   } = props;
+
   if (!loading) {
     return <View className={customClass}>{children}</View>;
   }
@@ -179,9 +180,7 @@ export default function Skeleton(props: SkeletonProps) {
   };
 
   const addUnit = (value?: string | number) => {
-    return typeof value === "number"
-      ? Taro.pxTransform(value, GlobalManager.systemInfo.screenWidth)
-      : value;
+    return typeof value === "number" ? Taro.pxTransform(value) : value;
   };
 
   const renderAvatar = (): JSX.Element | null => {
