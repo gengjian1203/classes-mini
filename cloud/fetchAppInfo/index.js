@@ -2,6 +2,7 @@
 const cloud = require("wx-server-sdk");
 const md5 = require("blueimp-md5");
 const queryAppTabBar = require("queryAppTabBar/index.js");
+const queryWeatherInfo = require("queryWeatherInfo/index.js");
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
@@ -9,6 +10,7 @@ cloud.init({
 
 const objFunction = {
   QUERY_APP_TAB_BAR: queryAppTabBar, // 查询APP级别底部导航
+  QUERY_WEATHER_INFO: queryWeatherInfo, // 查询天气相关信息
 };
 
 const verifyRequest = (event) => {
@@ -34,12 +36,13 @@ exports.main = async (event, context) => {
     const db = cloud.database();
     const memberId = `mem-${OPENID}`;
     console.log("请求人:", memberId, type);
-    objResult = await objFunction[type](data, db, memberId);
+    if (objFunction[type]) {
+      objResult = await objFunction[type](data, db, memberId);
+    } else {
+      objResult = { code: 500004, msg: "该接口函数未定义" };
+    }
   } else {
-    objResult = {
-      code: 500001,
-      msg: "密令校验非法",
-    };
+    objResult = { code: 500001, msg: "密令校验非法" };
   }
 
   const code = objResult.errCode || objResult.code;

@@ -17,6 +17,13 @@ export const getNowDate = () => {
   // console.log("getNowDate", todayString);
 
   return {
+    date,
+    YYYY,
+    MM,
+    DD,
+    hh,
+    mm,
+    ss,
     timeString: timeString,
     todayString: todayString,
   };

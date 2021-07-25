@@ -1,13 +1,13 @@
 /**
  * queryAppTabBar
  * 查询APP级别底部导航
- * @param {*} event
+ * @param {*} data
  * @param {*} db
  * @param {*} memberId
  * @returns
  */
 
-async function queryAppTabBar(event, db, memberId) {
+async function queryAppTabBar(data, db, memberId) {
   objResult = {
     data: [
       {

@@ -39,12 +39,13 @@ exports.main = async (event, context) => {
     const db = cloud.database();
     const memberId = `mem-${OPENID}`;
     console.log("请求人:", memberId, type);
-    objResult = await objFunction[type](data, db, memberId);
+    if (objFunction[type]) {
+      objResult = await objFunction[type](data, db, memberId);
+    } else {
+      objResult = { code: 500004, msg: "该接口函数未定义" };
+    }
   } else {
-    objResult = {
-      code: 500001,
-      msg: "密令校验非法",
-    };
+    objResult = { code: 500001, msg: "密令校验非法" };
   }
 
   const code = objResult.errCode || objResult.code;
