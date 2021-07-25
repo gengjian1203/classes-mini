@@ -1,6 +1,7 @@
 import Taro from "@tarojs/taro";
 import Config from "@/config/index";
 import GlobalManager from "@/services/GlobalManager";
+import Utils from "@/utils";
 
 export default class AppInitDataService {
   // 单例对象
@@ -15,6 +16,10 @@ export default class AppInitDataService {
     return this._instance;
   }
 
+  initSysInfo = () => {
+    GlobalManager.nowDate = Utils.getNowDate();
+  };
+
   initCloudInfo = () => {
     // 初始化云函数
     if (process.env.TARO_ENV === "weapp") {
@@ -26,7 +31,7 @@ export default class AppInitDataService {
 
   init() {
     console.log("AppInitService init start.");
-    // GlobalManager.systemInfo = Taro.getSystemInfoSync();
+    this.initSysInfo();
     this.initCloudInfo();
     console.log("AppInitService init done.", GlobalManager);
   }

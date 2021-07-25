@@ -4,15 +4,22 @@ $color-brand-light: var(--color-primary);
 $color-brand-dark: var(--color-primary);
 
 // 改变taro-ui的默认样式
-@import 'taro-ui/dist/style/index.scss';
+@import "taro-ui/dist/style/index.scss";
 
 // 重写日历样式
+.calendar-selected > .calendar-date {
+  background-color: var(--color-primary);
+}
+
+.at-calendar {
+  width: 100%;
+}
 .flex__item--selected {
-	background-color: $color-brand !important;
+  background-color: $color-brand !important;
 }
 
 // 重写浮动弹层样式
 .at-float-layout__container {
-	overflow: hidden;
-	border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  overflow: hidden;
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }

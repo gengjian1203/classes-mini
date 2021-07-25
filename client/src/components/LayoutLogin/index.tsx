@@ -7,7 +7,7 @@ import Api from "@/api";
 import useActions from "@/hooks/useActions";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
-import { checkObjectEmpty } from "@/utils/index";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -32,7 +32,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
   const handleGetUserInfo = async (e) => {
     console.log("handleGetUserInfo", e);
     const objUserInfo = e.detail.userInfo;
-    if (objUserInfo && !checkObjectEmpty(objUserInfo)) {
+    if (objUserInfo && !Utils.checkObjectEmpty(objUserInfo)) {
       setLogining(true);
       objUserInfo.shareSourceID = shareInfo.sourceID;
       objUserInfo.shareShareType = shareInfo.shareType;
@@ -55,7 +55,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
       success: async (res) => {
         console.log("handleBtnLoginClick", res);
         const objUserInfo: any = res.userInfo;
-        if (objUserInfo && !checkObjectEmpty(objUserInfo)) {
+        if (objUserInfo && !Utils.checkObjectEmpty(objUserInfo)) {
           setLogining(true);
           objUserInfo.shareSourceID = shareInfo.sourceID;
           objUserInfo.shareShareType = shareInfo.shareType;
