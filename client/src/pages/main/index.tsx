@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
-import api from "@/api";
+import Api from "@/api";
 import useActions from "@/hooks/useActions";
 import useQueryPageList from "@/hooks/useQueryPageList";
 import useCheckLogin from "@/hooks/useCheckLogin";
@@ -111,7 +111,7 @@ export default function Main() {
       SATELLITE: (res) => {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
-      GROUP: api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
+      GROUP: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
       MINE: null,
       WAVE: null,
@@ -140,17 +140,15 @@ export default function Main() {
   };
 
   // 测试按钮
-  const handleBtnTestClick = useCheckLogin(() => {
-    // setLoadComplete(!isLoadComplete)
-    Taro.navigateTo({
-      url: "/pages/ECharts/index",
-    });
+  const handleBtnTestClick = useCheckLogin(async () => {
+    const res = await Api.cloud.fetchAppInfo.spiderWeatherInfo({});
+    console.log("handleBtnTestClick", res);
   });
 
   // 测试按钮
   const handleBtnLoginClick = async () => {
     // setShowLayoutLogin(true)
-    const res = await api.cloud.fetchGroupInfo.addGroup({
+    const res = await Api.cloud.fetchGroupInfo.addGroup({
       logo:
         "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
       title: `测试${Math.random()}班`,
@@ -225,19 +223,19 @@ export default function Main() {
       {/* 渲染对应内容 */}
       {renderVPage()}
       {/* 测试内容 */}
-      {/* <View>测试</View>
+      <View>测试</View>
       <ButtonIcon
         value="http://pic.51yuansu.com/pic3/cover/01/66/10/5957f0b51c503_610.jpg"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
       />
-      <View>登录</View>
+      {/* <View>登录</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnLoginClick}
-      />
-      <View>图表</View>
+      /> */}
+      {/* <View>图表</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"

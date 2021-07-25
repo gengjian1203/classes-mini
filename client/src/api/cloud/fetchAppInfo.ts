@@ -15,6 +15,17 @@ const queryAppTabBar = async (objParams: any = {}) => {
   return res.data;
 };
 
+/**
+ * 测试爬取天气数据
+ */
+const spiderWeatherInfo = async (objParams: any = {}) => {
+  const params = {};
+  const res = await CloudFetch.callFunction("spiderWeatherInfo", params);
+  console.log("spiderWeatherInfo", res);
+  return res.data;
+};
+
 export default {
   queryAppTabBar,
+  spiderWeatherInfo,
 };

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
 import { AtButton, AtFloatLayout } from "taro-ui";
 import { View, Text } from "@tarojs/components";
-import api from "@/api";
+import Api from "@/api";
 import useActions from "@/hooks/useActions";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
@@ -37,7 +37,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
       objUserInfo.shareSourceID = shareInfo.sourceID;
       objUserInfo.shareShareType = shareInfo.shareType;
       objUserInfo.shareSharePath = shareInfo.sharePath;
-      const res = await api.cloud.fetchMemberInfo.addMember(objUserInfo);
+      const res = await Api.cloud.fetchMemberInfo.addMember(objUserInfo);
       console.log("handleGetUserInfo addMemberInfo", res);
       setMemberInfo(res.data);
       setLogining(false);
@@ -60,7 +60,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
           objUserInfo.shareSourceID = shareInfo.sourceID;
           objUserInfo.shareShareType = shareInfo.shareType;
           objUserInfo.shareSharePath = shareInfo.sharePath;
-          const res = await api.cloud.fetchMemberInfo.addMember(objUserInfo);
+          const res = await Api.cloud.fetchMemberInfo.addMember(objUserInfo);
           console.log("handleGetUserInfo addMemberInfo", res);
           setLogining(false);
           setShowLayoutLogin(false);
