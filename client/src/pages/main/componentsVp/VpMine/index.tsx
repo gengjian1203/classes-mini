@@ -2,8 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import ModuleCard from "@/components/ModuleCard";
 import { View, Image } from "@tarojs/components";
-
-import MainModuleHeader from "../../components/MainModuleHeader";
+import MineModuleHeader from "@/pages/Main/components/MineModuleHeader";
 
 import "./index.less";
 
@@ -40,7 +39,7 @@ export default function VpMine(props: IVpMineParam) {
 
   return (
     <View className="vp-mine-wrap">
-      <MainModuleHeader
+      <MineModuleHeader
         memberId={memberInfo?._id}
         logoUrl={memberInfo?.userAvatarUrl}
         title={memberInfo?.userNickName}

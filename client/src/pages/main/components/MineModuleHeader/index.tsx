@@ -6,14 +6,14 @@ import useCheckLogin from "@/hooks/useCheckLogin";
 
 import "./index.less";
 
-interface IMainModuleHeaderParam {
+interface IMineModuleHeaderParam {
   isLoadComplete?: boolean;
   memberId?: string;
   logoUrl?: string;
   title?: string;
 }
 
-export default function MainModuleHeader(props: IMainModuleHeaderParam) {
+export default function MineModuleHeader(props: IMineModuleHeaderParam) {
   const {
     memberId = "",
     logoUrl = "",
@@ -30,7 +30,7 @@ export default function MainModuleHeader(props: IMainModuleHeaderParam) {
 
   return (
     <View
-      className="module-header-panel"
+      className="module-header-wrap"
       style={
         `height: ${Taro.pxTransform(
           (systemInfo.statusBarHeight + 40 + 150) * 2,

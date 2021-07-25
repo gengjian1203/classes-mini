@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
+import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
 import GlobalManager from "@/services/GlobalManager";
 import Utils from "@/utils";
 
@@ -11,7 +12,6 @@ import { getMonthFromDayString } from "./utils";
 import "./index.less";
 
 interface IVpHomeParam {
-  title?: string;
   isLoadComplete?: boolean;
 }
 
@@ -33,33 +33,34 @@ const customStyleGenerator = (params) => {
 };
 
 export default function VpHome(props: IVpHomeParam) {
-  const {
-    title = "", // 标题
-    isLoadComplete = true,
-  } = props;
+  const { isLoadComplete = true } = props;
 
-  const weatherInfo = useRef({});
+  const weatherInfoMonth = useRef({});
+  const [isLoadCompleteWeather, setLoadCompleteWeather] = useState(false);
+  const [weatherInfoDay, setWeatherInfoDay] = useState(undefined);
 
   // 以月为单位请求天气数据
   const queryWeatherInfo = async (month = "none") => {
-    if (weatherInfo.current[month]) {
+    if (weatherInfoMonth.current[month]) {
       return;
     }
     const res = await Api.cloud.fetchAppInfo.queryWeatherInfo({
       month: month,
     });
-    weatherInfo.current[month] = res || [];
-    console.log("VpHome queryWeatherInfo", res);
+    weatherInfoMonth.current[month] = res || [];
+    // console.log("VpHome queryWeatherInfo", res);
   };
 
   // 渲染指定日期的天气数据
   const setWeatherInfo = async (dayString = "none") => {
     const month = getMonthFromDayString(dayString);
-    const arrInfo = weatherInfo.current[month] || [];
+    const arrInfo = weatherInfoMonth.current[month] || [];
     const info = arrInfo.find((item) => {
       return item.date === dayString;
     });
-    console.log("setWeatherInfo", info);
+    // console.log("setWeatherInfo", info);
+    setWeatherInfoDay(info);
+    setLoadCompleteWeather(true);
   };
 
   const onLoad = async () => {
@@ -74,14 +75,14 @@ export default function VpHome(props: IVpHomeParam) {
 
   // 点击日历指定日期
   const handleCalendarDayClick = (value) => {
-    console.log("handleCalendarDayClick", value);
+    // console.log("handleCalendarDayClick", value);
     const dayString = value?.value;
     setWeatherInfo(dayString);
   };
 
   // 日历切换回调事件
   const handleCalendarCurrentViewChange = (value) => {
-    console.log("handleCalendarCurrentViewChange", value);
+    // console.log("handleCalendarCurrentViewChange", value);
     const month = getMonthFromDayString(value);
     queryWeatherInfo(month);
   };
@@ -89,6 +90,10 @@ export default function VpHome(props: IVpHomeParam) {
   return (
     <View className="vp-home-wrap">
       <View className="flex-start-v vp-home-content">
+        <HomeModuleWeather
+          isLoadComplete={isLoadCompleteWeather}
+          weatherInfoDay={weatherInfoDay}
+        />
         <View style="width: 100%; ">
           <Calendar
             mode="lunar"
