@@ -1,14 +1,14 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 const md5 = require("blueimp-md5");
-const updateWeatherInfo = require("updateWeatherInfo/index.js");
+const spiderHeFengWeatherInfo = require("spiderHeFengWeatherInfo/index.js");
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
 });
 
 const objFunction = {
-  UPDATE_WEATHER_INFO: updateWeatherInfo, // 更新天气信息
+  SPIDER_HEFENG: spiderHeFengWeatherInfo, // 更新天气信息
 };
 
 const verifyRequest = (event) => {
@@ -29,7 +29,7 @@ exports.main = async (event, context) => {
   let { type, data } = event;
   const { OPENID, APPID, UNIONID } = cloud.getWXContext();
 
-  type = "UPDATE_WEATHER_INFO";
+  type = "SPIDER_HEFENG";
 
   let objResult = {};
   if (true || verifyRequest(event)) {
