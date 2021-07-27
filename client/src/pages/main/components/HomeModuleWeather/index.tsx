@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import Skeleton from "@/components/skeleton";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -37,26 +38,68 @@ interface IWeatherInfo {
 
 interface IHomeModuleWeatherParam {
   isLoadComplete?: boolean;
+  DN?: "Day" | "Night";
+  strSelectDay?: string;
   weatherInfoDay?: IWeatherInfo;
 }
 
 export default function HomeModuleWeather(props: IHomeModuleWeatherParam) {
-  const { isLoadComplete, weatherInfoDay } = props;
+  const { isLoadComplete, weatherInfoDay, strSelectDay, DN = "Day" } = props;
+
+  const strIcon = weatherInfoDay && weatherInfoDay[`icon${DN}`]; //
+  const srcIcon = (strIcon && require(`./images/${strIcon}.png`)) || "";
+  const strText = weatherInfoDay && weatherInfoDay[`text${DN}`]; //
+  const strwindDir = weatherInfoDay && weatherInfoDay[`windDir${DN}`];
 
   return (
     <Skeleton
       loading={!isLoadComplete}
       row={1}
       rowProps={{ width: "100%", height: 160 }}
-      customClass="flex-start-h module-weather-wrap"
     >
-      {weatherInfoDay && weatherInfoDay._id ? (
-        <View className="module-weather-content">{weatherInfoDay.textDay}</View>
-      ) : (
-        <View className="module-weather-empty">
-          <Text className="module-weather-empty-text">暂无数据</Text>
+      <View className="flex-start-v module-weather-wrap">
+        <View className="flex-between-h module-weather-title">
+          <View className="module-weather-content-location">长春</View>
+          <View className="module-weather-content-location">
+            {strSelectDay}
+          </View>
         </View>
-      )}
+        {weatherInfoDay && weatherInfoDay?._id ? (
+          <View className="module-weather-content">
+            <View className="flex-between-h module-weather-content-down">
+              <Image
+                className="module-weather-icon"
+                src={srcIcon}
+                mode="widthFix"
+              />
+              <View className="flex-start-v module-weather-item">
+                <Text className="module-weather-item-title">气温</Text>
+                <Text className="module-weather-item-text">
+                  {weatherInfoDay?.tempMax}℃/{weatherInfoDay?.tempMin}℃
+                </Text>
+              </View>
+              <View className="flex-start-v module-weather-item">
+                <Text className="module-weather-item-title">天气</Text>
+                <Text className="module-weather-item-text">{strText}</Text>
+              </View>
+              <View className="flex-start-v module-weather-item">
+                <Text className="module-weather-item-title">风向</Text>
+                <Text className="module-weather-item-text">{strwindDir}</Text>
+              </View>
+              <View className="flex-start-v module-weather-item">
+                <Text className="module-weather-item-title">降水量</Text>
+                <Text className="module-weather-item-text">
+                  {weatherInfoDay?.precip}mm
+                </Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View className="flex-center-v module-weather-empty">
+            <Text className="module-weather-empty-text">暂无数据</Text>
+          </View>
+        )}
+      </View>
     </Skeleton>
   );
 }

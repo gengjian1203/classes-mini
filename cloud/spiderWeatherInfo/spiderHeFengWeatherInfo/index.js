@@ -149,7 +149,7 @@ const queryWarningInfo = async (db) => {
   const href =
     `https://devapi.qweather.com/v7/warning/now` +
     `?key=${keyAPI}` + // 个人秘钥
-    `&location=116.41,39.91` + // 长春
+    `&location=${location}` + // 长春
     `&lang=zh`; // 多语言设置，中文
   const res = await superagent.get(href).timeout(40000); //取决于网页的编码方式
 
