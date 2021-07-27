@@ -25,7 +25,7 @@ const queryWeatherInfo = async (objParams: any = {}) => {
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
   console.log("queryWeatherInfo", res);
-  return res.data;
+  return res;
 };
 
 /**

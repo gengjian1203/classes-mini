@@ -9,9 +9,35 @@ const superagent = require("superagent"); //发起请求
 const keyAPI = `98c7d5fe40de420182c5b43bb73583f6`; // 和风天气开发平台API接口秘钥 https://dev.qweather.com/
 const location = `125.39,43.75`; // 长春净月培元学校
 
+// 字符串转为Date类型 '2021-07-27T16:08+08:00'
+const formatDate = (strTime) => {
+  const arrString = strTime.split("T") || [];
+  const arrDate = (arrString[0] && arrString[0].split("-")) || [];
+  const arrTimeFull = (arrString[1] && arrString[1].split("+")) || [];
+  const arrTime = (arrTimeFull[0] && arrTimeFull[0].split(":")) || [];
+  const YYYY = arrDate[0] || "1990";
+  const MM = arrDate[1] - parseInt(1) || "01";
+  const DD = arrDate[2] || "01";
+  const hh = arrTime[0] || "00";
+  const mm = arrTime[1] || "00";
+  const dd = arrTime[2] || "00";
+
+  const date = new Date(YYYY, MM, DD, hh, mm, dd);
+  // console.log("formatDate", YYYY, MM, DD, hh, mm, dd);
+  return date;
+};
+
 // 更新数据库天气数据表
 const updateWeatherInfo = async (db, data) => {
-  const daily = (data && data.daily) || [];
+  const daily = ((data && data.daily) || []).map((item) => {
+    const dateFxDate = formatDate(item.fxDate);
+    const timestampFxDate = dateFxDate.getTime();
+    return {
+      ...item,
+      dateFxDate: dateFxDate,
+      timestampFxDate: timestampFxDate,
+    };
+  });
   // console.log("3. updateWeatherInfo daily", daily);
   try {
     for (let item of daily) {
@@ -40,13 +66,13 @@ const updateWeatherInfo = async (db, data) => {
     objResult = {
       ...e,
     };
-    console.error("updateWeatherInfo error", e);
+    console.error("7. updateWeatherInfo error", e);
   }
 };
 
 // 查询7日天气情况
 const queryWeatherInfo = async (db) => {
-  console.log("0. queryWeatherInfo");
+  // console.log("0. queryWeatherInfo");
   const href =
     `https://devapi.qweather.com/v7/weather/7d` +
     `?key=${keyAPI}` + // 个人秘钥
@@ -67,7 +93,24 @@ const queryWeatherInfo = async (db) => {
 
 // 更新数据库天气灾害表
 const updateWarningInfo = async (db, data) => {
-  const warning = (data && data.warning) || [];
+  const warning = ((data && data.warning) || []).map((item) => {
+    const dateStartTime = formatDate(item.startTime);
+    const dateEndTime = formatDate(item.endTime);
+    const datePubTime = formatDate(item.pubTime);
+    const timestampStartTime = dateStartTime.getTime();
+    const timestampEndTime = dateEndTime.getTime();
+    const timestampPubTime = datePubTime.getTime();
+
+    return {
+      ...item,
+      dateStartTime: dateStartTime,
+      dateEndTime: dateEndTime,
+      datePubTime: datePubTime,
+      timestampStartTime: timestampStartTime,
+      timestampEndTime: timestampEndTime,
+      timestampPubTime: timestampPubTime,
+    };
+  });
   // console.log("3. updateWarningInfo warning", warning);
   try {
     for (let item of warning) {
@@ -96,17 +139,17 @@ const updateWarningInfo = async (db, data) => {
     objResult = {
       ...e,
     };
-    console.error("updateWarningInfo error", e);
+    console.error("7. updateWarningInfo error", e);
   }
 };
 
 // 查询当前的灾害预警
 const queryWarningInfo = async (db) => {
-  console.log("0. queryWarningInfo");
+  // console.log("0. queryWarningInfo");
   const href =
     `https://devapi.qweather.com/v7/warning/now` +
     `?key=${keyAPI}` + // 个人秘钥
-    `&location=121.48,31.40` + // 长春
+    `&location=116.41,39.91` + // 长春
     `&lang=zh`; // 多语言设置，中文
   const res = await superagent.get(href).timeout(40000); //取决于网页的编码方式
 
