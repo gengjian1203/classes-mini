@@ -13,6 +13,7 @@ export const getNowDate = () => {
   const ss = String(date.getSeconds()).padStart(2, "0");
 
   const timeString = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`;
+  const monthString = `${YYYY}-${MM}`;
   const todayString = `${YYYY}-${MM}-${DD}`;
   // console.log("getNowDate", todayString);
 
@@ -25,6 +26,7 @@ export const getNowDate = () => {
     mm,
     ss,
     timeString: timeString,
+    monthString: monthString,
     todayString: todayString,
   };
 };

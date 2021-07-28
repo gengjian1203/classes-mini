@@ -27,6 +27,24 @@ const formatDate = (strTime) => {
   return date;
 };
 
+// 字符串转为简单日期字符类型 '2021-07-27T16:08+08:00'
+const simpleDate = (strTime) => {
+  const arrString = strTime.split("T") || [];
+  const arrDate = (arrString[0] && arrString[0].split("-")) || [];
+  const arrTimeFull = (arrString[1] && arrString[1].split("+")) || [];
+  const arrTime = (arrTimeFull[0] && arrTimeFull[0].split(":")) || [];
+  const YYYY = arrDate[0] || "1990";
+  const MM = arrDate[1] - parseInt(1) || "01";
+  const DD = arrDate[2] || "01";
+  const hh = arrTime[0] || "00";
+  const mm = arrTime[1] || "00";
+  const dd = arrTime[2] || "00";
+
+  // const date = new Date(YYYY, MM, DD, hh, mm, dd);
+  // console.log("formatDate", YYYY, MM, DD, hh, mm, dd);
+  return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${dd}`;
+};
+
 // 更新数据库天气数据表
 const updateWeatherInfo = async (db, data) => {
   const daily = ((data && data.daily) || []).map((item) => {
@@ -91,9 +109,12 @@ const queryWeatherInfo = async (db) => {
   }
 };
 
-// 更新数据库天气灾害表
+// 更新数据库天气告警表
 const updateWarningInfo = async (db, data) => {
   const warning = ((data && data.warning) || []).map((item) => {
+    const simpleStartTime = simpleDate(item.startTime);
+    const simpleEndTime = simpleDate(item.endTime);
+    const simplePubTime = simpleDate(item.pubTime);
     const dateStartTime = formatDate(item.startTime);
     const dateEndTime = formatDate(item.endTime);
     const datePubTime = formatDate(item.pubTime);
@@ -103,6 +124,9 @@ const updateWarningInfo = async (db, data) => {
 
     return {
       ...item,
+      simpleStartTime: simpleStartTime,
+      simpleEndTime: simpleEndTime,
+      simplePubTime: simplePubTime,
       dateStartTime: dateStartTime,
       dateEndTime: dateEndTime,
       datePubTime: datePubTime,

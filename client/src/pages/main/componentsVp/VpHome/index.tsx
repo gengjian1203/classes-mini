@@ -4,6 +4,7 @@ import { AtButton, AtNoticebar } from "taro-ui";
 import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
+import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
 import GlobalManager from "@/services/GlobalManager";
 import Utils from "@/utils";
@@ -36,12 +37,17 @@ const customStyleGenerator = (params) => {
 export default function VpHome(props: IVpHomeParam) {
   const { isLoadComplete = true } = props;
 
-  const weatherInfoMonthLocal = useRef({});
-  const isFirstLoadWarningInfoNow = useRef(true);
-  const [isLoadCompleteWeather, setLoadCompleteWeather] = useState(false);
-  const [strSelectDay, setStrSelectDay] = useState("");
-  const [weatherInfoDay, setWeatherInfoDay] = useState(undefined);
-  const [warningInfoNow, setWarningInfoNow] = useState<any>([]);
+  const weatherInfoMonthLocal = useRef({}); // 月份为键的天气字典表，为缓存请求的数据
+  const [isLoadCompleteWeather, setLoadCompleteWeather] = useState(false); // 天气组件的数据是否加载完成标识
+  const [isShowDialogWarning, setShowDialogWarning] = useState(false);
+  const [strSelectDay, setSelectDay] = useState(
+    GlobalManager.nowDate.todayString || "2021-01-01"
+  ); // 日历组件选中日期
+  const [strSelectMonth, setSelectMonth] = useState(
+    GlobalManager.nowDate.monthString || "2021-01-01"
+  ); // 日历组件选中月份
+  const [weatherInfoDay, setWeatherInfoDay] = useState(undefined); // 选中当天的气象数据
+  const [warningInfoNow, setWarningInfoNow] = useState<any>([]); // 本日的气象告警信息
 
   // 以月为单位请求天气数据
   const queryWeatherInfo = async (month = "none") => {
@@ -54,15 +60,9 @@ export default function VpHome(props: IVpHomeParam) {
     console.log("VpHome queryWeatherInfo", res);
     const { weatherInfoMonth = {}, warningInfo = {} } = res || {};
     weatherInfoMonthLocal.current[month] =
-      (weatherInfoMonth && weatherInfoMonth.data) || [];
-    console.log(
-      "VpHome queryWeatherInfo1",
-      (warningInfo && warningInfo.data) || []
-    );
-    if (isFirstLoadWarningInfoNow.current) {
-      isFirstLoadWarningInfoNow.current = false;
-      setWarningInfoNow((warningInfo && warningInfo.data) || []);
-    }
+      (weatherInfoMonth && weatherInfoMonth?.data) || [];
+    setWarningInfoNow((warningInfo && warningInfo?.data) || []);
+    // setWarningInfoNow(new Array(10).fill(warningInfo?.data[0]));
   };
 
   // 渲染指定日期的天气数据
@@ -74,9 +74,8 @@ export default function VpHome(props: IVpHomeParam) {
         return item.fxDate === dayString;
       });
       // console.log("setWeatherInfo", info);
-      setStrSelectDay(dayString);
+      setSelectDay(dayString);
       setWeatherInfoDay(info);
-      setLoadCompleteWeather(true);
     }
   };
 
@@ -84,11 +83,18 @@ export default function VpHome(props: IVpHomeParam) {
     GlobalManager.nowDate = Utils.getNowDate();
     await queryWeatherInfo(GlobalManager.nowDate.MM);
     setWeatherInfo(GlobalManager.nowDate.todayString);
+    setLoadCompleteWeather(true);
   };
 
   useEffect(() => {
     onLoad();
   }, []);
+
+  // 点击告警条
+  const handleWarningInfoClick = (item) => {
+    console.log("handleWarningInfoClick", item);
+    setShowDialogWarning(true);
+  };
 
   // 点击日历指定日期
   const handleCalendarDayClick = (value) => {
@@ -101,6 +107,7 @@ export default function VpHome(props: IVpHomeParam) {
   const handleCalendarCurrentViewChange = (value) => {
     // console.log("handleCalendarCurrentViewChange", value);
     const month = getMonthFromDayString(value);
+    setSelectMonth(value);
     queryWeatherInfo(month);
   };
 
@@ -108,6 +115,13 @@ export default function VpHome(props: IVpHomeParam) {
   const hanldeBtnTodayClick = () => {
     console.log("hanldeBtnTodayClick");
     setWeatherInfo(GlobalManager.nowDate.todayString);
+    setSelectMonth(GlobalManager.nowDate.monthString);
+    handleCalendarCurrentViewChange(GlobalManager.nowDate.monthString);
+  };
+
+  // 模态对话框
+  const handleDialogWarningClick = () => {
+    setShowDialogWarning(false);
   };
 
   return (
@@ -118,15 +132,14 @@ export default function VpHome(props: IVpHomeParam) {
           {warningInfoNow &&
             warningInfoNow.map((item, index) => {
               return (
-                <AtNoticebar
-                  // key={`notice-bar-${index}`}
-                  icon="volume-plus"
-                  single
-                  marquee
-                  speed={60}
+                <View
+                  key={`notice-bar-${index}`}
+                  onClick={() => handleWarningInfoClick(item)}
                 >
-                  {item.title}
-                </AtNoticebar>
+                  <AtNoticebar icon="volume-plus" single marquee speed={60}>
+                    {item.title}
+                  </AtNoticebar>
+                </View>
               );
             })}
         </View>
@@ -142,6 +155,7 @@ export default function VpHome(props: IVpHomeParam) {
         <View className="vp-home-content-module">
           <Calendar
             selectedDate={strSelectDay}
+            currentView={strSelectMonth}
             mode="lunar"
             marks={[
               { value: "2021-08-11", color: "red", markSize: "9px" },
@@ -168,6 +182,13 @@ export default function VpHome(props: IVpHomeParam) {
             回到今天
           </AtButton>
         </View>
+        {/* 告警详细信息弹窗 */}
+        {isShowDialogWarning && (
+          <HomeDialogWarning
+            warningInfoNow={warningInfoNow}
+            onDialogWarningClose={handleDialogWarningClick}
+          />
+        )}
       </View>
     </View>
   );
