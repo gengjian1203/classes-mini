@@ -223,12 +223,12 @@ export default function Main() {
       {/* 渲染对应内容 */}
       {renderVPage()}
       {/* 测试内容 */}
-      <View>测试</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="http://pic.51yuansu.com/pic3/cover/01/66/10/5957f0b51c503_610.jpg"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      />
+      /> */}
       {/* <View>登录</View>
       <ButtonIcon
         value="iconselect"

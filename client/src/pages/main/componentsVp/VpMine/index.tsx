@@ -45,54 +45,8 @@ export default function VpMine(props: IVpMineParam) {
         title={memberInfo?.userNickName}
       />
       <View className="flex-start-v vp-mine-content">
-        <ModuleCard title="" customClass="vp-mine-module-card">
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-        </ModuleCard>
-        <ModuleCard title="" customClass="vp-mine-module-card" isEnableFold>
-          <View>555</View>
-          <View>666</View>
-          <View>7</View>
-          <View>8</View>
-          <View>222922</View>
-        </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card">
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-        </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-        </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-        </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-        </ModuleCard>
-        <ModuleCard title="111" customClass="vp-mine-module-card" isEnableFold>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
-          <View>22222</View>
+        <ModuleCard title="提示" customClass="vp-mine-module-card" isEnableFold>
+          <View>欢迎使用本小程序</View>
         </ModuleCard>
       </View>
     </View>
