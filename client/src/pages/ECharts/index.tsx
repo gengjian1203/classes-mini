@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { AtButton, AtNoticebar } from "taro-ui";
 import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import Api from "@/api";
@@ -163,9 +164,12 @@ export default function ECharts() {
       strNavigationTitle="单ECharts视图demo"
       colorBackgroud="transparent"
       isShowLeftIcon
-      isTransparent
+      isTransparent={false}
       customClass="flex-center-v"
     >
+      <AtNoticebar icon="volume-plus" single marquee speed={60}>
+        唧唧复唧唧，木兰当户织。
+      </AtNoticebar>
       <View onClick={hanldeTestClick}>Test</View>
       <View onClick={handleTitleClick}>This is Page ECharts.</View>
       {/* <EChartsNode option={optionECharts} /> */}

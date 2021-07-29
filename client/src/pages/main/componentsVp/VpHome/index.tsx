@@ -136,7 +136,7 @@ export default function VpHome(props: IVpHomeParam) {
                   key={`notice-bar-${index}`}
                   onClick={() => handleWarningInfoClick(item)}
                 >
-                  <AtNoticebar icon="volume-plus" single marquee speed={60}>
+                  <AtNoticebar icon="volume-plus" single marquee speed={100}>
                     {item.title}
                   </AtNoticebar>
                 </View>

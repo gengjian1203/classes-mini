@@ -33,7 +33,7 @@ export default function Navigation(props: INavigationProps) {
         setLeftIcon("left-icon iconfont iconhomepage");
       } else {
         // 返回
-        setLeftIcon("left-icon iconfont-mini iconreturn");
+        setLeftIcon("left-icon iconfont iconreturn");
       }
     }
     setPageInfo(objPageInfo);

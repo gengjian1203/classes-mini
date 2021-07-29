@@ -43,12 +43,9 @@ async function queryWeatherInfo(data, db, memberId) {
       .collection("TB_WEATHER_WARNING")
       .where(
         _.and([
-          {
-            timestampStartTime: _.lt(timestamp),
-          },
-          {
-            timestampEndTime: _.gt(timestamp),
-          },
+          { timestampStartTime: _.lt(timestamp) },
+          { timestampEndTime: _.gt(timestamp) },
+          // { _id: _.exists(true) },
         ])
       )
       .get();
