@@ -34,14 +34,14 @@ const simpleDate = (strTime) => {
   const arrTimeFull = (arrString[1] && arrString[1].split("+")) || [];
   const arrTime = (arrTimeFull[0] && arrTimeFull[0].split(":")) || [];
   const YYYY = arrDate[0] || "1990";
-  const MM = arrDate[1] - parseInt(1) || "01";
+  const MM = arrDate[1] || "01";
   const DD = arrDate[2] || "01";
   const hh = arrTime[0] || "00";
   const mm = arrTime[1] || "00";
   const dd = arrTime[2] || "00";
 
   // const date = new Date(YYYY, MM, DD, hh, mm, dd);
-  // console.log("formatDate", YYYY, MM, DD, hh, mm, dd);
+  // console.log("simpleDate", YYYY, MM, DD, hh, mm, dd);
   return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${dd}`;
 };
 

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { View, Image } from "@tarojs/components";
-import Skeleton from "@/components/skeleton";
+import Skeleton from "@/components/Skeleton";
 
 import { IItemType } from "../../index";
 

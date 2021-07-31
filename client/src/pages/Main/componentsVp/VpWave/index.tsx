@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Skeleton from "@/components/skeleton";
 import { View, Image } from "@tarojs/components";
 
 import ModuleHeader from "../../components/ModuleHeader";

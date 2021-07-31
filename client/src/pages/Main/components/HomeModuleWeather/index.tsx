@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
-import Skeleton from "@/components/skeleton";
+import Skeleton from "@/components/Skeleton";
 import Utils from "@/utils";
 
 import "./index.less";
