@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import Skeleton from "@/components/skeleton";
@@ -46,10 +46,27 @@ interface IHomeModuleWeatherParam {
 export default function HomeModuleWeather(props: IHomeModuleWeatherParam) {
   const { isLoadComplete, weatherInfoDay, strSelectDay, DN = "Day" } = props;
 
+  const timerBKMove = useRef<NodeJS.Timeout>(null);
+  const [isBKMove, setBKMove] = useState(false);
+
   const strIcon = weatherInfoDay && weatherInfoDay[`icon${DN}`]; //
   const srcIcon = (strIcon && require(`./images/${strIcon}.png`)) || "";
   const strText = weatherInfoDay && weatherInfoDay[`text${DN}`]; //
   const strwindDir = weatherInfoDay && weatherInfoDay[`windDir${DN}`];
+
+  useEffect(() => {
+    timerBKMove.current = setInterval(() => {
+      setBKMove(false);
+      setTimeout(() => {
+        setBKMove(true);
+      }, 0);
+    }, 10000);
+    return () => {
+      if (timerBKMove.current) {
+        clearInterval(timerBKMove.current);
+      }
+    };
+  }, []);
 
   return (
     <Skeleton
@@ -58,6 +75,9 @@ export default function HomeModuleWeather(props: IHomeModuleWeatherParam) {
       rowProps={{ width: "100%", height: 160 }}
     >
       <View className="flex-start-v module-weather-wrap">
+        <View
+          className={`module-weather-bk ` + `${isBKMove ? "bk-move " : ""}`}
+        />
         <View className="flex-between-h module-weather-title">
           <View className="module-weather-content-location">长春</View>
           <View className="module-weather-content-location">

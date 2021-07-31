@@ -9,6 +9,12 @@
   padding-left: var(--padding-sm);
 }
 
+.item-flash {
+  animation-name: animation-flash;
+  animation-duration: 1s;
+  border-radius: var(--border-radius-md);
+}
+
 .dialog-warning-item-title {
   width: 100%;
   margin-bottom: var(--margin-base);
@@ -61,4 +67,16 @@
   width: 100%;
   font-size: var(--font-size-sm);
   text-align: justify;
+}
+
+@keyframes animation-flash {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: var(--color-gray-6);
+  }
+  100% {
+    background-color: transparent;
+  }
 }

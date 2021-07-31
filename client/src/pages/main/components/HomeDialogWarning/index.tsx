@@ -40,13 +40,28 @@ interface IHomeDialogWarningParam {
 export default function HomeDialogWarning(props: IHomeDialogWarningParam) {
   const { warningInfoNow = [], onDialogWarningClose } = props;
 
+  const [nCurrentFlash, setCurrentFlash] = useState(-1);
+
+  // 闪烁指定项
+  const flashItem = (index = -1, count = 0) => {
+    setTimeout(() => {
+      if (count > 0) {
+        setCurrentFlash(index);
+        setTimeout(() => {
+          setCurrentFlash(-1);
+          flashItem(index, count - 1);
+        }, 1000);
+      }
+    }, 0);
+  };
+
   // 关闭气象告警弹窗
   const handleDialogClose = (e) => {
     onDialogWarningClose && onDialogWarningClose(e);
   };
 
   // 长按告警信息
-  const handleWarningItemLongPress = (item) => {
+  const handleWarningItemLongPress = (item, index) => {
     // console.log("handleWarningItemLongPress", item);
     const strLineTitle = `标题：${item.title}`; // 告警标题
     const strLineTime =
@@ -59,6 +74,9 @@ export default function HomeDialogWarning(props: IHomeDialogWarningParam) {
         `${strLineTime}\n` +
         `${strLineTag}\n` +
         `${strLineDesc}\n`,
+      success: () => {
+        flashItem(index, 2);
+      },
     });
   };
 
@@ -70,41 +88,45 @@ export default function HomeDialogWarning(props: IHomeDialogWarningParam) {
       onDialogClose={handleDialogClose}
     >
       {warningInfoNow &&
-        warningInfoNow.map((item) => {
+        warningInfoNow.map((item, index) => {
           return (
             <View
               className="dialog-warning-item"
-              onLongPress={() => handleWarningItemLongPress(item)}
+              onLongPress={() => handleWarningItemLongPress(item, index)}
             >
-              <View className="dialog-warning-item-title">
-                <View className="dialog-warning-item-up-title-text">
-                  {item.title}
+              <View
+                className={`${nCurrentFlash === index ? "item-flash " : ""}`}
+              >
+                <View className="dialog-warning-item-title">
+                  <View className="dialog-warning-item-up-title-text">
+                    {item.title}
+                  </View>
                 </View>
-              </View>
-              <View className="dialog-warning-item-time">
-                <View className="dialog-warning-item-time-text">
-                  {`${item.simpleStartTime} ~ ${item.simpleEndTime}`}
+                <View className="dialog-warning-item-time">
+                  <View className="dialog-warning-item-time-text">
+                    {`${item.simpleStartTime} ~ ${item.simpleEndTime}`}
+                  </View>
                 </View>
-              </View>
-              <View className="flex-start-h dialog-warning-item-tag">
-                <AtTag
-                  size="small"
-                  active
-                  className="dialog-warning-item-tag-node"
-                >
-                  {item.typeName}
-                </AtTag>
-                <AtTag
-                  size="small"
-                  active
-                  className="dialog-warning-item-tag-node"
-                >
-                  {item.level}
-                </AtTag>
-              </View>
-              <View className="dialog-warning-item-desc">
-                <View className="dialog-warning-item-desc-text">
-                  {item.text}
+                <View className="flex-start-h dialog-warning-item-tag">
+                  <AtTag
+                    size="small"
+                    active
+                    className="dialog-warning-item-tag-node"
+                  >
+                    {item.typeName}
+                  </AtTag>
+                  <AtTag
+                    size="small"
+                    active
+                    className="dialog-warning-item-tag-node"
+                  >
+                    {item.level}
+                  </AtTag>
+                </View>
+                <View className="dialog-warning-item-desc">
+                  <View className="dialog-warning-item-desc-text">
+                    {item.text}
+                  </View>
                 </View>
               </View>
             </View>

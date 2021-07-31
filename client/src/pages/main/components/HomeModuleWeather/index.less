@@ -1,10 +1,33 @@
 .module-weather-wrap {
+  overflow: hidden;
+  position: relative;
   box-sizing: border-box;
   padding: var(--padding-xs);
   width: 100%;
   height: 160px;
   border-radius: var(--border-radius-lg);
-  background-color: var(--color-primary);
+}
+
+.module-weather-bk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 100%;
+  z-index: -1;
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary) 35%,
+    var(--color-white) 50%,
+    var(--color-primary) 65%,
+    var(--color-primary)
+  );
+}
+
+.bk-move {
+  animation-name: animation-move;
+  animation-duration: 3s;
 }
 
 .module-weather-title {
@@ -55,4 +78,13 @@
   color: var(--color-white);
   font-size: var(--font-size-xl);
   font-weight: bold;
+}
+
+@keyframes animation-move {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-70%);
+  }
 }
