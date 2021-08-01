@@ -15,7 +15,7 @@ import {
  * @param canvas
  * @param config
  */
-const drawShareBackground = (
+const drawShareBackground = async (
   canvas: Taro.CanvasContext,
   config: IConfigType
 ) => {
@@ -23,7 +23,7 @@ const drawShareBackground = (
 
   if (objConfigBackground.strBackgroundUrl) {
     canvas.drawImage(
-      ResourceManager.getStaticUrl(objConfigBackground.strBackgroundUrl),
+      await ResourceManager.getUrl(objConfigBackground.strBackgroundUrl),
       objConfigBackground.nBackgroundX,
       objConfigBackground.nBackgroundY,
       objConfigBackground.nBackgroundWidth,
@@ -40,7 +40,7 @@ const drawShareBackground = (
  * @param config
  * @param strContentUrl
  */
-const drawShareContent = (
+const drawShareContent = async (
   canvas: Taro.CanvasContext,
   config: IConfigType,
   strContentUrl: string
@@ -49,7 +49,7 @@ const drawShareContent = (
 
   if (strContentUrl) {
     canvas.drawImage(
-      ResourceManager.getStaticUrl(strContentUrl),
+      await ResourceManager.getUrl(strContentUrl),
       objConfigContent.nContentX,
       objConfigContent.nContentY,
       objConfigContent.nContentWidth,
@@ -112,7 +112,7 @@ const drawShareSource = async (
  * @param canvas
  * @param config
  */
-const drawShareQRCode = (
+const drawShareQRCode = async (
   canvas: Taro.CanvasContext,
   config: IConfigType,
   strQRCodeUrl: string
@@ -121,7 +121,7 @@ const drawShareQRCode = (
 
   if (strQRCodeUrl) {
     canvas.drawImage(
-      ResourceManager.getStaticUrl(strQRCodeUrl),
+      await ResourceManager.getUrl(strQRCodeUrl),
       objConfigQRCode.nQRCodeX,
       objConfigQRCode.nQRCodeY,
       objConfigQRCode.nQRCodeWidth,
@@ -172,15 +172,16 @@ export const drawCanvasShare = async (
 
   if (canvas) {
     // 绘制海报背景
-    drawShareBackground(canvas, config);
+    await drawShareBackground(canvas, config);
     // 绘制海报主题内容
-    drawShareContent(canvas, config, strContentUrl);
+    await drawShareContent(canvas, config, strContentUrl);
     // 绘制分享人身份
     await drawShareSource(canvas, config);
     // 绘制二维码
-    drawShareQRCode(canvas, config, strQRCodeUrl);
+    await drawShareQRCode(canvas, config, strQRCodeUrl);
     // 绘制附属内容
     drawShareExtend(canvas, config);
+    // console.log("drawCanvasShare done.");
   } else {
     console.error("drawCanvasShare canvas is null.");
   }

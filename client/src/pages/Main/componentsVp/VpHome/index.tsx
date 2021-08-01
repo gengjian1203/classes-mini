@@ -201,7 +201,7 @@ export default function VpHome(props: IVpHomeParam) {
         </AtButton>
       </View>
       {/* 分享浮动按钮 */}
-      <View className="flex-center-v vp-home-float-btn-panel">
+      <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
         <ButtonIcon
           value="iconsend"
           width={100}
