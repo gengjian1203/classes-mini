@@ -65,11 +65,14 @@ const drawShareContent = (
  * @param canvas
  * @param config
  */
-const drawShareSource = (canvas: Taro.CanvasContext, config: IConfigType) => {
+const drawShareSource = async (
+  canvas: Taro.CanvasContext,
+  config: IConfigType
+) => {
   const objMemberInfo = StorageManager.getStorageSync("memberInfo");
   const objConfigSource = config.objSource;
 
-  if (objMemberInfo && objMemberInfo.user_avatarUrl) {
+  if (objMemberInfo && objMemberInfo.userAvatarUrl) {
     const nRadius = Math.floor(objConfigSource.nSourceAvatarWidth / 2);
     // 绘制头像
     canvas.save();
@@ -83,7 +86,7 @@ const drawShareSource = (canvas: Taro.CanvasContext, config: IConfigType) => {
     );
     canvas.clip();
     canvas.drawImage(
-      ResourceManager.getStaticUrl(objMemberInfo.user_avatarUrl),
+      await ResourceManager.getUrl(objMemberInfo.userAvatarUrl),
       objConfigSource.nSourceAvatarX,
       objConfigSource.nSourceAvatarY,
       objConfigSource.nSourceAvatarWidth,
@@ -95,12 +98,12 @@ const drawShareSource = (canvas: Taro.CanvasContext, config: IConfigType) => {
     canvas.setFontSize(objConfigSource.nSourceNameFontSize);
     canvas.fillText(
       // ellipsisString(objMemberInfo.user_nickName, 18),
-      objMemberInfo.user_nickName,
+      objMemberInfo.userNickName,
       objConfigSource.nSourceNameX,
       objConfigSource.nSourceNameY
     );
   } else {
-    console.error("drawCanvasShare user_avatarUrl is null.");
+    console.error("drawCanvasShare userAvatarUrl is null.");
   }
 };
 
@@ -158,13 +161,13 @@ const drawShareExtend = (canvas: Taro.CanvasContext, config: IConfigType) => {
  * @param strQRCodeUrl
  * @param index
  */
-export const drawCanvasShare = (
+export const drawCanvasShare = async (
   canvas: Taro.CanvasContext,
   strContentUrl: string = "",
   strQRCodeUrl: string = "",
   index: number = 0
 ) => {
-  console.log("drawCanvasShare.");
+  // console.log("drawCanvasShare.");
   const config = CanvasShareConfig[index % CanvasShareConfig.length];
 
   if (canvas) {
@@ -173,7 +176,7 @@ export const drawCanvasShare = (
     // 绘制海报主题内容
     drawShareContent(canvas, config, strContentUrl);
     // 绘制分享人身份
-    drawShareSource(canvas, config);
+    await drawShareSource(canvas, config);
     // 绘制二维码
     drawShareQRCode(canvas, config, strQRCodeUrl);
     // 绘制附属内容

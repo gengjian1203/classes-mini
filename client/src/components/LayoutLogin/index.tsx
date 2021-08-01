@@ -16,7 +16,7 @@ interface ILayoutLoginParam {}
 export default function LayoutLogin(props: ILayoutLoginParam) {
   const {} = props;
 
-  const { shareInfo } = useSelector((state) => state);
+  const { objSourceInfo } = useSelector((state) => state.shareInfo);
   const { isShowLayoutLogin } = useSelector((state) => state.appInfo);
 
   const { setShowLayoutLogin } = useActions(appInfoActions);
@@ -34,9 +34,9 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
     const objUserInfo = e.detail.userInfo;
     if (objUserInfo && !Utils.checkObjectEmpty(objUserInfo)) {
       setLogining(true);
-      objUserInfo.shareSourceID = shareInfo.sourceID;
-      objUserInfo.shareShareType = shareInfo.shareType;
-      objUserInfo.shareSharePath = shareInfo.sharePath;
+      objUserInfo.shareSourceID = objSourceInfo.sourceID;
+      objUserInfo.shareShareType = objSourceInfo.shareType;
+      objUserInfo.shareSharePath = objSourceInfo.sharePath;
       const res = await Api.cloud.fetchMemberInfo.addMember(objUserInfo);
       console.log("handleGetUserInfo addMemberInfo", res);
       setMemberInfo(res.data);
@@ -57,9 +57,9 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
         const objUserInfo: any = res.userInfo;
         if (objUserInfo && !Utils.checkObjectEmpty(objUserInfo)) {
           setLogining(true);
-          objUserInfo.shareSourceID = shareInfo.sourceID;
-          objUserInfo.shareShareType = shareInfo.shareType;
-          objUserInfo.shareSharePath = shareInfo.sharePath;
+          objUserInfo.shareSourceID = objSourceInfo.sourceID;
+          objUserInfo.shareShareType = objSourceInfo.shareType;
+          objUserInfo.shareSharePath = objSourceInfo.sharePath;
           const res = await Api.cloud.fetchMemberInfo.addMember(objUserInfo);
           console.log("handleGetUserInfo addMemberInfo", res);
           setLogining(false);

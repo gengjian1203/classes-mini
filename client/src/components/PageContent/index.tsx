@@ -37,8 +37,8 @@ export default function PageContent(props: IPageContentParam) {
   // console.log('PageContent', configInfo)
 
   const colorPrimary = "#60b968";
-  const colorPrimaryL = "";
-  const colorPrimaryD = "";
+  const colorPrimaryL = "#80d988";
+  const colorPrimaryD = "#409948";
 
   // 样式规范
   const themeStyle =

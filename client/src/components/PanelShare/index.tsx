@@ -1,9 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Taro, { useShareAppMessage } from "@tarojs/taro";
 import { View, Image, Canvas } from "@tarojs/components";
 
 import ButtonIcon from "@/components/ButtonIcon";
+import Skeleton from "@/components/Skeleton";
 import Mask from "@/components/Mask";
 import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
@@ -23,10 +24,10 @@ interface IPanelShareProps {}
 export default function PanelShare(props: IPanelShareProps) {
   const {} = props;
 
+  const [isShowBtnRefresh, setShowBtnRefresh] = useState<boolean>(false);
   const [strSharePhotoUrl, setSharePhotoUrl] = useState<string>("");
   const [canvasShare, setCanvasShare] = useState<any>(null);
 
-  const memberInfo = useSelector((state) => state.memberInfo);
   const {
     isShowPanelShare,
     strShareTitle,
@@ -35,56 +36,43 @@ export default function PanelShare(props: IPanelShareProps) {
   } = useSelector((state) => state.shareInfo);
   const { setShareInfo } = useActions(shareInfoActions);
 
-  // 更新海报canvas
-  // const updateCanvasShare = async () => {
-  //   Taro.showLoading({
-  //     title: "生成海报中",
-  //     mask: true,
-  //   });
-  //   const strQRCodeUrlTmp = await ResourceManager.getUrl(
-  //     await QRCodeManager.getQRCode(strSharePath)
-  //   );
-  //   const strShareContentUrlTmp = await ResourceManager.getUrl(strShareContentUrl);
-  //   console.log(
-  //     "updateCanvasShare strQRCodeUrl",
-  //     strQRCodeUrlTmp,
-  //     strShareContentUrlTmp
-  //   );
-  //   drawCanvasShare(canvasShare, strShareContentUrlTmp, strQRCodeUrlTmp, 2);
-  //   canvasShare.draw(true, () => {
-  //     Taro.hideLoading();
-  //     Taro.canvasToTempFilePath({
-  //       x: 0,
-  //       y: 0,
-  //       width: PANEL_SHARE_WIDTH * 2,
-  //       height: PANEL_SHARE_HEIGHT * 2,
-  //       destWidth: PANEL_SHARE_WIDTH * 2,
-  //       destHeight: PANEL_SHARE_HEIGHT * 2,
-  //       fileType: "jpg",
-  //       canvasId: "canvas-share",
-  //       success: (resToCanvas) => {
-  //         console.log("resToCanvas", resToCanvas);
-  //         setSharePhotoUrl(resToCanvas.tempFilePath);
-  //       },
-  //       fail: (err) => {
-  //         Taro.showToast({
-  //           title: "生成海报失败",
-  //           icon: "none",
-  //         });
-  //       },
-  //     });
-  //   });
-  // };
-
   const onLoad = () => {
     // 设置 canvas 对象
     setCanvasShare(Taro.createCanvasContext("canvas-share"));
   };
 
   const updateCanvasShare = async () => {
-    const srcQRCode = await QRCodeManager.getQRCode(objShareParam);
-    console.log("updateCanvasShare", srcQRCode);
-    setSharePhotoUrl(srcQRCode);
+    setShowBtnRefresh(false);
+    const [srcQRCode, strShareContentUrlTmp] = await Promise.all([
+      QRCodeManager.getQRCode(objShareParam),
+      await ResourceManager.getUrl(
+        "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg"
+      ),
+    ]);
+    // console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
+    await drawCanvasShare(canvasShare, strShareContentUrlTmp, srcQRCode, 2);
+    canvasShare.draw(true, () => {
+      // Taro.hideLoading();
+      Taro.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: PANEL_SHARE_WIDTH * 2,
+        height: PANEL_SHARE_HEIGHT * 2,
+        destWidth: PANEL_SHARE_WIDTH * 2,
+        destHeight: PANEL_SHARE_HEIGHT * 2,
+        fileType: "jpg",
+        canvasId: "canvas-share",
+        success: (resToCanvas) => {
+          console.log("canvasToTempFilePath success.", resToCanvas);
+          setSharePhotoUrl(resToCanvas.tempFilePath);
+        },
+        fail: (errToCanvas) => {
+          console.log("canvasToTempFilePath fail.", errToCanvas);
+          setShowBtnRefresh(true);
+          Taro.showToast({ title: "生成海报失败", icon: "none" });
+        },
+      });
+    });
   };
 
   useEffect(() => {
@@ -92,7 +80,7 @@ export default function PanelShare(props: IPanelShareProps) {
   }, []);
 
   useEffect(() => {
-    console.log("PanelShare", isShowPanelShare);
+    // console.log("PanelShare", isShowPanelShare);
     if (isShowPanelShare) {
       updateCanvasShare();
     }
@@ -100,16 +88,20 @@ export default function PanelShare(props: IPanelShareProps) {
   }, [isShowPanelShare]);
 
   useShareAppMessage((res) => {
-    // const sharePath = processSharePath({
-    // 	sharePath: path,
-    // 	shareType: strShareType,
-    // })
-    console.log("useShareAppMessage1", objShareParam);
+    const objShareParamDefault = Utils.processSharePath({
+      shareType: Utils.getShareTypeName("POPULARIZE"),
+      sharePath: "/pages/Main/index",
+    });
+    console.log("useShareAppMessage1", objShareParam, objShareParamDefault);
     const title = strShareTitle || "分享一个小程序，快来看看吧！";
     const imageUrl =
       strShareImage ||
-      "http://image.mamicode.com/info/201808/20180828195242126065.png";
-    const path = objShareParam?.sharePathFull || "/pages/Loading/index";
+      "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg";
+    const path =
+      objShareParam?.sharePathFull ||
+      objShareParamDefault?.sharePathFull ||
+      "/pages/Loading/index";
+
     console.log("useShareAppMessage2", path);
 
     return {
@@ -119,40 +111,55 @@ export default function PanelShare(props: IPanelShareProps) {
     };
   });
 
+  const saveImage = () => {
+    // console.log("handleSaveClick");
+    Taro.getImageInfo({
+      src: strSharePhotoUrl,
+      success: (res) => {
+        // console.log("getImageInfo res.", res);
+        Taro.saveImageToPhotosAlbum({
+          filePath: strSharePhotoUrl,
+          success: (resSaveImage) => {
+            // console.log("saveImageToPhotosAlbum res.", resSaveImage);
+            Taro.showToast({
+              title: "保存成功",
+              icon: "success",
+            });
+          },
+          fail: (errSaveImage) => {
+            // console.log("saveImageToPhotosAlbum err.", errSaveImage);
+            if (errSaveImage.errMsg !== "saveImageToPhotosAlbum:fail cancel") {
+              Taro.showToast({
+                title: "保存失败",
+                icon: "none",
+              });
+            }
+          },
+        });
+      },
+      fail: (err) => {
+        console.error("getImageInfo err.", err);
+      },
+    });
+  };
+
+  // 刷新海报图
+  const handleBtnRefreshPhotoClick = () => {
+    updateCanvasShare();
+  };
+
   // 保存海报
   const handleSaveClick = useThrottle(
     useCheckAuthorize("scope.writePhotosAlbum", () => {
-      console.log("handleSaveClick");
-      Taro.getImageInfo({
-        src: strSharePhotoUrl,
-        success: (res) => {
-          console.log("getImageInfo res.", res);
-          Taro.saveImageToPhotosAlbum({
-            filePath: strSharePhotoUrl,
-            success: (resSaveImage) => {
-              console.log("saveImageToPhotosAlbum res.", resSaveImage);
-              Taro.showToast({
-                title: "保存成功",
-                icon: "success",
-              });
-            },
-            fail: (errSaveImage) => {
-              console.log("saveImageToPhotosAlbum err.", errSaveImage);
-              if (
-                errSaveImage.errMsg !== "saveImageToPhotosAlbum:fail cancel"
-              ) {
-                Taro.showToast({
-                  title: "保存失败",
-                  icon: "none",
-                });
-              }
-            },
-          });
-        },
-        fail: (err) => {
-          console.log("getImageInfo err.", err);
-        },
-      });
+      if (strSharePhotoUrl) {
+        saveImage();
+      } else {
+        Taro.showToast({
+          title: "海报生成中",
+          icon: "none",
+          mask: true,
+        });
+      }
     })
   );
 
@@ -164,35 +171,43 @@ export default function PanelShare(props: IPanelShareProps) {
   return (
     <Fragment>
       {isShowPanelShare && (
-        <Mask>
-          <View
-            className={`share-content `}
-            style={
-              `width: ${PANEL_SHARE_WIDTH}px;` +
-              `height: ${PANEL_SHARE_HEIGHT}px;`
-            }
+        <Mask customClass="flex-start-v panel-share-content">
+          <Skeleton
+            loading={!strSharePhotoUrl}
+            animate={!isShowBtnRefresh}
+            row={1}
+            rowProps={{
+              width: 2 * PANEL_SHARE_WIDTH,
+              height: 2 * PANEL_SHARE_HEIGHT,
+            }}
+            customClass="panel-share-img"
           >
             <Image
-              className="share-img"
-              style={
-                `width: ${PANEL_SHARE_WIDTH}px;` +
-                `height: ${PANEL_SHARE_HEIGHT}px;`
-              }
+              className="panel-share-img"
               src={strSharePhotoUrl}
               mode="widthFix"
               showMenuByLongpress
             />
-            {/* <AtButton className="content-btn-icon flex-center-v content-btn-left">
-              <View className="iconfont iconicon-test1"></View>
-            </AtButton> */}
-            {/* <AtButton className="content-btn-icon flex-center-v content-btn-right">
-              <View className="iconfont iconicon-test3"></View>
-            </AtButton> */}
-          </View>
-          <View className="share-text">长按图片，可快捷转发哦！</View>
+          </Skeleton>
+          {isShowBtnRefresh && (
+            <View className="panel-share-button-refresh">
+              <ButtonIcon
+                value="iconrefresh"
+                width={100}
+                height={100}
+                radius={50}
+                size={60}
+                color="#9e9e9e"
+                onClick={handleBtnRefreshPhotoClick}
+              />
+            </View>
+          )}
+          {strSharePhotoUrl && (
+            <View className="panel-share-text">长按图片，可快捷转发哦！</View>
+          )}
           {/* 按钮区域 */}
-          <View className="share-button-wrap flex-around-h">
-            <View className="share-button flex-between-v">
+          <View className="flex-around-h panel-share-footer">
+            <View className="flex-between-v share-button">
               <ButtonIcon
                 value="iconweixin"
                 width={100}
@@ -202,9 +217,9 @@ export default function PanelShare(props: IPanelShareProps) {
                 color="#04be02"
                 openType="share"
               />
-              <View className="btn-text">分享</View>
+              <View className="share-button-text">分享</View>
             </View>
-            <View className="share-button flex-between-v">
+            <View className="flex-between-v share-button">
               <ButtonIcon
                 value="iconxiazai"
                 width={100}
@@ -214,9 +229,9 @@ export default function PanelShare(props: IPanelShareProps) {
                 color="#0084ff"
                 onClick={handleSaveClick}
               />
-              <View className="btn-text">保存</View>
+              <View className="share-button-text">保存</View>
             </View>
-            <View className="share-button flex-between-v">
+            <View className="flex-between-v share-button">
               <ButtonIcon
                 value="iconshanchu2"
                 width={100}
@@ -226,10 +241,9 @@ export default function PanelShare(props: IPanelShareProps) {
                 color="#f7b500"
                 onClick={handlePanelShareClose}
               />
-              <View className="btn-text">关闭</View>
+              <View className="share-button-text">关闭</View>
             </View>
           </View>
-
           {/* 屏外绘制分享的海报 */}
           <Canvas
             canvasId="canvas-share"

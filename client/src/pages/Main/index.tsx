@@ -185,9 +185,8 @@ export default function Main() {
     });
     setShareInfo({
       isShowPanelShare: true,
-      strShareTitle: "我要分享一小小下",
-      strShareImage:
-        "https://pic1.zhimg.com/v2-37a25c73c5f32052b291edb1d1d4a41d_1440w.jpg",
+      strShareTitle: "",
+      strShareImage: "",
       objShareParam: objShareParam,
     });
   };
@@ -281,12 +280,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnEChartsClick}
       /> */}
-      <View>分享按钮</View>
+      {/* <View>分享按钮</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnShareClick}
-      />
+      /> */}
       {/* <View>生成二维码按钮</View>
       <ButtonIcon
         value="iconselect"

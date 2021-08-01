@@ -22,8 +22,7 @@ export default function shareInfoReducer(state = INITIAL_STATE, action) {
       case SET_SHARE_INFO:
         draft = {
           ...draft,
-          strShareTitle: draft.isShowPanelShare ? draft.strShareTitle : "",
-          strShareImage: draft.isShowPanelShare ? draft.strShareImage : "",
+          objShareParam: payload.isShowPanelShare ? payload.objShareParam : {},
           ...payload,
         };
         return draft;

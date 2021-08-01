@@ -32,8 +32,8 @@ export default function Loading() {
       const shareScenePath = decodeURIComponent(sceneParams?.sharePath || "");
       setSourceInfo({
         sourceID: sceneParams?.sourceID || "",
-        shareType: `LINK_${sceneParams?.shareType || "MINIPROGRAM"}`,
-        sharePath: sceneParams?.sharePath || "/pages/Loading/index",
+        shareType: `QRCODE_${sceneParams?.shareType || "MINIPROGRAM"}`,
+        sharePath: shareScenePath || "/pages/Loading/index",
       });
       Taro.redirectTo({
         url: shareScenePath,
@@ -42,8 +42,8 @@ export default function Loading() {
       const shareLinkPath = decodeURIComponent(linkParams?.sharePath || "");
       setSourceInfo({
         sourceID: linkParams?.sourceID || "",
-        shareType: `QRCODE_${linkParams?.shareType || "MINIPROGRAM"}`,
-        sharePath: linkParams?.sharePath || "/pages/Loading/index",
+        shareType: `LINK_${linkParams?.shareType || "MINIPROGRAM"}`,
+        sharePath: shareLinkPath || "/pages/Loading/index",
       });
       Taro.redirectTo({
         url: shareLinkPath,
@@ -70,8 +70,9 @@ export default function Loading() {
       Api.cloud.fetchAppInfo.queryAppTabBar(),
       Api.cloud.fetchMemberInfo.queryMember(),
     ];
-    params.scene &&
+    if (params.scene) {
       arrQueryList.push(Api.cloud.fetchQRCodeInfo.queryQRCode(params));
+    }
     const [
       resQueryAppTabBar,
       resQueryMember,
