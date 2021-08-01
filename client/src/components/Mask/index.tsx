@@ -1,24 +1,39 @@
-import React from 'react'
-import { View } from '@tarojs/components'
+import React from "react";
+import { View } from "@tarojs/components";
 
-import './index.less'
+import "./index.less";
 
 interface IMaskParam {
-	className?: string
-	children?: any
+  customClass?: string;
+  onMaskClose?: any;
+  children?: any;
 }
 
 export default function Mask(props: IMaskParam) {
-	const { className = '', children } = props
+  const { customClass = "", onMaskClose, children } = props;
 
-	const handleMaskClick = e => {
-		// console.log('handleMaskClick')
-		e.stopPropagation()
-	}
+  // 关闭对话框
+  const handleMaskClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onMaskClose && onMaskClose(e);
+  };
 
-	return (
-		<View className={className} onClick={handleMaskClick}>
-			{children}
-		</View>
-	)
+  // 阻止点击面板事件冒泡
+  const handleContentClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  return (
+    <View
+      className="flex-center-v dialog-mask-wrap"
+      onClick={handleMaskClick}
+      catchMove
+    >
+      <View className={customClass} onClick={handleContentClick}>
+        {children}
+      </View>
+    </View>
+  );
 }

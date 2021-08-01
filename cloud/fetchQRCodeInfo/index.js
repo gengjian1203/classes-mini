@@ -40,7 +40,7 @@ exports.main = async (event, context) => {
     const memberId = `mem-${OPENID}`;
     console.log("请求人:", memberId, type);
     if (objFunction[type]) {
-      objResult = await objFunction[type](data, db, memberId);
+      objResult = await objFunction[type](data, db, memberId, cloud);
     } else {
       objResult = { code: 500004, msg: "该接口函数未定义" };
     }

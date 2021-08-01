@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView } from "@tarojs/components";
+import Mask from "@/components/Mask";
 
 import "./index.less";
 
@@ -27,44 +28,30 @@ export default function Dialog(props: IDialogProps) {
   } = props;
 
   // 关闭对话框
-  const handleDialogMaskClick = (e) => {
+  const handleMaskClose = (e) => {
     e.preventDefault();
     e.stopPropagation();
     onDialogClose && onDialogClose(e);
   };
 
-  // 阻止点击面板事件冒泡
-  const handleDialogPanelClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   return (
-    <View
-      className="flex-center-v dialog-mask-wrap"
-      onClick={handleDialogMaskClick}
-      catchMove
-    >
-      <View className="dialog-panel-content" onClick={handleDialogPanelClick}>
-        <View className="flex-center-v dialog-panel-up">
-          <View className="flex-center-v dialog-panel-up-icon">
-            <View
-              className={`iconfont ${titleIcon} dialog-panel-up-icon-text`}
-            />
-          </View>
-          <View className="dialog-panel-up-title">{title}</View>
+    <Mask customClass="dialog-panel-content" onMaskClose={handleMaskClose}>
+      <View className="flex-center-v dialog-panel-up">
+        <View className="flex-center-v dialog-panel-up-icon">
+          <View className={`iconfont ${titleIcon} dialog-panel-up-icon-text`} />
         </View>
-        <ScrollView
-          scrollY
-          className={`flex-center-v dialog-panel-down ${customClass}`}
-          style={customStyle}
-        >
-          {children}
-        </ScrollView>
-        <View className="flex-center-h dialog-panel-footer">
-          长按可复制对应信息
-        </View>
+        <View className="dialog-panel-up-title">{title}</View>
       </View>
-    </View>
+      <ScrollView
+        scrollY
+        className={`flex-center-v dialog-panel-down ${customClass}`}
+        style={customStyle}
+      >
+        {children}
+      </ScrollView>
+      <View className="flex-center-h dialog-panel-footer">
+        长按可复制对应信息
+      </View>
+    </Mask>
   );
 }

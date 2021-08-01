@@ -18,9 +18,6 @@ export default function ECharts() {
   const [ec, setEC] = useState({});
 
   const onLoad = async () => {
-    if (process.env.TARO_ENV === "weapp") {
-      Taro.hideShareMenu();
-    }
     setEC({
       onInit: initChart,
     });

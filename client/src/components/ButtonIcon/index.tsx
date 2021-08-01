@@ -12,6 +12,7 @@ interface IButtonIconParam {
   radius?: number; // 边角
   size?: number; // 字号
   color?: string; // 按钮背景色（仅为iconfont可用）
+  openType?: string; // 按钮开发功能类型
   customStyle?: string; // 自定义样式
   onClick?: (e?: any) => void; // 按钮点击事件回调
 }
@@ -24,6 +25,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
     radius = 20,
     size = 80,
     color = "var(--color-primary)",
+    openType = "",
     customStyle = "",
     onClick = () => {},
   } = props;
@@ -37,6 +39,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
   return (
     <AtButton
       className="button-icon-wrap"
+      openType={openType}
       customStyle={
         `width: ${Taro.pxTransform(width, systemInfo.screenWidth)}; ` +
         `height: ${Taro.pxTransform(height, systemInfo.screenWidth)}; ` +

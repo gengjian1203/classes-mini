@@ -5,44 +5,89 @@ import useActions from "@/hooks/useActions";
 import Api from "@/api";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
+import shareInfoActions from "@/redux/actions/shareInfo";
 import PageContent from "@/components/PageContent";
+import Utils from "@/utils";
 
 import "./index.less";
 
 export default function Loading() {
   const { params } = useRouter();
 
-  const { setAppConfigInfo, setAppHomePage, setAppTabBarInfo } = useActions(
-    appInfoActions
-  );
+  const {
+    setAppConfigInfo,
+    setAppHomePage,
+    setAppTabBarInfo,
+    setShowLayoutLogin,
+  } = useActions(appInfoActions);
   const { setMemberInfo } = useActions(memberInfoActions);
+  const { setShareInfo, setSourceInfo } = useActions(shareInfoActions);
 
-  const jumpPage = () => {
-    Taro.redirectTo({
-      url: `/pages/Main/index`,
-    });
+  const jumpPage = (resQueryQrCode, linkParams) => {
+    const { params: sceneParams } = Utils.router2Params(
+      resQueryQrCode?.sharePathFull || ""
+    );
+    console.log("jumpPage", sceneParams, linkParams);
+    if (sceneParams?.sharePath) {
+      const shareScenePath = decodeURIComponent(sceneParams?.sharePath || "");
+      setSourceInfo({
+        sourceID: sceneParams?.sourceID || "",
+        shareType: `LINK_${sceneParams?.shareType || "MINIPROGRAM"}`,
+        sharePath: sceneParams?.sharePath || "/pages/Loading/index",
+      });
+      Taro.redirectTo({
+        url: shareScenePath,
+      });
+    } else if (linkParams?.sharePath) {
+      const shareLinkPath = decodeURIComponent(linkParams?.sharePath || "");
+      setSourceInfo({
+        sourceID: linkParams?.sourceID || "",
+        shareType: `QRCODE_${linkParams?.shareType || "MINIPROGRAM"}`,
+        sharePath: linkParams?.sharePath || "/pages/Loading/index",
+      });
+      Taro.redirectTo({
+        url: shareLinkPath,
+      });
+    } else {
+      Taro.redirectTo({
+        url: `/pages/Main/index`,
+      });
+    }
+  };
+
+  const initAppState = () => {
+    setShowLayoutLogin(false);
+    setShareInfo({ isShowPanelShare: false });
   };
 
   const onLoad = async () => {
     if (process.env.TARO_ENV === "weapp") {
       Taro.hideShareMenu();
     }
+    initAppState();
 
-    const [resQueryAppTabBar, resLoginMember] = await Promise.all([
+    const arrQueryList = [
       Api.cloud.fetchAppInfo.queryAppTabBar(),
       Api.cloud.fetchMemberInfo.queryMember(),
-    ]);
+    ];
+    params.scene &&
+      arrQueryList.push(Api.cloud.fetchQRCodeInfo.queryQRCode(params));
+    const [
+      resQueryAppTabBar,
+      resQueryMember,
+      resQueryQrCode,
+    ] = await Promise.all(arrQueryList);
 
     setAppHomePage("/pages/Main/index");
-    console.log("Loading", resQueryAppTabBar, resLoginMember);
+    console.log("Loading", resQueryAppTabBar, resQueryMember, resQueryQrCode);
     if (resQueryAppTabBar) {
       setAppTabBarInfo({
         tabList: resQueryAppTabBar,
         strCurrentId: "",
       });
-      setMemberInfo(resLoginMember);
-      jumpPage();
+      setMemberInfo(resQueryMember);
     }
+    jumpPage(resQueryQrCode, params);
   };
 
   useEffect(() => {

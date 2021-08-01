@@ -1,7 +1,6 @@
 import Taro from "@tarojs/taro";
 import React, { Fragment } from "react";
 import { View } from "@tarojs/components";
-import Mask from "@/components/Mask";
 
 import "./index.less";
 
@@ -28,7 +27,7 @@ export default function PanelBottom(props: IPanelBottomProps) {
 
   return (
     // {/* 面板 */}
-    <Mask className="panel-bottom-wrap">
+    <View className="panel-bottom-wrap">
       {/* 实际内容 */}
       {true && (
         <View
@@ -48,6 +47,6 @@ export default function PanelBottom(props: IPanelBottomProps) {
           {isSafeBottom && <View className="safe-bottom"></View>}
         </View>
       )}
-    </Mask>
+    </View>
   );
 }

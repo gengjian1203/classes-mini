@@ -1,8 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { View } from "@tarojs/components";
-import NavigationHeader from "@/components/NavigationHeader";
+import PanelShare from "@/components/PanelShare"; // 位置warning
 import LayoutLogin from "@/components/LayoutLogin";
+import NavigationHeader from "@/components/NavigationHeader";
 
 import "./animation.less";
 import "./base.less";
@@ -62,8 +63,10 @@ export default function PageContent(props: IPageContentParam) {
       >
         {children}
       </View>
-      {/* 弹窗 */}
+      {/* 登录弹窗 */}
       <LayoutLogin />
+      {/* 分享弹窗 */}
+      <PanelShare />
     </View>
   );
 }

@@ -10,14 +10,9 @@ async function queryQRCode(data, db, cloud) {
   let objResult = {};
 
   try {
-    objResult = {
-      code: 200,
-      data: await db
-        .collection("TB_QRCODE")
-        .doc(data.strQRCodeId)
-        .get()
-    };
+    objResult = await db.collection("TB_QRCODE").doc(data.scene).get();
   } catch (e) {
+    objResult = e;
     console.error("queryQRCode error", e);
   }
 

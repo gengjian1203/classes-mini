@@ -8,8 +8,9 @@ import UUID from "./base/UUID";
 import ellipsisString from "./format/ellipsisString";
 import hiddenString from "./format/hiddenString";
 import normalDate from "./format/normalDate";
-import router2param from "./format/router2param";
 import router2url from "./format/router2url";
+import router2Params from "./format/router2Params";
+import routerAppendParams from "./format/routerAppendParams";
 import simpleDate from "./format/simpleDate";
 import { shareType, getShareTypeName } from "./share/getShareTypeName";
 import processSharePath from "./share/processSharePath";
@@ -23,11 +24,12 @@ export default {
   getHDAvatarUrl,
   getNowDate,
   mergeObject,
+  router2Params,
+  routerAppendParams,
   UUID,
   ellipsisString,
   hiddenString,
   normalDate,
-  router2param,
   router2url,
   simpleDate,
   getShareTypeName,

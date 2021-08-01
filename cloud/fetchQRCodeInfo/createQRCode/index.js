@@ -17,70 +17,77 @@ const getNowTime = () => {
   const mm = date.getMinutes();
   const ss = date.getSeconds();
   const time = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`;
-  return time;
+  return {
+    timeDate: date,
+    timeSimple: time,
+    timeStampTime: date.getTime(),
+  };
 };
 
-async function createQRCode(data, db, cloud, strMemberId) {
+async function createQRCode(data, db, strMemberId, cloud) {
+  console.log("createQRCode", data);
   let objResult = {};
   let objQRCodeInfo;
   let strId = "";
+  let strCloudPath = "";
   try {
     objQRCodeInfo = await db
       .collection("TB_QRCODE")
       .where({
-        strSharePath: data.strSharePath
+        sharePathFull: data.sharePathFull,
       })
       .get();
   } catch (e) {
     console.error("createQRCode error", e);
   }
 
-  // console.log('createQRCode.objQRCodeInfo.', objQRCodeInfo)
+  console.log("createQRCode.objQRCodeInfo.", objQRCodeInfo);
   const isOldQRCode = objQRCodeInfo.data[0] && objQRCodeInfo.data[0]._id;
 
   if (isOldQRCode) {
     // 已经生成过二维码
     strId = objQRCodeInfo.data[0]._id;
+    strCloudPath = `qrcode/${strId}.jpg`;
   } else {
     try {
+      const time = getNowTime();
       // 尚未生成过
       const objQRCode = {
         ...data,
-        strMemberId,
-        strTime: getNowTime()
+        ...time,
       };
       const res = await db.collection("TB_QRCODE").add({ data: objQRCode });
-      // console.log('addQRCode', res)
+      console.log("addQRCode", res);
       strId = res._id;
+      strCloudPath = `qrcode/${strId}.jpg`;
     } catch (e) {
       console.error("addQRCode error", e);
     }
+    if (strCloudPath) {
+      // try {
+      console.log("getUnlimited start.", strCloudPath, strId);
+      // 获取二维码
+      const res = await cloud.openapi.wxacode.getUnlimited({
+        scene: strId,
+        width: 280,
+        isHyaline: false,
+      });
+      console.log("getUnlimited res", res);
+      // 上传云存储
+      const resUpLoadFile = await cloud.uploadFile({
+        cloudPath: strCloudPath,
+        fileContent: res.buffer, //处理buffer 二进制数据
+      });
+      console.log("uploadFile res", resUpLoadFile);
+      // } catch (e) {
+      //   console.error("getUnlimited error", e);
+      // }
+    }
   }
-
-  console.log("createQRCode.strId.", strId);
-  const strCloudPath = `qrcode/${strId}.jpg`;
-
-  // if (!isOldQRCode) {
-  try {
-    // 获取二维码
-    const res = await cloud.openapi.wxacode.getUnlimited({
-      scene: strId,
-      width: 280,
-      isHyaline: true
-    });
-    // 上传云存储
-    await cloud.uploadFile({
-      cloudPath: strCloudPath,
-      fileContent: res.buffer //处理buffer 二进制数据
-    });
-  } catch (e) {
-    console.error("getUnlimited error", e);
-  }
-  // }
 
   objResult = {
     code: 200,
-    data: { strQRCodeFileId: strCloudPath }
+    data: { strQRCodeFileId: strCloudPath },
   };
 
   return objResult;

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Taro, { useRouter } from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import useActions from "@/hooks/useActions";
 import useQueryPageList from "@/hooks/useQueryPageList";
@@ -9,7 +9,10 @@ import useCheckLogin from "@/hooks/useCheckLogin";
 import ButtonIcon from "@/components/ButtonIcon";
 import PageContent from "@/components/PageContent";
 import TabbarBottom from "@/components/TabBarBottom";
+import QRCodeManager from "@/services/QRCodeManager";
 import appInfoActions from "@/redux/actions/appInfo";
+import shareInfoActions from "@/redux/actions/shareInfo";
+import Utils from "@/utils";
 
 import VpClasses from "./componentsVp/VpClasses/index";
 import VpHome from "./componentsVp/VpHome/index";
@@ -26,6 +29,7 @@ export default function Main() {
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 加载完毕
   const [strNavigationTitle, setNavigationTitle] = useState<string>("");
   const [nTabBarCurrent, setTabBarCurrent] = useState<number>(0);
+  const [strTestImageUrl, setTestImageUrl] = useState<string>("");
 
   // 班级列表
   const [paramQueryClassByKeyTitle, setQueryClassByKeyTitle] = useState({
@@ -38,11 +42,9 @@ export default function Main() {
   const { setAppTabBarCurrentId, setShowLayoutLogin } = useActions(
     appInfoActions
   );
+  const { setShareInfo } = useActions(shareInfoActions);
 
   const onLoad = async () => {
-    if (process.env.TARO_ENV === "weapp") {
-      Taro.hideShareMenu();
-    }
     const params = {
       nPageNum: 0,
       nPageSize: 10,
@@ -140,9 +142,9 @@ export default function Main() {
   };
 
   // 测试按钮
-  const handleBtnTestClick = useCheckLogin(async () => {
+  const handleBtnSpiderClick = useCheckLogin(async () => {
     const res = await Api.cloud.fetchAppInfo.spiderWeatherInfo({});
-    console.log("handleBtnTestClick", res);
+    console.log("handleBtnSpiderClick", res);
   });
 
   // 测试按钮
@@ -171,6 +173,41 @@ export default function Main() {
     Taro.navigateTo({
       url: "/pages/EChartsDemo/index",
     });
+  };
+
+  const handleBtnShareClick = () => {
+    const objShareParam = Utils.processSharePath({
+      shareType: Utils.getShareTypeName("POPULARIZE"),
+      sharePath: "/pages/EChartsDemo/index",
+      aaa: 111,
+      bbb: 22,
+      zxc: "abab",
+    });
+    setShareInfo({
+      isShowPanelShare: true,
+      strShareTitle: "我要分享一小小下",
+      strShareImage:
+        "https://pic1.zhimg.com/v2-37a25c73c5f32052b291edb1d1d4a41d_1440w.jpg",
+      objShareParam: objShareParam,
+    });
+  };
+
+  const handleBtnQRCodeClick = async () => {
+    // const objParam = {
+    //   sourceID: "aaabbbcccc",
+    //   shareType: "MINIPROGRAM_1212",
+    //   shareRouter: "/pages/EChartsDemo/index",
+    //   sharePath:
+    //     "/pages/Loading/index?jumpPage=/pages/EChartsDemo/index&aa=111&bb=222&zxc=abab",
+    // };
+    const objShareInfo = Utils.processSharePath({
+      sharePath: "/pages/EChartsDemo/index",
+      aaa: 111,
+      bbb: 22,
+      zxc: "abab",
+    });
+    const srcQRCode = await QRCodeManager.getQRCode(objShareInfo);
+    setTestImageUrl(srcQRCode);
   };
 
   const renderVPage = () => {
@@ -230,20 +267,33 @@ export default function Main() {
       <ButtonIcon
         value="http://pic.51yuansu.com/pic3/cover/01/66/10/5957f0b51c503_610.jpg"
         color="var(--color-primary)"
-        onClick={handleBtnTestClick}
+        onClick={handleBtnSpiderClick}
       /> */}
       {/* <View>跳转单图表</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnLoginClick}
-      />
-      <View>跳转多图表</View>
+      /> */}
+      {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnEChartsClick}
       /> */}
+      <View>分享按钮</View>
+      <ButtonIcon
+        value="iconselect"
+        color="var(--color-primary)"
+        onClick={handleBtnShareClick}
+      />
+      {/* <View>生成二维码按钮</View>
+      <ButtonIcon
+        value="iconselect"
+        color="var(--color-primary)"
+        onClick={handleBtnQRCodeClick}
+      />
+      <Image src={strTestImageUrl} /> */}
       {/* 底部导航 */}
       <TabbarBottom
         arrTabBarList={tabBarInfo.tabList}

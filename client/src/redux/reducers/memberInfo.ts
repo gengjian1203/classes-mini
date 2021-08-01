@@ -3,8 +3,6 @@ import StorageManager from "@/services/StorageManager";
 
 import { SET_MEMBER_INFO } from "@/redux/constants/memberInfo";
 
-const m_managerStorage = StorageManager.getInstance();
-
 const INITIAL_STATE = {};
 
 export default function memberInfoReducer(state = INITIAL_STATE, action: any) {
@@ -15,7 +13,7 @@ export default function memberInfoReducer(state = INITIAL_STATE, action: any) {
       // 设置成员信息
       case SET_MEMBER_INFO:
         draft = payload;
-        m_managerStorage.setStorageSync("memberInfo", draft);
+        StorageManager.setStorageSync("memberInfo", draft);
         return draft;
 
       default:

@@ -11,7 +11,16 @@ const INITIAL_STATE = {
   configInfo: {}, // 小程序配置信息
   strMainPath: "", // 小程序首页
   tabBarInfo: {
-    tabList: [],
+    tabList: [
+      {
+        contentType: "MINE",
+        iconType: "iconfont iconpeople",
+        id: "0000000",
+        permission: ["normal"],
+        selectedIconType: "iconfont iconpeople_fill",
+        title: "我的",
+      },
+    ],
     strCurrentId: "",
   }, // 底部导航状态
   isShowLayoutLogin: false, // 登录弹窗状态
