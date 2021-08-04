@@ -5,6 +5,7 @@ import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import ButtonIcon from "@/components/ButtonIcon";
+import NoticeBar from "@/components/NoticeBar";
 import useActions from "@/hooks/useActions";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
@@ -154,7 +155,7 @@ export default function VpHome(props: IVpHomeParam) {
                 key={`notice-bar-${index}`}
                 onClick={() => handleWarningInfoClick(item)}
               >
-                <AtNoticebar icon="volume-plus" single marquee speed={100}>
+                <AtNoticebar icon="volume-plus" single>
                   {item.title}
                 </AtNoticebar>
               </View>

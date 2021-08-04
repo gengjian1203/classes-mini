@@ -1,0 +1,53 @@
+.notice-bar-wrap {
+  width: 100%;
+  height: 48px;
+  background-color: #fbf6ee;
+}
+
+.notice-bar-panel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.notice-bar-icon {
+  flex: 0 0 auto;
+  font-size: var(--font-size-xl);
+  color: #daa55d;
+}
+
+.notice-bar-content {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.notice-bar-content-text {
+  position: absolute;
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  // line-height: var(--font-size-sm);
+  color: #daa55d;
+}
+
+.notice-bar-content-text-move {
+  animation-name: animation-notice-bar-move;
+  animation-duration: 0.7s;
+  animation-timing-function: linear;
+}
+
+@keyframes animation-notice-bar-move {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-80px);
+  }
+}

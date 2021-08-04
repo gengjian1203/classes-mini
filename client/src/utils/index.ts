@@ -3,6 +3,7 @@ import deepClone from "./base/deepClone";
 import deepCompare from "./base/deepCompare";
 import getHDAvatarUrl from "./base/getHDAvatarUrl";
 import getNowDate from "./base/getNowDate";
+import getTextLength from "./base/getTextLength";
 import mergeObject from "./base/mergeObject";
 import UUID from "./base/UUID";
 import ellipsisString from "./format/ellipsisString";
@@ -23,6 +24,7 @@ export default {
   deepCompare,
   getHDAvatarUrl,
   getNowDate,
+  getTextLength,
   mergeObject,
   router2Params,
   routerAppendParams,
