@@ -8,12 +8,20 @@
  */
 
 async function queryMemberInfo(data, db, strMemberId) {
+  const date = new Date();
+  const YYYY = date.getFullYear();
+  const MM = date.getMonth() + 1;
+  const DD = date.getDate();
+  const hh = date.getHours();
+  const mm = date.getMinutes();
+  const ss = date.getSeconds();
+  const time = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`;
+
   let objResult = {};
 
   try {
     objResult = await db.collection("TB_MEMBER").doc(strMemberId).get();
-    await db
-      .collection("TB_MEMBER")
+    db.collection("TB_MEMBER")
       .doc(strMemberId)
       .update({
         data: {

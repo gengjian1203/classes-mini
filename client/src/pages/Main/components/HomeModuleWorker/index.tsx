@@ -9,11 +9,12 @@ import "./index.less";
 
 interface IHomeModuleWorkerParam {
   isLoadComplete?: boolean;
+  strModuleTitle?: string;
   arrWorkerList?: Array<any>;
 }
 
 export default function HomeModuleWeather(props: IHomeModuleWorkerParam) {
-  const { isLoadComplete, arrWorkerList = [] } = props;
+  const { isLoadComplete, strModuleTitle = "", arrWorkerList = [] } = props;
 
   useEffect(() => {
     return () => {};
@@ -26,7 +27,7 @@ export default function HomeModuleWeather(props: IHomeModuleWorkerParam) {
       rowProps={{ width: "100%", height: 160 }}
     >
       <ModuleCard
-        title="值班人员"
+        title={strModuleTitle}
         customClass="module-worder-panel"
         isEnableFold
       >

@@ -11,10 +11,11 @@ import Utils from "@/utils";
 import "./index.less";
 
 interface IMemberInfoType {
-  _id: string;
-  userAvatarUrl: string;
-  userNickName: string;
-  appBindWorkerId: string;
+  _id?: string;
+  userAvatarUrl?: string;
+  userNickName?: string;
+  appBindWorkerId?: string;
+  appTag?: string;
 }
 interface IMineModuleHeaderParam {
   isLoadComplete?: boolean;
@@ -132,16 +133,9 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
               </Text> */}
             </View>
             <View className="module-header-right-down">
-              {/* {["Leader", "Worker", "Tester"].map((item, index) => {
-                return (
-                  <Text
-                    className="text-nowrap module-header-right-down-tag"
-                    key={`tag-${index}`}
-                  >
-                    {item}
-                  </Text>
-                );
-              })} */}
+              <Text className="text-nowrap module-header-right-down-tag">
+                {Utils.getTagName(memberInfo?.appTag)}
+              </Text>
             </View>
           </View>
         </View>

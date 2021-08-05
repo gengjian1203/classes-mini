@@ -148,24 +148,16 @@ export default function Main() {
   });
 
   // 测试按钮
-  const handleBtnLoginClick = async () => {
-    // setShowLayoutLogin(true)
-    // const res = await Api.cloud.fetchGroupInfo.addGroup({
-    //   logo:
-    //     "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-    //   title: `测试${Math.random()}班`,
-    //   describe:
-    //     "汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。",
-    //   address: "洛水畔",
-    // });
-    // console.log("handleBtnLoginClick", res);
-    // Taro.showToast({
-    //   title: "创建社区",
-    //   icon: "none",
-    // });
-    Taro.navigateTo({
-      url: "/pages/ECharts/index",
-    });
+  const handleBtnTestClick = async () => {
+    const params = {
+      name: "孙尚香",
+      nameSimple: "尚香",
+      gender: 2,
+      cellphone: "9292922929",
+      tag: "WEATHER_TIME",
+    };
+    const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
+    console.log("handleBtnTestClick", res);
   };
 
   //
@@ -268,11 +260,11 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      {/* <View>跳转单图表</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
-        onClick={handleBtnLoginClick}
+        onClick={handleBtnTestClick}
       /> */}
       {/* <View>跳转多图表</View>
       <ButtonIcon

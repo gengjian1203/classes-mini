@@ -5,7 +5,7 @@ import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import ButtonIcon from "@/components/ButtonIcon";
-import NoticeBar from "@/components/NoticeBar";
+import Permission from "@/components/Permission";
 import useActions from "@/hooks/useActions";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
@@ -54,6 +54,8 @@ export default function VpHome(props: IVpHomeParam) {
   ); // 日历组件选中月份
   const [weatherInfoDay, setWeatherInfoDay] = useState(undefined); // 选中当天的气象数据
   const [warningInfoNow, setWarningInfoNow] = useState<any>([]); // 本日的气象告警信息
+
+  const memberInfo = useSelector((state) => state.memberInfo);
 
   const { setShareInfo } = useActions(shareInfoActions);
 
@@ -203,16 +205,21 @@ export default function VpHome(props: IVpHomeParam) {
           回到今天
         </AtButton>
       </View>
-      {/* 天气组件 */}
-      <View className="vp-home-content-module">
+
+      {/* 短时值班人员组件 */}
+      <Permission
+        strCheckTag="WEATHER_TIME"
+        customClass="vp-home-content-module"
+      >
         <HomeModuleWorker
           isLoadComplete={isLoadCompleteWeather}
+          strModuleTitle="短时值班人员"
           arrWorkerList={[{ name: "张三" }, { name: "李四" }, { name: "王二" }]}
         />
-      </View>
+      </Permission>
 
       {/* 分享浮动按钮 */}
-      <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
+      {/* <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
         <ButtonIcon
           value="iconsend"
           width={100}
@@ -222,7 +229,7 @@ export default function VpHome(props: IVpHomeParam) {
           color="var(--color-primary)"
           onClick={handleBtnShareClick}
         />
-      </View>
+      </View> */}
 
       {/* 告警详细信息弹窗 */}
       {isShowDialogWarning && (

@@ -7,6 +7,7 @@ import getTextLength from "./base/getTextLength";
 import mergeObject from "./base/mergeObject";
 import UUID from "./base/UUID";
 import ellipsisString from "./format/ellipsisString";
+import getTagName from "./format/getTagName";
 import hiddenString from "./format/hiddenString";
 import normalDate from "./format/normalDate";
 import router2url from "./format/router2url";
@@ -30,6 +31,7 @@ export default {
   routerAppendParams,
   UUID,
   ellipsisString,
+  getTagName,
   hiddenString,
   normalDate,
   router2url,
