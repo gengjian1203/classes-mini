@@ -7,8 +7,10 @@ import Api from "@/api";
 import ButtonIcon from "@/components/ButtonIcon";
 import NoticeBar from "@/components/NoticeBar";
 import useActions from "@/hooks/useActions";
+import useCheckLogin from "@/hooks/useCheckLogin";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
+import HomeModuleWorker from "@/pages/Main/components/HomeModuleWorker";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import GlobalManager from "@/services/GlobalManager";
 import Utils from "@/utils";
@@ -126,7 +128,7 @@ export default function VpHome(props: IVpHomeParam) {
   };
 
   // 分享按钮点击事件
-  const handleBtnShareClick = () => {
+  const handleBtnShareClick = useCheckLogin(() => {
     const objShareParam = Utils.processSharePath({
       shareType: Utils.getShareTypeName("POPULARIZE"),
       sharePath: "/pages/Main/index",
@@ -137,7 +139,7 @@ export default function VpHome(props: IVpHomeParam) {
       strShareImage: "",
       objShareParam: objShareParam,
     });
-  };
+  });
 
   // 模态对话框
   const handleDialogWarningClick = () => {
@@ -201,6 +203,14 @@ export default function VpHome(props: IVpHomeParam) {
           回到今天
         </AtButton>
       </View>
+      {/* 天气组件 */}
+      <View className="vp-home-content-module">
+        <HomeModuleWorker
+          isLoadComplete={isLoadCompleteWeather}
+          arrWorkerList={[{ name: "张三" }, { name: "李四" }, { name: "王二" }]}
+        />
+      </View>
+
       {/* 分享浮动按钮 */}
       <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
         <ButtonIcon

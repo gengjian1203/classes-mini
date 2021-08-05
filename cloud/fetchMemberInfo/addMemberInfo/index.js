@@ -39,6 +39,7 @@ const createMember = async (data, db, strMemberId, date, time) => {
     // 应用级
     appLevel: 1, // 等级
     appExp: 0, // 经验
+    appBindWorkerId: "", // 绑定小程序内身份
   };
   // 创建新的玩家信息
   try {

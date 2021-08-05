@@ -39,11 +39,7 @@ export default function VpMine(props: IVpMineParam) {
 
   return (
     <View className="vp-mine-wrap">
-      <MineModuleHeader
-        memberId={memberInfo?._id}
-        logoUrl={memberInfo?.userAvatarUrl}
-        title={memberInfo?.userNickName}
-      />
+      <MineModuleHeader memberInfo={memberInfo} />
       <View className="flex-start-v vp-mine-content">
         <ModuleCard title="提示" customClass="vp-mine-module-card" isEnableFold>
           <View>欢迎使用本小程序</View>

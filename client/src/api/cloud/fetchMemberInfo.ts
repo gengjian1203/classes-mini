@@ -28,7 +28,21 @@ const queryMember = async (objParams: any = {}) => {
   return res.data;
 };
 
+/**
+ * 查询成员
+ */
+const updateMember = async (objParams: any = {}) => {
+  const params = {
+    type: "UPDATE_MEMBER",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
+  console.log("updateMember", res);
+  return res.data;
+};
+
 export default {
   addMember,
   queryMember,
+  updateMember,
 };

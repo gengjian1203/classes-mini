@@ -12,6 +12,20 @@ db.collection('TB_GROUP')
 .remove()
 ```
 
+2. 新增字段
+
+```SQL
+db.collection('TB_MEMBER')
+.where({
+  _id: _.exists(true)
+})
+.update({
+  data: {
+    appBindWorkerId: db.command.set('')
+  }
+})
+```
+
 ### 状态码
 
 | 微信 (code / errCode ) |   报错信息 (errMsg)    |

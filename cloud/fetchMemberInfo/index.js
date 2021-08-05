@@ -3,6 +3,7 @@ const cloud = require("wx-server-sdk");
 const md5 = require("blueimp-md5");
 const addMemberInfo = require("addMemberInfo/index.js");
 const queryMemberInfo = require("queryMemberInfo/index.js");
+const updateMemberInfo = require("updateMemberInfo/index.js");
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
@@ -11,6 +12,7 @@ cloud.init({
 const objFunction = {
   ADD_MEMBER: addMemberInfo, // 新增成员
   QUERY_MEMBER: queryMemberInfo, // 查询成员
+  UPDATE_MEMBER: updateMemberInfo, // 更新成员
 };
 
 const verifyRequest = (event) => {
