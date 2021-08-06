@@ -17,7 +17,7 @@ export default class AppInitDataService {
   }
 
   initSysInfo = () => {
-    GlobalManager.nowDate = Utils.getNowDate();
+    GlobalManager.nowDate = Utils.getStringDate(new Date());
   };
 
   initCloudInfo = () => {

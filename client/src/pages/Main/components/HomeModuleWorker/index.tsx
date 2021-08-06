@@ -31,13 +31,14 @@ export default function HomeModuleWeather(props: IHomeModuleWorkerParam) {
         customClass="module-worder-panel"
         isEnableFold
       >
-        {arrWorkerList.map((item, index) => {
-          return (
-            <View key={`worker-${index}`} className="worker-item">
-              {item.name}
-            </View>
-          );
-        })}
+        {arrWorkerList &&
+          arrWorkerList.map((item, index) => {
+            return (
+              <View key={`worker-${index}`} className="worker-item">
+                {item.workId}
+              </View>
+            );
+          })}
       </ModuleCard>
     </Skeleton>
   );

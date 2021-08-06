@@ -1,10 +1,9 @@
 /**
- * 获取当前时间
- * @param
+ * 获取指定时间字符串
+ * @param date Date();
  * @return
  */
-export const getNowDate = () => {
-  const date = new Date();
+export const getStringDate = (date) => {
   const YYYY = String(date.getFullYear());
   const MM = String(date.getMonth() + 1).padStart(2, "0");
   const DD = String(date.getDate()).padStart(2, "0");
@@ -14,7 +13,7 @@ export const getNowDate = () => {
 
   const timeString = `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`;
   const monthString = `${YYYY}-${MM}`;
-  const todayString = `${YYYY}-${MM}-${DD}`;
+  const dayString = `${YYYY}-${MM}-${DD}`;
   // console.log("getNowDate", todayString);
 
   return {
@@ -27,8 +26,8 @@ export const getNowDate = () => {
     ss,
     timeString: timeString,
     monthString: monthString,
-    todayString: todayString,
+    todayString: dayString,
   };
 };
 
-export default getNowDate;
+export default getStringDate;

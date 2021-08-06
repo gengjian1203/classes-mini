@@ -2,7 +2,7 @@ import checkObjectEmpty from "./base/checkObjectEmpty";
 import deepClone from "./base/deepClone";
 import deepCompare from "./base/deepCompare";
 import getHDAvatarUrl from "./base/getHDAvatarUrl";
-import getNowDate from "./base/getNowDate";
+import getStringDate from "./base/getStringDate";
 import getTextLength from "./base/getTextLength";
 import mergeObject from "./base/mergeObject";
 import UUID from "./base/UUID";
@@ -24,7 +24,7 @@ export default {
   deepClone,
   deepCompare,
   getHDAvatarUrl,
-  getNowDate,
+  getStringDate,
   getTextLength,
   mergeObject,
   router2Params,

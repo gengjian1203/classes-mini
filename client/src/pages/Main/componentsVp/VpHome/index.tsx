@@ -43,7 +43,9 @@ const customStyleGenerator = (params) => {
 export default function VpHome(props: IVpHomeParam) {
   const { isLoadComplete = true } = props;
 
+  const taskInfoLocal = useRef({}); // 月份为键的任务字典表，为缓存请求的数据
   const weatherInfoMonthLocal = useRef({}); // 月份为键的天气字典表，为缓存请求的数据
+
   const [isLoadCompleteWeather, setLoadCompleteWeather] = useState(false); // 天气组件的数据是否加载完成标识
   const [isShowDialogWarning, setShowDialogWarning] = useState(false);
   const [strSelectDay, setSelectDay] = useState(
@@ -52,47 +54,56 @@ export default function VpHome(props: IVpHomeParam) {
   const [strSelectMonth, setSelectMonth] = useState(
     GlobalManager.nowDate.monthString || "2021-01-01"
   ); // 日历组件选中月份
-  const [weatherInfoDay, setWeatherInfoDay] = useState(undefined); // 选中当天的气象数据
+  const [weatherInfoDay, setWeatherInfoDay] = useState({}); // 选中当天的气象数据
+  const [taskInfoDay, setTaskInfoDay] = useState({}); // 选中当天的任务数据
   const [warningInfoNow, setWarningInfoNow] = useState<any>([]); // 本日的气象告警信息
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
   const { setShareInfo } = useActions(shareInfoActions);
 
-  // 以月为单位请求天气数据
-  const queryWeatherInfo = async (month = "none") => {
-    if (weatherInfoMonthLocal.current[month]) {
+  // 以月为单位请求首页数据
+  const queryHomeInfo = async (month = "none") => {
+    if (weatherInfoMonthLocal.current[month] || taskInfoLocal.current[month]) {
       return;
     }
-    const res = await Api.cloud.fetchAppInfo.queryWeatherInfo({
+    const res = await Api.cloud.fetchAppInfo.queryHomeInfo({
       month: month,
     });
-    console.log("VpHome queryWeatherInfo", res);
-    const { weatherInfoMonth = {}, warningInfo = {} } = res || {};
+    console.log("VpHome queryHomeInfo", res);
+    const { taskInfo = {}, weatherInfoMonth = {}, warningInfo = {} } =
+      res || {};
+    taskInfoLocal.current[month] = (taskInfo && taskInfo?.data) || [];
     weatherInfoMonthLocal.current[month] =
       (weatherInfoMonth && weatherInfoMonth?.data) || [];
     setWarningInfoNow((warningInfo && warningInfo?.data) || []);
     // setWarningInfoNow(new Array(10).fill(warningInfo?.data[0]));
   };
 
-  // 渲染指定日期的天气数据
-  const setWeatherInfo = async (dayString = "") => {
+  // 渲染指定日期的相关数据
+  const setDayInfo = async (dayString = "") => {
     if (dayString) {
       const month = getMonthFromDayString(dayString);
-      const arrInfo = weatherInfoMonthLocal.current[month] || [];
-      const info = arrInfo.find((item) => {
+      const arrTaskInfo = taskInfoLocal.current[month] || [];
+      const arrWeatherInfo = weatherInfoMonthLocal.current[month] || [];
+
+      const taskInfo = arrTaskInfo.find((item) => {
         return item.fxDate === dayString;
       });
-      // console.log("setWeatherInfo", info);
+      const weatherInfo = arrWeatherInfo.find((item) => {
+        return item.fxDate === dayString;
+      });
+      // console.log("setDayInfo", taskInfo, weatherInfo);
       setSelectDay(dayString);
-      setWeatherInfoDay(info);
+      setTaskInfoDay(taskInfo);
+      setWeatherInfoDay(weatherInfo);
     }
   };
 
   const onLoad = async () => {
-    GlobalManager.nowDate = Utils.getNowDate();
-    await queryWeatherInfo(GlobalManager.nowDate.MM);
-    setWeatherInfo(GlobalManager.nowDate.todayString);
+    GlobalManager.nowDate = Utils.getStringDate(new Date());
+    await queryHomeInfo(GlobalManager.nowDate.MM);
+    setDayInfo(GlobalManager.nowDate.todayString);
     setLoadCompleteWeather(true);
   };
 
@@ -110,7 +121,7 @@ export default function VpHome(props: IVpHomeParam) {
   const handleCalendarDayClick = (value) => {
     // console.log("handleCalendarDayClick", value);
     const dayString = value?.value;
-    setWeatherInfo(dayString);
+    setDayInfo(dayString);
   };
 
   // 日历切换回调事件
@@ -118,13 +129,13 @@ export default function VpHome(props: IVpHomeParam) {
     // console.log("handleCalendarCurrentViewChange", value);
     const month = getMonthFromDayString(value);
     setSelectMonth(value);
-    queryWeatherInfo(month);
+    queryHomeInfo(month);
   };
 
   // 回到今天按钮事件
   const hanldeBtnTodayClick = () => {
     console.log("hanldeBtnTodayClick");
-    setWeatherInfo(GlobalManager.nowDate.todayString);
+    setDayInfo(GlobalManager.nowDate.todayString);
     setSelectMonth(GlobalManager.nowDate.monthString);
     handleCalendarCurrentViewChange(GlobalManager.nowDate.monthString);
   };
@@ -194,6 +205,7 @@ export default function VpHome(props: IVpHomeParam) {
             { value: "2021-09-22", text: "休假", color: "darkblue" },
             { value: "2021-09-23", text: "会议", color: "gray" },
           ]}
+          bodyStyle={{ marginBottom: "-1rem" }}
           customStyleGenerator={customStyleGenerator}
           onDayClick={handleCalendarDayClick}
           onCurrentViewChange={handleCalendarCurrentViewChange}
@@ -214,7 +226,7 @@ export default function VpHome(props: IVpHomeParam) {
         <HomeModuleWorker
           isLoadComplete={isLoadCompleteWeather}
           strModuleTitle="短时值班人员"
-          arrWorkerList={[{ name: "张三" }, { name: "李四" }, { name: "王二" }]}
+          arrWorkerList={taskInfoDay && taskInfoDay["WEATHER_TIME"]}
         />
       </Permission>
 

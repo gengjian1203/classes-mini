@@ -16,6 +16,20 @@ const queryAppTabBar = async (objParams: any = {}) => {
 };
 
 /**
+ * 查询首页的相关信息
+ * @returns
+ */
+const queryHomeInfo = async (objParams: any = {}) => {
+  const params = {
+    type: "QUERY_HOME_INFO",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
+  console.log("queryHomeInfo", res);
+  return res;
+};
+
+/**
  * 查询天气相关信息
  */
 const queryWeatherInfo = async (objParams: any = {}) => {
@@ -40,6 +54,7 @@ const spiderWeatherInfo = async (objParams: any = {}) => {
 
 export default {
   queryAppTabBar,
+  queryHomeInfo,
   queryWeatherInfo,
   spiderWeatherInfo,
 };
