@@ -3,14 +3,12 @@ import CloudFetch from "@/services/CloudFetch";
 const CLOUD_NAME = "fetchTaskInfo";
 
 interface IAddTaskParams {
-  name?: string; // 名称
-  nameSimple?: string; // 简称
-  gender?: number; // 性别
-  cellphone?: string; // 手机号
-  tag?: string; // 身份标签
+  fxDate: string;
+  keyName: string;
+  arrData: Array<any>;
 }
 /**
- * 注册成员
+ * 新增任务
  */
 const addTask = async (objParams: IAddTaskParams = {}) => {
   const params = {
@@ -23,7 +21,7 @@ const addTask = async (objParams: IAddTaskParams = {}) => {
 };
 
 /**
- * 查询成员
+ * 查询任务
  */
 const queryTask = async (objParams: any = {}) => {
   const params = {
@@ -36,7 +34,7 @@ const queryTask = async (objParams: any = {}) => {
 };
 
 /**
- * 查询成员
+ * 更新任务
  */
 const updateTask = async (objParams: any = {}) => {
   const params = {

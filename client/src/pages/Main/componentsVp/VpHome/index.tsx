@@ -15,7 +15,11 @@ import shareInfoActions from "@/redux/actions/shareInfo";
 import GlobalManager from "@/services/GlobalManager";
 import Utils from "@/utils";
 
-import { getMonthFromDayString } from "./utils";
+import {
+  getMonthFromDayString,
+  getWorkerIdNew,
+  formatWorkerInfo,
+} from "./utils";
 
 import "./index.less";
 
@@ -43,8 +47,9 @@ const customStyleGenerator = (params) => {
 export default function VpHome(props: IVpHomeParam) {
   const { isLoadComplete = true } = props;
 
-  const taskInfoLocal = useRef({}); // 月份为键的任务字典表，为缓存请求的数据
-  const weatherInfoMonthLocal = useRef({}); // 月份为键的天气字典表，为缓存请求的数据
+  const taskListLocal = useRef([]); // 月份为键的任务字典表，为缓存请求的数据
+  const weatherMonthListLocal = useRef({}); // 月份为键的天气字典表，为缓存请求的数据
+  const workerMapLocal = useRef({}); // 月份为键的天气字典表，为缓存请求的数据
 
   const [isLoadCompleteWeather, setLoadCompleteWeather] = useState(false); // 天气组件的数据是否加载完成标识
   const [isShowDialogWarning, setShowDialogWarning] = useState(false);
@@ -54,49 +59,72 @@ export default function VpHome(props: IVpHomeParam) {
   const [strSelectMonth, setSelectMonth] = useState(
     GlobalManager.nowDate.monthString || "2021-01-01"
   ); // 日历组件选中月份
-  const [weatherInfoDay, setWeatherInfoDay] = useState({}); // 选中当天的气象数据
-  const [taskInfoDay, setTaskInfoDay] = useState({}); // 选中当天的任务数据
-  const [warningInfoNow, setWarningInfoNow] = useState<any>([]); // 本日的气象告警信息
+  const [warningListNow, setWarningListNow] = useState<any>([]); // 本日的气象告警信息
+  const [weatherItemDay, setWeatherItemDay] = useState({}); // 选中当天的气象数据
+  const [arrTaskItemWeatherTime, setTaskItemWeatherTime] = useState([]); // 选中当天的短时任务数据
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
   const { setShareInfo } = useActions(shareInfoActions);
 
+  // 缓存请求到的员工信息放入字典中
+  const setWorkerMapLocal = async (month) => {
+    const arrWorkerIdNew = getWorkerIdNew(
+      taskListLocal.current[month],
+      workerMapLocal.current
+    );
+    if (arrWorkerIdNew && arrWorkerIdNew.length > 0) {
+      const params = { arrId: arrWorkerIdNew };
+      const resWorker = await Api.cloud.fetchWorkerInfo.queryWorker(params);
+      // console.log("queryWorker", resWorker);
+      for (let item of resWorker) {
+        workerMapLocal.current[item._id] = item;
+      }
+    }
+  };
+
   // 以月为单位请求首页数据
   const queryHomeInfo = async (month = "none") => {
-    if (weatherInfoMonthLocal.current[month] || taskInfoLocal.current[month]) {
+    if (weatherMonthListLocal.current[month] || taskListLocal.current[month]) {
       return;
     }
     const res = await Api.cloud.fetchAppInfo.queryHomeInfo({
       month: month,
     });
     console.log("VpHome queryHomeInfo", res);
-    const { taskInfo = {}, weatherInfoMonth = {}, warningInfo = {} } =
+    const { taskList = {}, weatherMonthList = {}, warningList = {} } =
       res || {};
-    taskInfoLocal.current[month] = (taskInfo && taskInfo?.data) || [];
-    weatherInfoMonthLocal.current[month] =
-      (weatherInfoMonth && weatherInfoMonth?.data) || [];
-    setWarningInfoNow((warningInfo && warningInfo?.data) || []);
-    // setWarningInfoNow(new Array(10).fill(warningInfo?.data[0]));
+    taskListLocal.current[month] = (taskList && taskList?.data) || [];
+    weatherMonthListLocal.current[month] =
+      (weatherMonthList && weatherMonthList?.data) || [];
+    await setWorkerMapLocal(month);
+    setWarningListNow((warningList && warningList?.data) || []);
+    // setWarningListNow(new Array(10).fill(warningList?.data[0]));
   };
 
   // 渲染指定日期的相关数据
   const setDayInfo = async (dayString = "") => {
     if (dayString) {
       const month = getMonthFromDayString(dayString);
-      const arrTaskInfo = taskInfoLocal.current[month] || [];
-      const arrWeatherInfo = weatherInfoMonthLocal.current[month] || [];
+      const arrTaskList = taskListLocal.current[month] || [];
+      const arrWeatherList = weatherMonthListLocal.current[month] || [];
 
-      const taskInfo = arrTaskInfo.find((item) => {
+      const taskItem = arrTaskList.find((item) => {
         return item.fxDate === dayString;
       });
-      const weatherInfo = arrWeatherInfo.find((item) => {
+      const weatherItem = arrWeatherList.find((item) => {
         return item.fxDate === dayString;
       });
-      // console.log("setDayInfo", taskInfo, weatherInfo);
+      // console.log("setDayInfo", taskItem, weatherItem);
       setSelectDay(dayString);
-      setTaskInfoDay(taskInfo);
-      setWeatherInfoDay(weatherInfo);
+      setWeatherItemDay(weatherItem);
+      const arrTaskItemWeatherTimeTmp = formatWorkerInfo(
+        workerMapLocal.current,
+        taskItem,
+        "WEATHER_TIME"
+      );
+      console.log("setDayInfo", taskItem, arrTaskItemWeatherTimeTmp);
+      setTaskItemWeatherTime(arrTaskItemWeatherTimeTmp);
     }
   };
 
@@ -112,8 +140,8 @@ export default function VpHome(props: IVpHomeParam) {
   }, []);
 
   // 点击告警条
-  const handleWarningInfoClick = (item) => {
-    console.log("handleWarningInfoClick", item);
+  const handleWarningItemClick = (item) => {
+    console.log("handleWarningItemClick", item);
     setShowDialogWarning(true);
   };
 
@@ -163,12 +191,12 @@ export default function VpHome(props: IVpHomeParam) {
     <View className="vp-home-content">
       {/* 天气预警组件 */}
       <View className="vp-home-content-module">
-        {warningInfoNow &&
-          warningInfoNow.map((item, index) => {
+        {warningListNow &&
+          warningListNow.map((item, index) => {
             return (
               <View
                 key={`notice-bar-${index}`}
-                onClick={() => handleWarningInfoClick(item)}
+                onClick={() => handleWarningItemClick(item)}
               >
                 <AtNoticebar icon="volume-plus" single>
                   {item.title}
@@ -182,7 +210,7 @@ export default function VpHome(props: IVpHomeParam) {
         <HomeModuleWeather
           isLoadComplete={isLoadCompleteWeather}
           strSelectDay={strSelectDay}
-          weatherInfoDay={weatherInfoDay}
+          weatherInfoDay={weatherItemDay}
         />
       </View>
       {/* 日历组件 */}
@@ -226,7 +254,7 @@ export default function VpHome(props: IVpHomeParam) {
         <HomeModuleWorker
           isLoadComplete={isLoadCompleteWeather}
           strModuleTitle="短时值班人员"
-          arrWorkerList={taskInfoDay && taskInfoDay["WEATHER_TIME"]}
+          arrWorkerList={arrTaskItemWeatherTime}
         />
       </Permission>
 
@@ -246,7 +274,7 @@ export default function VpHome(props: IVpHomeParam) {
       {/* 告警详细信息弹窗 */}
       {isShowDialogWarning && (
         <HomeDialogWarning
-          warningInfoNow={warningInfoNow}
+          warningInfoNow={warningListNow}
           onDialogWarningClose={handleDialogWarningClick}
         />
       )}

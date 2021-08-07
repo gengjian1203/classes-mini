@@ -7,94 +7,77 @@
  * @returns
  */
 
-async function queryHomeInfo(data, db, memberId) {
-  const { month = "none" } = data;
+const MAX_LIMIT = 100;
+
+const queryTaskList = async (data, db, month) => {
+  const taskList = await db
+    .collection("TB_TASK")
+    .where({
+      fxDate: db.RegExp({
+        regexp: `[\s\S]*-${month}-[\s\S]*`,
+        options: "i",
+      }),
+    })
+    .limit(MAX_LIMIT)
+    .get();
+  // console.log("queryTaskList", taskList);
+  return taskList;
+};
+
+const queryWeatherMonthList = async (data, db, month) => {
+  const weatherMonthList = await db
+    .collection("TB_WEATHER_NORMAL")
+    .where({
+      fxDate: db.RegExp({
+        regexp: `[\s\S]*-${month}-[\s\S]*`,
+        options: "i",
+      }),
+    })
+    .limit(MAX_LIMIT)
+    .get();
+  // console.log("queryWeatherMonthList", weatherMonthList);
+  return weatherMonthList;
+};
+
+const queryWarningList = async (data, db) => {
   const _ = db.command;
   const date = new Date();
   const timestamp = date.getTime();
-  console.log("queryHomeInfo timestamp", timestamp);
+
+  const warningList = await db
+    .collection("TB_WEATHER_WARNING")
+    .where(
+      _.and([
+        { timestampStartTime: _.lt(timestamp) },
+        { timestampEndTime: _.gt(timestamp) },
+        // { _id: _.exists(true) },
+      ])
+    )
+    .limit(MAX_LIMIT)
+    .get();
+  // console.log("queryWarningList", warningList);
+  return warningList;
+};
+
+async function queryHomeInfo(data, db, memberId) {
+  const { month = "none" } = data;
+  // console.log("queryHomeInfo timestamp", timestamp);
 
   let objResult = {};
-  let taskInfo = {};
-  let weatherInfoMonth = {};
-  let warningInfo = {};
 
-  // 查询当月气象信息
-  try {
-    taskInfo = await db
-      .collection("TB_TASK")
-      .aggregate()
-      .where({
-        fxDate: db.RegExp({
-          regexp: `[\s\S]*-${month}-[\s\S]*`,
-          options: "i",
-        }),
-      })
-      .limit(100)
-      .lookup({
-        from: "TB_WORKER",
-        localField: "workerId",
-        foreignField: "authors",
-        as: "publishedBooks",
-      })
-      .end();
-    // console.log("query taskInfo", taskInfo);
-  } catch (e) {
-    // 没有查到。异常。
-    taskInfo = {
-      ...e,
-    };
-    console.error("query taskInfo error", e);
-  }
-
-  // 查询当月气象信息
-  try {
-    weatherInfoMonth = await db
-      .collection("TB_WEATHER_NORMAL")
-      .where({
-        fxDate: db.RegExp({
-          regexp: `[\s\S]*-${month}-[\s\S]*`,
-          options: "i",
-        }),
-      })
-      .limit(100)
-      .get();
-    // console.log("query weatherInfoMonth", weatherInfoMonth);
-  } catch (e) {
-    // 没有查到。异常。
-    weatherInfoMonth = {
-      ...e,
-    };
-    console.error("query weatherInfoMonth error", e);
-  }
-  // 查询当前告警情况
-  try {
-    warningInfo = await db
-      .collection("TB_WEATHER_WARNING")
-      .where(
-        _.and([
-          { timestampStartTime: _.lt(timestamp) },
-          { timestampEndTime: _.gt(timestamp) },
-          // { _id: _.exists(true) },
-        ])
-      )
-      .get();
-    // console.log("query warningInfo", warningInfo);
-  } catch (e) {
-    // 没有查到。异常。
-    warningInfo = {
-      ...e,
-    };
-    console.error("query warningInfo error", e);
-  }
+  const [taskList, weatherMonthList, warningList] = await Promise.all([
+    queryTaskList(data, db, month),
+    queryWeatherMonthList(data, db, month),
+    queryWarningList(data, db),
+  ]);
 
   objResult = {
-    taskInfo,
-    weatherInfoMonth,
-    warningInfo,
+    taskList,
+    weatherMonthList,
+    warningList,
   };
 
-  console.log("queryHomeInfo objResult", objResult);
+  // console.log("queryHomeInfo objResult", objResult);
   return objResult;
 }
 

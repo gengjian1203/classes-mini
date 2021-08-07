@@ -10,7 +10,7 @@ interface IAddWorkerParams {
   tag?: string; // 身份标签
 }
 /**
- * 注册成员
+ * 注册员工
  */
 const addWorker = async (objParams: IAddWorkerParams = {}) => {
   const params = {
@@ -23,7 +23,7 @@ const addWorker = async (objParams: IAddWorkerParams = {}) => {
 };
 
 /**
- * 查询成员
+ * 查询员工
  */
 const queryWorker = async (objParams: any = {}) => {
   const params = {
@@ -36,7 +36,7 @@ const queryWorker = async (objParams: any = {}) => {
 };
 
 /**
- * 查询成员
+ * 更新员工
  */
 const updateWorker = async (objParams: any = {}) => {
   const params = {

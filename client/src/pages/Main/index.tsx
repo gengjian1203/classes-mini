@@ -161,13 +161,13 @@ export default function Main() {
     // console.log("handleBtnTestClick", res);
     // 新增任务
     const params = {
-      fxDate: "2021-08-05",
+      fxDate: "2021-07-05",
       keyName: "WEATHER_TIME",
       arrData: [
-        { workId: "cd045e75610be6a9032ec76a26cd74c9" },
-        { workId: "2d44d6c2610be7c202dce06648a918af" },
-        { workId: "cd045e75610be7ec032f337975d96b19" },
-        { workId: "cd045e75610be882032f6b456dbb3b0a" },
+        { workerId: "cd045e75610be6a9032ec76a26cd74c9" },
+        // { workerId: "2d44d6c2610be7c202dce06648a918af" },
+        // { workerId: "cd045e75610be7ec032f337975d96b19" },
+        { workerId: "cd045e75610be882032f6b456dbb3b0a" },
       ],
     };
     const res = await Api.cloud.fetchTaskInfo.addTask(params);
@@ -274,12 +274,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      <View>测试</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      />
+      /> */}
       {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"
