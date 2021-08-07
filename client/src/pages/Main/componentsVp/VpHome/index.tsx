@@ -4,14 +4,10 @@ import { AtButton, AtNoticebar } from "taro-ui";
 import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
-import ButtonIcon from "@/components/ButtonIcon";
 import Permission from "@/components/Permission";
-import useActions from "@/hooks/useActions";
-import useCheckLogin from "@/hooks/useCheckLogin";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
 import HomeModuleWorker from "@/pages/Main/components/HomeModuleWorker";
-import shareInfoActions from "@/redux/actions/shareInfo";
 import GlobalManager from "@/services/GlobalManager";
 import Utils from "@/utils";
 
@@ -65,8 +61,6 @@ export default function VpHome(props: IVpHomeParam) {
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
-  const { setShareInfo } = useActions(shareInfoActions);
-
   // 缓存请求到的员工信息放入字典中
   const setWorkerMapLocal = async (month) => {
     const arrWorkerIdNew = getWorkerIdNew(
@@ -91,7 +85,7 @@ export default function VpHome(props: IVpHomeParam) {
     const res = await Api.cloud.fetchAppInfo.queryHomeInfo({
       month: month,
     });
-    console.log("VpHome queryHomeInfo", res);
+    // console.log("VpHome queryHomeInfo", res);
     const { taskList = {}, weatherMonthList = {}, warningList = {} } =
       res || {};
     taskListLocal.current[month] = (taskList && taskList?.data) || [];
@@ -123,7 +117,7 @@ export default function VpHome(props: IVpHomeParam) {
         taskItem,
         "WEATHER_TIME"
       );
-      console.log("setDayInfo", taskItem, arrTaskItemWeatherTimeTmp);
+      // console.log("setDayInfo", taskItem, arrTaskItemWeatherTimeTmp);
       setTaskItemWeatherTime(arrTaskItemWeatherTimeTmp);
     }
   };
@@ -141,7 +135,7 @@ export default function VpHome(props: IVpHomeParam) {
 
   // 点击告警条
   const handleWarningItemClick = (item) => {
-    console.log("handleWarningItemClick", item);
+    // console.log("handleWarningItemClick", item);
     setShowDialogWarning(true);
   };
 
@@ -162,25 +156,11 @@ export default function VpHome(props: IVpHomeParam) {
 
   // 回到今天按钮事件
   const hanldeBtnTodayClick = () => {
-    console.log("hanldeBtnTodayClick");
+    // console.log("hanldeBtnTodayClick");
     setDayInfo(GlobalManager.nowDate.todayString);
     setSelectMonth(GlobalManager.nowDate.monthString);
     handleCalendarCurrentViewChange(GlobalManager.nowDate.monthString);
   };
-
-  // 分享按钮点击事件
-  const handleBtnShareClick = useCheckLogin(() => {
-    const objShareParam = Utils.processSharePath({
-      shareType: Utils.getShareTypeName("POPULARIZE"),
-      sharePath: "/pages/Main/index",
-    });
-    setShareInfo({
-      isShowPanelShare: true,
-      strShareTitle: "",
-      strShareImage: "",
-      objShareParam: objShareParam,
-    });
-  });
 
   // 模态对话框
   const handleDialogWarningClick = () => {
@@ -257,19 +237,6 @@ export default function VpHome(props: IVpHomeParam) {
           arrWorkerList={arrTaskItemWeatherTime}
         />
       </Permission>
-
-      {/* 分享浮动按钮 */}
-      {/* <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
-        <ButtonIcon
-          value="iconsend"
-          width={100}
-          height={100}
-          radius={50}
-          size={60}
-          color="var(--color-primary)"
-          onClick={handleBtnShareClick}
-        />
-      </View> */}
 
       {/* 告警详细信息弹窗 */}
       {isShowDialogWarning && (

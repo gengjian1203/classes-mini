@@ -71,6 +71,10 @@ interface SkeletonProps {
    */
   animateName?: AnimateName;
   /**
+   * @description 骨架屏是否圆边
+   */
+  isBorderRadius?: boolean;
+  /**
    * @description 段落占位图宽度，可传数组来设置每一行的宽度
    * @type {(number | string | (number | string)[])}
    */
@@ -139,6 +143,7 @@ export default function Skeleton(props: SkeletonProps) {
     avatarShape = "round",
     animate = true,
     animateName = "blink",
+    isBorderRadius = false,
     contentAlignStyle = "center",
     customClass = "",
     children,
@@ -226,9 +231,11 @@ export default function Skeleton(props: SkeletonProps) {
           <View
             key={item}
             className="skeleton-row"
-            style={`width: ${addUnit(getRowWidth(index))};height: ${addUnit(
-              getRowHeight(index)
-            )}`}
+            style={
+              `width: ${addUnit(getRowWidth(index))}; ` +
+              `height: ${addUnit(getRowHeight(index))};` +
+              `border-radius: ${isBorderRadius ? addUnit(16) : addUnit(0)}`
+            }
           />
         );
       });

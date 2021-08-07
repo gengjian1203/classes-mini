@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
-import { View, Image, Text } from "@tarojs/components";
+import { View, Text } from "@tarojs/components";
 import ModuleCard from "@/components/ModuleCard";
 import Skeleton from "@/components/Skeleton";
 
@@ -40,6 +40,7 @@ export default function HomeModuleWorker(props: IHomeModuleWorkerParam) {
   return (
     <Skeleton
       loading={!isLoadComplete}
+      isBorderRadius
       row={1}
       rowProps={{ width: "100%", height: 160 }}
     >
@@ -48,46 +49,54 @@ export default function HomeModuleWorker(props: IHomeModuleWorkerParam) {
         customClass="module-worker-panel"
         isEnableFold
       >
-        {arrWorkerList &&
-          arrWorkerList.map((item, index) => {
-            const {
-              objWorkerInfo = {},
-              objWorkerOldInfo = {},
-              renderLocal = {},
-            } = item || {};
-            return (
-              <View
-                key={`worker-${index}`}
-                className="flex-center-h worker-item"
-              >
-                <HomeModuleWorkerPersion
-                  isShowWorker
-                  isDisablePersion={false}
-                  strLogoBGImage={renderLocal?.strLogoBGImage}
-                  workerPersionInfo={objWorkerInfo}
-                  onPersionClick={() => {
-                    handleWorkerPersionClick(objWorkerInfo);
-                  }}
-                />
+        {arrWorkerList && arrWorkerList.length > 0 ? (
+          <Fragment>
+            {arrWorkerList &&
+              arrWorkerList.map((item, index) => {
+                const {
+                  objWorkerInfo = {},
+                  objWorkerOldInfo = {},
+                  renderLocal = {},
+                } = item || {};
+                return (
+                  <View
+                    key={`worker-${index}`}
+                    className="flex-center-h worker-item"
+                  >
+                    <HomeModuleWorkerPersion
+                      isShowWorker
+                      isDisablePersion={false}
+                      strLogoBGImage={renderLocal?.strLogoBGImage}
+                      workerPersionInfo={objWorkerInfo}
+                      onPersionClick={() => {
+                        handleWorkerPersionClick(objWorkerInfo);
+                      }}
+                    />
 
-                <View className="flex-center-h worker-item-persion-arrow">
-                  {renderLocal?.isShowWorkerOld && (
-                    <View className="iconfont iconleft_double worker-item-persion-arrow-icon" />
-                  )}
-                </View>
+                    <View className="flex-center-h worker-item-persion-arrow">
+                      {renderLocal?.isShowWorkerOld && (
+                        <View className="iconfont iconleft_double worker-item-persion-arrow-icon" />
+                      )}
+                    </View>
 
-                <HomeModuleWorkerPersion
-                  isShowWorker={renderLocal?.isShowWorkerOld}
-                  isDisablePersion
-                  strLogoBGImage={renderLocal?.strOldLogoBGImage}
-                  workerPersionInfo={objWorkerOldInfo}
-                  onPersionClick={() => {
-                    handleWorkerOldPersionClick(objWorkerOldInfo);
-                  }}
-                />
-              </View>
-            );
-          })}
+                    <HomeModuleWorkerPersion
+                      isShowWorker={renderLocal?.isShowWorkerOld}
+                      isDisablePersion
+                      strLogoBGImage={renderLocal?.strOldLogoBGImage}
+                      workerPersionInfo={objWorkerOldInfo}
+                      onPersionClick={() => {
+                        handleWorkerOldPersionClick(objWorkerOldInfo);
+                      }}
+                    />
+                  </View>
+                );
+              })}
+          </Fragment>
+        ) : (
+          <View className="flex-center-v module-worker-empty">
+            <Text className="module-worker-empty-text">暂无数据</Text>
+          </View>
+        )}
       </ModuleCard>
     </Skeleton>
   );

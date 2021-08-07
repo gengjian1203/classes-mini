@@ -1,49 +1,127 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import ModuleCard from "@/components/ModuleCard";
+import { AtList, AtListItem } from "taro-ui";
 import { View, Image } from "@tarojs/components";
+import ButtonIcon from "@/components/ButtonIcon";
+import ModuleCard from "@/components/ModuleCard";
+import useActions from "@/hooks/useActions";
+import useCheckLogin from "@/hooks/useCheckLogin";
 import MineModuleHeader from "@/pages/Main/components/MineModuleHeader";
+import shareInfoActions from "@/redux/actions/shareInfo";
+import Utils from "@/utils";
 
 import "./index.less";
 
 interface IVpMineParam {
-  title?: string;
   isLoadComplete?: boolean;
-  onTitleClick?: any;
 }
 
 export default function VpMine(props: IVpMineParam) {
-  const {
-    title = "", // 标题
-    isLoadComplete = true,
-    onTitleClick = () => {}, // 点击标题回调
-  } = props;
+  const { isLoadComplete = true } = props;
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
-  const [value, setValue] = useState<number>(0);
+  const { setShareInfo } = useActions(shareInfoActions);
 
-  useEffect(() => {
-    setValue(Math.random());
-  }, []);
+  useEffect(() => {}, []);
 
-  // 点击标题
-  const handleTitleClick = () => {
-    onTitleClick && onTitleClick();
-  };
+  // 编辑职工
+  const handleEditWorkerClick = () => {};
 
-  // 点击数值
-  const handleValueClick = () => {
-    setValue(Math.random());
-  };
+  // 录入排班
+  const handleEditTaskClick = () => {};
+
+  // 窜班调整
+  const handleUpdateTaskClick = () => {};
+
+  // 分享按钮点击事件
+  const handleBtnShareClick = useCheckLogin(() => {
+    const objShareParam = Utils.processSharePath({
+      shareType: Utils.getShareTypeName("POPULARIZE"),
+      sharePath: "/pages/Main/index",
+    });
+    setShareInfo({
+      isShowPanelShare: true,
+      strShareTitle: "",
+      strShareImage: "",
+      objShareParam: objShareParam,
+    });
+  });
 
   return (
     <View className="vp-mine-wrap">
       <MineModuleHeader memberInfo={memberInfo} />
       <View className="flex-start-v vp-mine-content">
-        <ModuleCard title="提示" customClass="vp-mine-module-card" isEnableFold>
-          <View>欢迎使用本小程序</View>
+        {/* 简介面板 */}
+        <ModuleCard
+          customClass="vp-mine-module "
+          customContentClass="flex-between-h vp-mine-module-self "
+        >
+          <View className="flex-center-v vp-mine-module-self-item">
+            <View className="vp-mine-module-self-item-up">下次值班</View>
+            <View className="vp-mine-module-self-item-down">--</View>
+          </View>
+          <View className="flex-center-v vp-mine-module-self-item">
+            <View className="vp-mine-module-self-item-up">欠班情况</View>
+            <View className="vp-mine-module-self-item-down">--</View>
+          </View>
+          <View className="flex-center-v vp-mine-module-self-item">
+            <View className="vp-mine-module-self-item-up">本周代办</View>
+            <View className="vp-mine-module-self-item-down">--</View>
+          </View>
         </ModuleCard>
+
+        {/* 管理模块 */}
+        <ModuleCard
+          title="管理"
+          customClass="vp-mine-module vp-mine-module-manager"
+        >
+          <AtList>
+            <AtListItem
+              iconInfo={{
+                size: 24,
+                color: "var(--color-primary)",
+                value: "iconfont icongroup",
+              }}
+              title="编辑职工"
+              onClick={handleEditWorkerClick}
+              arrow="right"
+            />
+            <AtListItem
+              iconInfo={{
+                size: 24,
+                color: "var(--color-primary)",
+                value: "iconfont iconactivity",
+              }}
+              title="录入排班"
+              onClick={handleEditTaskClick}
+              arrow="right"
+            />
+            <AtListItem
+              iconInfo={{
+                size: 24,
+                color: "var(--color-primary)",
+                value: "iconfont iconflip",
+              }}
+              title="窜班调整"
+              onClick={handleUpdateTaskClick}
+              arrow="right"
+            />
+          </AtList>
+        </ModuleCard>
+
+        {/* 分享浮动按钮 */}
+        <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
+          <ButtonIcon
+            value="iconsend"
+            width={100}
+            height={100}
+            radius={50}
+            size={60}
+            color="var(--color-primary)"
+            onClick={handleBtnShareClick}
+          />
+        </View>
       </View>
     </View>
   );

@@ -71,6 +71,7 @@ export default function HomeModuleWeather(props: IHomeModuleWeatherParam) {
   return (
     <Skeleton
       loading={!isLoadComplete}
+      isBorderRadius
       row={1}
       rowProps={{ width: "100%", height: 160 }}
     >

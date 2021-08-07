@@ -17,6 +17,7 @@ interface IModuleCardProps {
   isLockHiddenContent?: boolean;
   customClass?: string;
   customStyle?: any;
+  customContentClass?: string;
   renderTitleExtend?: any;
   children?: any;
 }
@@ -28,6 +29,7 @@ export default function ModuleCard(props: IModuleCardProps) {
     isLockHiddenContent = false,
     customClass = "",
     customStyle = {},
+    customContentClass = "",
     renderTitleExtend = null,
     children,
   } = props;
@@ -65,7 +67,9 @@ export default function ModuleCard(props: IModuleCardProps) {
       )}
       {/* 内容区域 */}
       {!isLockHiddenContent && isShowContent && (
-        <View className="module-card-content">{children}</View>
+        <View className={`module-card-content ${customContentClass}`}>
+          {children}
+        </View>
       )}
     </View>
   );
