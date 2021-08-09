@@ -4,16 +4,20 @@ export default {
   ],
   subpackages: [
     {
-      root: "pages/ECharts", // 数据展示页
-      pages: ["index"],
+      root: "pages/ECharts",
+      pages: ["index"], // 数据展示页
     },
     {
-      root: "pages/EChartsDemo", // 数据组件展示demo
-      pages: ["index"],
+      root: "pages/EChartsDemo",
+      pages: ["index"], // 数据组件展示demo
     },
     {
-      root: "pages/Main", // 首页
-      pages: ["index"],
+      root: "pages/EditWorker",
+      pages: ["index"], // 编辑职工页
+    },
+    {
+      root: "pages/Main",
+      pages: ["index"], // 首页
     },
   ],
   preloadRule: {},

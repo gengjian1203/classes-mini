@@ -1,6 +1,7 @@
 import checkObjectEmpty from "./base/checkObjectEmpty";
 import deepClone from "./base/deepClone";
 import deepCompare from "./base/deepCompare";
+import getDeviceSize from "./base/getDeviceSize";
 import getHDAvatarUrl from "./base/getHDAvatarUrl";
 import getStringDate from "./base/getStringDate";
 import getTextLength from "./base/getTextLength";
@@ -23,6 +24,7 @@ export default {
   checkObjectEmpty,
   deepClone,
   deepCompare,
+  getDeviceSize,
   getHDAvatarUrl,
   getStringDate,
   getTextLength,

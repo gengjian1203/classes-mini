@@ -4,6 +4,7 @@ import { AtButton, AtNoticebar } from "taro-ui";
 import Calendar from "taro-calendar-customizable";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
+import ConfigTag from "@/config/tag";
 import Permission from "@/components/Permission";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
@@ -115,7 +116,7 @@ export default function VpHome(props: IVpHomeParam) {
       const arrTaskItemWeatherTimeTmp = formatWorkerInfo(
         workerMapLocal.current,
         taskItem,
-        "WEATHER_TIME"
+        ConfigTag["WEATHER_TIME"]?.code || ""
       );
       // console.log("setDayInfo", taskItem, arrTaskItemWeatherTimeTmp);
       setTaskItemWeatherTime(arrTaskItemWeatherTimeTmp);
@@ -227,15 +228,14 @@ export default function VpHome(props: IVpHomeParam) {
       </View>
 
       {/* 短时值班人员组件 */}
-      <Permission
-        strCheckTag="WEATHER_TIME"
-        customClass="vp-home-content-module"
-      >
-        <HomeModuleWorker
-          isLoadComplete={isLoadCompleteWeather}
-          strModuleTitle="短时值班人员"
-          arrWorkerList={arrTaskItemWeatherTime}
-        />
+      <Permission strCheckCompany={ConfigTag["WEATHER_TIME"]?.company || ""}>
+        <View className="vp-home-content-module">
+          <HomeModuleWorker
+            isLoadComplete={isLoadCompleteWeather}
+            strModuleTitle="短时值班人员"
+            arrWorkerList={arrTaskItemWeatherTime}
+          />
+        </View>
       </Permission>
 
       {/* 告警详细信息弹窗 */}

@@ -3,18 +3,18 @@ import { AtSearchBar } from "taro-ui";
 import Taro from "@tarojs/taro";
 import Api from "@/api";
 import { View } from "@tarojs/components";
-import ListClass from "../../components/ListClass";
+import ListNode from "@/components/ListNode";
 
 import "./index.less";
 
-interface IVpClassesParam {
+interface IVpGroupParam {
   isLoadComplete?: boolean;
-  arrClassList?: Array<any>;
-  onClassListSearch?: (...arg: any) => any;
+  arrGroupList?: Array<any>;
+  onGroupListSearch?: (...arg: any) => any;
 }
 
-export default function VpClasses(props: IVpClassesParam) {
-  const { isLoadComplete = true, arrClassList = [], onClassListSearch } = props;
+export default function VpGroup(props: IVpGroupParam) {
+  const { isLoadComplete = true, arrGroupList = [], onGroupListSearch } = props;
 
   const valueSearch = useRef<string>("");
 
@@ -31,19 +31,21 @@ export default function VpClasses(props: IVpClassesParam) {
     const params = {
       keyTitle: valueSearch.current,
     };
-    onClassListSearch && onClassListSearch(params);
+    onGroupListSearch && onGroupListSearch(params);
   };
   return (
-    <View className="vp-classes-wrap">
+    <View className="vp-group-wrap">
       <AtSearchBar
         value=""
         onChange={handleSearchChange}
         onActionClick={handleSearchActionClick}
       />
-      <View className="flex-start-v vp-classes-content">
-        <ListClass
-          isLoadComplete={isLoadComplete}
-          arrClassList={arrClassList}
+      <View className="flex-start-v vp-group-content">
+        <ListNode
+          isLoadCompleteList={isLoadComplete}
+          strType={"GROUP"}
+          arrList={arrGroupList}
+          onDetailClick={() => {}}
         />
       </View>
     </View>

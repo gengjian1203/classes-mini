@@ -5,7 +5,7 @@
 tree.md
 mock.md
 project.config.json
-
+project.private.config.json
 
 #忽略上传的文件夹
 **/.vscode/**

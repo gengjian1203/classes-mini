@@ -15,7 +15,7 @@ interface IMemberInfoType {
   userAvatarUrl?: string;
   userNickName?: string;
   appBindWorkerId?: string;
-  appTag?: string;
+  objWorker?: any;
 }
 interface IMineModuleHeaderParam {
   isLoadComplete?: boolean;
@@ -132,11 +132,13 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
                 Lv.1
               </Text> */}
             </View>
-            <View className="module-header-right-down">
-              <Text className="text-nowrap module-header-right-down-tag">
-                {Utils.getTagName(memberInfo?.appTag)}
-              </Text>
-            </View>
+            {Utils.getTagName(memberInfo?.objWorker?.tag) && (
+              <View className="module-header-right-down">
+                <Text className="text-nowrap module-header-right-down-tag">
+                  {Utils.getTagName(memberInfo?.objWorker?.tag)}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       ) : (

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Taro, { useRouter } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
+import ConfigTag from "@/config/tag";
 import useActions from "@/hooks/useActions";
 import useQueryPageList from "@/hooks/useQueryPageList";
 import useCheckLogin from "@/hooks/useCheckLogin";
@@ -14,7 +15,7 @@ import appInfoActions from "@/redux/actions/appInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import Utils from "@/utils";
 
-import VpClasses from "./componentsVp/VpClasses/index";
+import VpGroup from "./componentsVp/VpGroup/index";
 import VpHome from "./componentsVp/VpHome/index";
 import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
@@ -32,10 +33,10 @@ export default function Main() {
   const [strTestImageUrl, setTestImageUrl] = useState<string>("");
 
   // 班级列表
-  const [paramQueryClassByKeyTitle, setQueryClassByKeyTitle] = useState({
+  const [paramQueryGroupByKeyTitle, setQueryGroupByKeyTitle] = useState({
     keyTitle: "",
   });
-  const [arrClassList, setClassList] = useState<Array<any>>([]);
+  const [arrGroupList, setGroupList] = useState<Array<any>>([]);
 
   // 底部导航
   const { tabBarInfo } = useSelector((state) => state.appInfo);
@@ -68,9 +69,9 @@ export default function Main() {
       default:
         break;
     }
-    setTimeout(() => {
-      setLoadComplete(true);
-    }, 3000);
+    // setTimeout(() => {
+    //   setLoadComplete(true);
+    // }, 3000);
   };
 
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function Main() {
           case "LOADING":
             break;
           case "RESULT":
-            setClassList(
+            setGroupList(
               list.map((item) => {
                 return {
                   ...item,
@@ -120,7 +121,7 @@ export default function Main() {
       SATELLITE: null,
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
-      GROUP: paramQueryClassByKeyTitle,
+      GROUP: paramQueryGroupByKeyTitle,
       HOME: {},
       MINE: {},
       WAVE: {},
@@ -134,11 +135,11 @@ export default function Main() {
       return;
     }
     setTabBarCurrent(current);
-    setLoadComplete(false);
+    // setLoadComplete(false);
   };
 
-  const handleClassListSearch = (param) => {
-    setQueryClassByKeyTitle(param);
+  const handleGroupListSearch = (param) => {
+    setQueryGroupByKeyTitle(param);
   };
 
   // 测试按钮
@@ -155,14 +156,14 @@ export default function Main() {
     //   nameSimple: "尚香",
     //   gender: 2,
     //   cellphone: "9292922929",
-    //   tag: "WEATHER_TIME",
+    //   tag: ConfigTag["WEATHER_TIME"]?.code || "",
     // };
     // const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
     // console.log("handleBtnTestClick", res);
     // 新增任务
     const params = {
       fxDate: "2021-07-05",
-      keyName: "WEATHER_TIME",
+      keyName: ConfigTag["WEATHER_TIME"]?.code || "",
       arrData: [
         { workerId: "cd045e75610be6a9032ec76a26cd74c9" },
         // { workerId: "2d44d6c2610be7c202dce06648a918af" },
@@ -219,27 +220,24 @@ export default function Main() {
     return {
       // 班级
       GROUP: (
-        <VpClasses
+        <VpGroup
           isLoadComplete={isLoadComplete}
-          arrClassList={arrClassList}
-          onClassListSearch={handleClassListSearch}
+          arrGroupList={arrGroupList}
+          onGroupListSearch={handleGroupListSearch}
         />
       ),
-      // 我的
+      // 首页
       HOME: <VpHome isLoadComplete={isLoadComplete} />,
       // 我的
-      MINE: (
-        <VpMine
-          isLoadComplete={isLoadComplete}
-          title={tabBarInfo?.tabList[nTabBarCurrent].title}
-        />
-      ),
+      MINE: <VpMine isLoadComplete={isLoadComplete} />,
+      // 中波
       WAVE: (
         <VpWave
           isLoadComplete={isLoadComplete}
           title={tabBarInfo?.tabList[nTabBarCurrent].title}
         />
       ),
+      // 星站
       SATELLITE: (
         <VpSatellite
           isLoadComplete={isLoadComplete}

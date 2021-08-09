@@ -1,55 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { View } from "@tarojs/components";
+import React, { Fragment, useEffect, useState } from "react";
+import usePermission from "@/hooks/usePermission";
 
 import "./index.less";
 
 interface IPermissionParam {
-  customClass?: string;
   strCheckTag?: string;
+  strCheckCompany?: string;
+  strCheckPosition?: string;
   children?: any;
 }
 
 export default function Permission(props: IPermissionParam) {
-  const { customClass = "", strCheckTag = "", children } = props;
+  const {
+    strCheckTag = "pass",
+    strCheckCompany = "pass",
+    strCheckPosition = "pass",
+    children,
+  } = props;
 
   const [isShowComponents, setShowComponents] = useState<boolean>(false);
 
-  const memberInfo = useSelector((state) => state.memberInfo);
-
   useEffect(() => {
-    let result = false;
-    const appSelfTag = memberInfo?.appTag || "";
-    if (appSelfTag === "GM") {
-      result = true; // GM身份全部通过
-    } else {
-      const arrSelfTag = appSelfTag.split("_");
-      const strSelfCompany = arrSelfTag[0];
-      const strSelfPosition = arrSelfTag[1];
-
-      const arrCheckTag = strCheckTag.split("_");
-      const strCheckCompany = arrCheckTag[0];
-      const strCheckPosition = arrCheckTag[1];
-      if (
-        strSelfCompany &&
-        strSelfPosition &&
-        strCheckCompany &&
-        strCheckPosition
-      ) {
-        // 为合法数据开始判断
-        if (
-          appSelfTag === strCheckTag || // 严格符合条件
-          (strSelfCompany === strSelfCompany && strSelfPosition === "LEADER") // 为该公司领导
-        ) {
-          result = true;
-        }
-      }
-    }
-
+    let result = usePermission({
+      strCheckTag: strCheckTag,
+      strCheckCompany: strCheckCompany,
+      strCheckPosition: strCheckPosition,
+    });
     setShowComponents(result);
-  }, [strCheckTag]);
+  }, [strCheckTag, strCheckCompany, strCheckPosition]);
 
-  return (
-    <View className={`${customClass}`}>{isShowComponents && children}</View>
-  );
+  return <Fragment>{isShowComponents && children}</Fragment>;
 }
