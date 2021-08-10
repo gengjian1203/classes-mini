@@ -51,7 +51,8 @@ export default function Navigation(props: INavigationProps) {
     if (objPageInfo.length === 1) {
       // 首页
       Taro.reLaunch({
-        url: appInfo.strMainPath || "/pages/Main/index",
+        url: "/pages/Loading/index",
+        // url: appInfo.strMainPath || "/pages/Main/index",
       });
     } else {
       // 返回

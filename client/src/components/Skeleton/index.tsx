@@ -106,6 +106,11 @@ interface SkeletonProps {
    * @type String
    */
   customClass?: string;
+  /**
+   * @description 自定义样式
+   * @type String | React.CSSProperties | undefined
+   */
+  customStyle?: string | React.CSSProperties | undefined;
 
   children?: JSX.Element;
 }
@@ -146,6 +151,7 @@ export default function Skeleton(props: SkeletonProps) {
     isBorderRadius = false,
     contentAlignStyle = "center",
     customClass = "",
+    customStyle = "",
     children,
   } = props;
 
@@ -261,6 +267,7 @@ export default function Skeleton(props: SkeletonProps) {
         }` +
         `${customClass} `
       }
+      style={customStyle}
     >
       {renderAvatar()}
       <View

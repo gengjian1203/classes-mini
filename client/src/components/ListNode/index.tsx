@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { View, Image, Text } from "@tarojs/components";
+import Taro from "@tarojs/taro";
 
 import Skeleton from "@/components/Skeleton";
 import emptyList from "@/images/emptyList.png";
@@ -15,9 +16,13 @@ export interface IInfoType {
   _id?: string;
   author?: string; // 作者
   title?: string; // 标题
+  name?: string; // 名称
+  nameSimple?: string; // 名称缩写
   desc?: string; // 简介
+  cellphone?: string; // 电话
   logo?: string; // 头像
   posterImg?: string; // 缩略图
+  strLogoBGImage?: string; // logo背景图颜色
   createTime?: string; // 创建时间
   address?: string; // 地理位置
   source?: string; // 源类型
@@ -33,7 +38,9 @@ interface IListNodeProps {
     | "WORKER"; // 职工类型
   arrList: Array<IInfoType>;
   showBottomLoadingTip?: boolean;
-  onDetailClick: (any: any) => void;
+  onDetailClick?: (any?: any) => void;
+  onEditClick?: (any?: any) => void;
+  onDeleteClick?: (any?: any) => void;
 }
 
 export default function ListNode(props: IListNodeProps) {
@@ -43,6 +50,8 @@ export default function ListNode(props: IListNodeProps) {
     showBottomLoadingTip = false,
     arrList = [],
     onDetailClick,
+    onEditClick,
+    onDeleteClick,
   } = props;
 
   // 渲染列表
@@ -88,6 +97,8 @@ export default function ListNode(props: IListNodeProps) {
               key={`monent-${index}`}
               info={item}
               onDetailClick={onDetailClick}
+              onEditClick={onEditClick}
+              onDeleteClick={onDeleteClick}
             />
           );
         });
@@ -117,6 +128,26 @@ export default function ListNode(props: IListNodeProps) {
     const arrSkeleton = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     switch (strType) {
+      case "WORKER": {
+        return arrSkeleton.map((item, index) => {
+          return (
+            <Skeleton
+              key={`list-skeleton-${index}`}
+              type="row"
+              // title
+              titleWidth="100%"
+              row={2}
+              rowProps={{ width: "50%", height: 26 }}
+              action
+              avatar
+              customStyle={{
+                height: Taro.pxTransform(140),
+                borderBottom: "1px solid var(--color-gray-7)",
+              }}
+            />
+          );
+        });
+      }
       case "BASE": {
       }
       case "MOMENT": {
@@ -125,7 +156,7 @@ export default function ListNode(props: IListNodeProps) {
         return arrSkeleton.map((item, index) => {
           return (
             <Skeleton
-              key={index}
+              key={`list-skeleton-${index}`}
               type="row"
               title
               titleWidth="100%"

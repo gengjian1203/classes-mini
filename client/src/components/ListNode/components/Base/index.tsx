@@ -6,14 +6,14 @@ import "./index.less";
 
 interface IBaseProps {
   info: IInfoType;
-  onDetailClick: (any: any) => void;
+  onDetailClick?: (any?: any) => void;
 }
 
 export default function Base(props: IBaseProps) {
   const { info = {}, onDetailClick } = props;
 
   const handleDetailClick = (info) => {
-    onDetailClick(info);
+    onDetailClick && onDetailClick(info);
   };
 
   return (

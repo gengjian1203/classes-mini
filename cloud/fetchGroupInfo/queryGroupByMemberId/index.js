@@ -7,7 +7,7 @@
  * @returns
  */
 
-const MAX_LIMIT = 20;
+const MAX_LIMIT = 33;
 
 async function queryGroupByMemberId(data, db, strMemberId) {
   let objResult = {};

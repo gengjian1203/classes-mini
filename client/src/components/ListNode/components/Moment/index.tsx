@@ -7,14 +7,14 @@ import "./index.less";
 
 interface IMomentProps {
   info: IInfoType;
-  onDetailClick: (any: any) => void;
+  onDetailClick?: (any?: any) => void;
 }
 
 export default function Moment(props: IMomentProps) {
   const { info = {}, onDetailClick } = props;
 
   const handleDetailClick = (info) => {
-    onDetailClick(info);
+    onDetailClick && onDetailClick(info);
   };
 
   return (

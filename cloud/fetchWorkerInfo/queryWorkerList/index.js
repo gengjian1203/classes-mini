@@ -7,36 +7,45 @@
  * @returns
  */
 
-const MAX_LIMIT = 20;
+const MAX_LIMIT = 33;
 
 async function queryWorkerList(data, db, strMemberId) {
   let objResult = {};
 
   const { pageNum = 0, pageSize = MAX_LIMIT, tag = "", name = "" } = data;
   console.log("queryWorkerList param data", pageNum, pageSize, name);
-  const where = db.collection("TB_WORKER").where({
+  const rule = {
     name: db.RegExp({
       regexp: `[\s\S]*${name}[\s\S]*`,
       options: "i",
     }),
     tag: tag,
-  });
+  };
 
   const [resDataList, resTotal] = await Promise.all([
-    where
-      .orderBy("nameLetter", "asc")
+    db
+      .collection("TB_WORKER")
+      .aggregate()
+      .match(rule)
+      .sort({ nameLetter: 1 })
       .skip(pageNum * pageSize)
       .limit(pageSize)
-      .get(),
-    where.orderBy("nameLetter", "asc").count(),
+      .lookup({
+        from: "TB_MEMBER",
+        localField: "appBindMemberId",
+        foreignField: "_id",
+        as: "objMemberInfo",
+      })
+      .end(),
+    db.collection("TB_WORKER").where(rule).count(),
   ]);
 
-  console.log("queryWorkerList resTotal", resTotal);
+  console.log("queryWorkerList resTotal", resDataList);
 
   try {
     objResult = {
       data: {
-        dataList: resDataList.data,
+        dataList: resDataList.list,
         totalCount: resTotal.total,
       },
     };

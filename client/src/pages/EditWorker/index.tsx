@@ -75,8 +75,9 @@ export default function EditWorker() {
             list.map((item) => {
               return {
                 ...item,
-                author: item.nameSimple,
-                title: item.name, // 标题
+                strLogoBGImage: Boolean(item?.gender !== 2)
+                  ? "linear-gradient(135deg, var(--color-man), 80%, var(--color-white, #ffffff))"
+                  : "linear-gradient(135deg, var(--color-woman), 80%, var(--color-white, #ffffff))",
               };
             })
           );
@@ -130,10 +131,17 @@ export default function EditWorker() {
   // 创建职工
   const handleCreateWorkerClick = () => {
     console.log("handleCreateWorkerClick");
+    setLoadComplete(!isLoadComplete);
   };
 
-  const handleWorkerClick = (itemWorker, itemOptions) => {
-    console.log("handleWorkerClick", itemWorker, itemOptions);
+  // 编辑职工
+  const handleWorkerEditClick = (info) => {
+    console.log("handleWorkerClick", info);
+  };
+
+  // 删除职工
+  const handleWorkerDeleteClick = (info) => {
+    console.log("handleWorkerDeleteClick", info);
   };
 
   return (
@@ -162,15 +170,18 @@ export default function EditWorker() {
         />
       </View>
 
-      <ListNode
-        isLoadCompleteList={isLoadComplete}
-        strType="WORKER"
-        showBottomLoadingTip={showListLoadingTip}
-        arrList={arrWorkerList}
-        onDetailClick={() => {}}
-      />
+      <View className="edit-worker-content">
+        <ListNode
+          isLoadCompleteList={isLoadComplete}
+          strType="WORKER"
+          showBottomLoadingTip={showListLoadingTip}
+          arrList={arrWorkerList}
+          onEditClick={handleWorkerEditClick}
+          onDeleteClick={handleWorkerDeleteClick}
+        />
+      </View>
 
-      {/* 分享浮动按钮 */}
+      {/* 创建浮动按钮 */}
       <View className="safe-bottom flex-center-v edit-worker-float-btn-panel">
         <ButtonIcon
           value="iconadd"

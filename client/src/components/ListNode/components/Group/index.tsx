@@ -7,14 +7,14 @@ import "./index.less";
 
 interface IGroupParam {
   info: IInfoType;
-  onDetailClick: (any: any) => void;
+  onDetailClick?: (any?: any) => void;
 }
 
 export default function Group(props: IGroupParam) {
   const { info = {}, onDetailClick } = props;
 
   const handleDetailClick = (info) => {
-    onDetailClick(info);
+    onDetailClick && onDetailClick(info);
   };
 
   return (
