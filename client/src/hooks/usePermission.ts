@@ -4,12 +4,9 @@
  * 2. 传入的标签（对比纬度）
  */
 
-import { useSelector } from "react-redux";
 import StorageManager from "@/services/StorageManager";
 
 export function usePermission(params): boolean {
-  // const memberInfo = useSelector((state) => state?.memberInfo);
-
   const memberInfo = StorageManager.getStorageSync("memberInfo");
 
   const {

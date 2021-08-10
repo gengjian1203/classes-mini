@@ -26,8 +26,7 @@ async function addTaskInfo(data, db, strMemberId) {
       }),
     ],
   };
-
-  console.log("dataSave", dataSave);
+  // console.log("dataSave", dataSave);
 
   try {
     const res = await db
@@ -38,11 +37,12 @@ async function addTaskInfo(data, db, strMemberId) {
       .get();
 
     if (res && res.data && res.data.length > 0) {
-      const dataOld = res.data[0];
+      const { _id, ...dataOld } = res.data[0];
+      // console.log("dataOld", _id, dataOld);
       // 有则直接更新
       await db
         .collection("TB_TASK")
-        .where({ id: item.id })
+        .doc(_id)
         .update({ data: { ...dataOld, ...dataSave } });
       // console.log("5. updateWarningInfo update", item);
     } else {
@@ -51,7 +51,7 @@ async function addTaskInfo(data, db, strMemberId) {
       // console.log("5. updateWarningInfo add", item);
     }
   } catch (e) {
-    console.error("addMemberInfo error", e);
+    console.error("addTaskInfo error", e);
   }
 
   return objResult;

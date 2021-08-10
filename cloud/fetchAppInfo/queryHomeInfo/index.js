@@ -1,7 +1,10 @@
 /**
  * queryHomeInfo
- * 查询天气相关信息
- * @param {*} data
+ * 查询首页相关信息
+ * @param {
+ *  month: "08", 查询指定月份的信息
+ *  objTaskType: { WEATHER_TIME: true } 返回指定的任务字段
+ * } data
  * @param {*} db
  * @param {*} memberId
  * @returns
@@ -10,6 +13,7 @@
 const MAX_LIMIT = 100;
 
 const queryTaskList = async (data, db, month) => {
+  const objTaskType = data.objTaskType || {};
   const taskList = await db
     .collection("TB_TASK")
     .where({
@@ -17,6 +21,11 @@ const queryTaskList = async (data, db, month) => {
         regexp: `[\s\S]*-${month}-[\s\S]*`,
         options: "i",
       }),
+    })
+    .field({
+      _id: true,
+      fxDate: true,
+      ...objTaskType,
     })
     .limit(MAX_LIMIT)
     .get();

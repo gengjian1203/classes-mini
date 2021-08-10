@@ -6,6 +6,7 @@ import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
 import Permission from "@/components/Permission";
+import usePermission from "@/hooks/usePermission";
 import HomeDialogWarning from "@/pages/Main/components/HomeDialogWarning";
 import HomeModuleWeather from "@/pages/Main/components/HomeModuleWeather";
 import HomeModuleWorker from "@/pages/Main/components/HomeModuleWorker";
@@ -83,10 +84,23 @@ export default function VpHome(props: IVpHomeParam) {
     if (weatherMonthListLocal.current[month] || taskListLocal.current[month]) {
       return;
     }
+    // 请求接口数据
+    const objTaskType = {};
+    Object.keys(ConfigTag)
+      .filter((item) => {
+        return usePermission({ strCheckCompany: ConfigTag[item].company });
+      })
+      .map((item) => {
+        objTaskType[item] = true;
+      });
+    // console.log("queryHomeInfo arrTaskType", objTaskType);
     const res = await Api.cloud.fetchAppInfo.queryHomeInfo({
+      objTaskType: objTaskType,
       month: month,
     });
     // console.log("VpHome queryHomeInfo", res);
+
+    // 通过数据进行渲染
     const { taskList = {}, weatherMonthList = {}, warningList = {} } =
       res || {};
     taskListLocal.current[month] = (taskList && taskList?.data) || [];
