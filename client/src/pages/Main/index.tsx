@@ -13,6 +13,7 @@ import TabbarBottom from "@/components/TabBarBottom";
 import QRCodeManager from "@/services/QRCodeManager";
 import appInfoActions from "@/redux/actions/appInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
+import PinYin from "@/services/PinYin";
 import Utils from "@/utils";
 
 import VpGroup from "./componentsVp/VpGroup/index";
@@ -151,28 +152,32 @@ export default function Main() {
   // 测试按钮
   const handleBtnTestClick = async () => {
     // 新增员工
-    // const params = {
-    //   name: "孙尚香",
-    //   nameSimple: "尚香",
-    //   gender: 2,
-    //   cellphone: "9292922929",
-    //   tag: ConfigTag["WEATHER_TIME"]?.code || "",
-    // };
-    // const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
-    // console.log("handleBtnTestClick", res);
-    // 新增任务
+    const name = "孙尚香";
     const params = {
-      fxDate: "2021-07-05",
-      keyName: ConfigTag["WEATHER_TIME"]?.code || "",
-      arrData: [
-        { workerId: "cd045e75610be6a9032ec76a26cd74c9" },
-        // { workerId: "2d44d6c2610be7c202dce06648a918af" },
-        // { workerId: "cd045e75610be7ec032f337975d96b19" },
-        { workerId: "cd045e75610be882032f6b456dbb3b0a" },
-      ],
+      name: name,
+      nameSimple: name.substr(-2),
+      nameFirstLetter: PinYin.getCamelChars(name).substr(0, 1),
+      nameLetter: PinYin.getCamelChars(name),
+      gender: 2,
+      cellphone: "9292922929",
+      tag: ConfigTag["WEATHER_TIME"]?.code || "",
     };
-    const res = await Api.cloud.fetchTaskInfo.addTask(params);
+    const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
     console.log("handleBtnTestClick", res);
+
+    // 新增任务
+    // const params = {
+    //   fxDate: "2021-07-05",
+    //   keyName: ConfigTag["WEATHER_TIME"]?.code || "",
+    //   arrData: [
+    //     { workerId: "cd045e75610be6a9032ec76a26cd74c9" },
+    //     // { workerId: "2d44d6c2610be7c202dce06648a918af" },
+    //     // { workerId: "cd045e75610be7ec032f337975d96b19" },
+    //     { workerId: "cd045e75610be882032f6b456dbb3b0a" },
+    //   ],
+    // };
+    // const res = await Api.cloud.fetchTaskInfo.addTask(params);
+    // console.log("handleBtnTestClick", res);
   };
 
   //
@@ -272,12 +277,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      {/* <View>测试</View>
+      <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      /> */}
+      />
       {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"

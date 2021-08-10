@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
-import { View } from "@tarojs/components";
+import { View, Image, Text } from "@tarojs/components";
 
 import Skeleton from "@/components/Skeleton";
+import emptyList from "@/images/emptyList.png";
 
 import Base from "./components/Base";
 import Group from "./components/Group";
@@ -97,6 +98,20 @@ export default function ListNode(props: IListNodeProps) {
     }
   };
 
+  // 渲染空列表样式
+  const renderEmpty = () => {
+    return (
+      <View className="flex-center-v list-node-empty">
+        <Image
+          className="list-node-empty-img"
+          mode="widthFix"
+          src={emptyList}
+        />
+        <Text className="list-node-empty-text">暂无数据哦</Text>
+      </View>
+    );
+  };
+
   // 渲染骨架屏
   const renderSkeleton = () => {
     const arrSkeleton = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -129,7 +144,11 @@ export default function ListNode(props: IListNodeProps) {
 
   return (
     <View className="list-node-wrap">
-      {isLoadCompleteList ? arrList && readerList() : renderSkeleton()}
+      {isLoadCompleteList
+        ? arrList && arrList.length > 0
+          ? readerList()
+          : renderEmpty()
+        : renderSkeleton()}
       {showBottomLoadingTip && (
         <View className="list-node-loading-tip">努力加载中...</View>
       )}

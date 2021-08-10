@@ -5,12 +5,6 @@ const tag = {
     position: "GM",
     name: "系统管理员",
   },
-  MEDIA_LEADER: {
-    code: "MEDIA_LEADER",
-    company: "MEDIA",
-    position: "LEADER",
-    name: "广电领导组",
-  },
   MEDIA_WAVE: {
     code: "MEDIA_WAVE",
     company: "MEDIA",
@@ -35,11 +29,11 @@ const tag = {
     position: "POWER",
     name: "广电机电部",
   },
-  WEATHER_LEADER: {
-    code: "WEATHER_TIME",
-    company: "WEATHER",
+  MEDIA_LEADER: {
+    code: "MEDIA_LEADER",
+    company: "MEDIA",
     position: "LEADER",
-    name: "气象领导组",
+    name: "广电领导组",
   },
   WEATHER_TIME: {
     code: "WEATHER_TIME",
@@ -52,6 +46,12 @@ const tag = {
     company: "WEATHER",
     position: "STAGE",
     name: "气象短期科",
+  },
+  WEATHER_LEADER: {
+    code: "WEATHER_LEADER",
+    company: "WEATHER",
+    position: "LEADER",
+    name: "气象领导组",
   },
 };
 

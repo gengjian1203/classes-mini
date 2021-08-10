@@ -18,6 +18,14 @@ $color-brand-dark: var(--color-primary-dark);
   background-color: $color-brand !important;
 }
 
+// 重写搜索栏样式
+.at-search-bar {
+  width: 100%;
+}
+.at-search-bar::after {
+  content: none;
+}
+
 // 重写浮动弹层样式
 .at-float-layout__container {
   overflow: hidden;

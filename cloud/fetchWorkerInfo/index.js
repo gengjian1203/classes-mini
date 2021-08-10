@@ -3,6 +3,7 @@ const cloud = require("wx-server-sdk");
 const md5 = require("blueimp-md5");
 const addWorkerInfo = require("addWorkerInfo/index.js");
 const queryWorkerInfo = require("queryWorkerInfo/index.js");
+const queryWorkerList = require("queryWorkerList/index.js");
 const updateWorkerInfo = require("updateWorkerInfo/index.js");
 
 cloud.init({
@@ -12,6 +13,7 @@ cloud.init({
 const objFunction = {
   ADD_WORKER: addWorkerInfo, // 新增员工
   QUERY_WORKER: queryWorkerInfo, // 查询员工
+  QUERY_WORKER_LIST: queryWorkerList, // 分页查询员工列表
   UPDATE_WORKER: updateWorkerInfo, // 更新员工
 };
 

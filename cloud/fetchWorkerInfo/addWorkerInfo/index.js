@@ -13,11 +13,15 @@ const createWorker = async (data, db, strMemberId, date, time) => {
   let objResult = {};
   const objWorker = {
     // 系统级
+    sysCreateDate: date, // 创建时间
+    sysCreateTime: time, // 创建时间
     sysUpdateDate: date, // 修改时间
     sysUpdateTime: time, // 修改时间
     // 身份级
     name: data.name, // 名称
     nameSimple: data.nameSimple, // 简称
+    nameFirstLetter: data.nameFirstLetter, // 名称首字母
+    nameLetter: data.nameLetter, // 名称缩写
     gender: data.gender, // 性别
     cellphone: data.cellphone, // 手机号
     tag: data.tag, // 身份标签

@@ -36,6 +36,19 @@ const queryWorker = async (objParams: any = {}) => {
 };
 
 /**
+ * 分页查询员工列表
+ */
+const queryWorkerList = async (objParams: any = {}) => {
+  const params = {
+    type: "QUERY_WORKER_LIST",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
+  console.log("queryWorkerList", res);
+  return res.data;
+};
+
+/**
  * 更新员工
  */
 const updateWorker = async (objParams: any = {}) => {
@@ -51,5 +64,6 @@ const updateWorker = async (objParams: any = {}) => {
 export default {
   addWorker,
   queryWorker,
+  queryWorkerList,
   updateWorker,
 };

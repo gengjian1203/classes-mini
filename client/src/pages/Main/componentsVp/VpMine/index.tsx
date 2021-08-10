@@ -123,7 +123,7 @@ export default function VpMine(props: IVpMineParam) {
           </ModuleCard>
         </Permission>
         {/* 分享浮动按钮 */}
-        <View className="safe-bottom flex-center-v vp-home-float-btn-panel">
+        <View className="safe-bottom flex-center-v vp-mine-float-btn-panel">
           <ButtonIcon
             value="iconsend"
             width={100}
