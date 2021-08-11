@@ -2,7 +2,7 @@
  * queryHomeInfo
  * 查询首页相关信息
  * @param {
- *  month: "08", 查询指定月份的信息
+ *  month: "2021-08", 查询指定年月的信息
  *  objTaskType: { WEATHER_TIME: true } 返回指定的任务字段
  * } data
  * @param {*} db
@@ -18,7 +18,7 @@ const queryTaskList = async (data, db, month) => {
     .collection("TB_TASK")
     .where({
       fxDate: db.RegExp({
-        regexp: `[\s\S]*-${month}-[\s\S]*`,
+        regexp: `${month}-[\s\S]*`,
         options: "i",
       }),
     })
@@ -38,7 +38,7 @@ const queryWeatherMonthList = async (data, db, month) => {
     .collection("TB_WEATHER_NORMAL")
     .where({
       fxDate: db.RegExp({
-        regexp: `[\s\S]*-${month}-[\s\S]*`,
+        regexp: `${month}-[\s\S]*`,
         options: "i",
       }),
     })

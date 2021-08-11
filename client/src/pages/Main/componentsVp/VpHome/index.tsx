@@ -139,7 +139,8 @@ export default function VpHome(props: IVpHomeParam) {
 
   const onLoad = async () => {
     GlobalManager.nowDate = Utils.getStringDate(new Date());
-    await queryHomeInfo(GlobalManager.nowDate.MM);
+    const month = getMonthFromDayString(GlobalManager.nowDate.monthString);
+    await queryHomeInfo(month);
     setDayInfo(GlobalManager.nowDate.todayString);
     setLoadCompleteWeather(true);
   };

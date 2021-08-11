@@ -59,6 +59,10 @@ const queryAppTabBar = async (objParams: any = {}) => {
 
 /**
  * 查询首页的相关信息
+ *  * @param {
+ *  month: "2021-08", 查询指定年月的信息
+ *  objTaskType: { WEATHER_TIME: true } 返回指定的任务字段
+ * } data
  * @returns
  */
 const queryHomeInfo = async (objParams: any = {}) => {

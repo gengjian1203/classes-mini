@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { AtActivityIndicator } from "taro-ui";
 import Taro, { useShareAppMessage } from "@tarojs/taro";
 import { View, Image, Canvas } from "@tarojs/components";
 
@@ -11,6 +12,7 @@ import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useThrottle from "@/hooks/useThrottle";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import QRCodeManager from "@/services/QRCodeManager";
+import StorageManager from "@/services/StorageManager";
 import ResourceManager from "@/services/ResourceManager";
 import Utils from "@/utils";
 
@@ -35,6 +37,8 @@ export default function PanelShare(props: IPanelShareProps) {
     objShareParam,
   } = useSelector((state) => state.shareInfo);
   const { setShareInfo } = useActions(shareInfoActions);
+
+  const objMemberInfo = StorageManager.getStorageSync("memberInfo");
 
   const onLoad = () => {
     // 设置 canvas 对象
@@ -154,11 +158,15 @@ export default function PanelShare(props: IPanelShareProps) {
       if (strSharePhotoUrl) {
         saveImage();
       } else {
-        Taro.showToast({
-          title: "海报生成中",
-          icon: "none",
-          mask: true,
-        });
+        if (isShowBtnRefresh) {
+          handleBtnRefreshPhotoClick();
+        } else {
+          Taro.showToast({
+            title: "海报生成中",
+            icon: "none",
+            mask: true,
+          });
+        }
       }
     })
   );
@@ -172,36 +180,75 @@ export default function PanelShare(props: IPanelShareProps) {
     <Fragment>
       {isShowPanelShare && (
         <Mask customClass="flex-start-v panel-share-content">
-          <Skeleton
-            loading={!strSharePhotoUrl}
-            animate={!isShowBtnRefresh}
-            row={1}
-            rowProps={{
-              width: 2 * PANEL_SHARE_WIDTH,
-              height: 2 * PANEL_SHARE_HEIGHT,
-            }}
-            customClass="panel-share-img"
-          >
+          {strSharePhotoUrl ? (
+            // <Skeleton
+            //   loading={!strSharePhotoUrl}
+            //   animate={!isShowBtnRefresh}
+            //   row={1}
+            //   rowProps={{
+            //     width: 2 * PANEL_SHARE_WIDTH,
+            //     height: 2 * PANEL_SHARE_HEIGHT,
+            //   }}
+            //   customClass="panel-share-img"
+            // >
             <Image
               className="panel-share-img"
               src={strSharePhotoUrl}
               mode="widthFix"
               showMenuByLongpress
             />
-          </Skeleton>
-          {isShowBtnRefresh && (
-            <View className="panel-share-button-refresh">
-              <ButtonIcon
-                value="iconrefresh"
-                width={100}
-                height={100}
-                radius={50}
-                size={60}
-                color="#9e9e9e"
-                onClick={handleBtnRefreshPhotoClick}
+          ) : (
+            // DOM模拟海报
+            <View
+              className="flex-start-v panel-share-simple-wrap"
+              style={{
+                width: Taro.pxTransform(2 * PANEL_SHARE_WIDTH),
+                height: Taro.pxTransform(2 * PANEL_SHARE_HEIGHT),
+              }}
+            >
+              <Image
+                className="panel-share-img"
+                src="cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg"
+                mode="aspectFill"
               />
+              <View className="flex-center-h panel-share-simple-footer">
+                <View className="panel-share-simple-footer-left">
+                  <Image
+                    className="panel-share-simple-footer-left-avatar"
+                    src={objMemberInfo?.userAvatarUrl || ""}
+                    mode="scaleToFill"
+                  />
+                  <View className="panel-share-simple-footer-left-text">
+                    {objMemberInfo?.userNickName || ""}
+                  </View>
+                  <View className="panel-share-simple-footer-left-text">
+                    分享给你一个小程序~
+                  </View>
+                </View>
+                <View className="flex-center-v panel-share-simple-footer-right">
+                  {isShowBtnRefresh ? (
+                    <View className="panel-share-button-refresh">
+                      <ButtonIcon
+                        value="iconrefresh"
+                        width={100}
+                        height={100}
+                        radius={50}
+                        size={60}
+                        color="#9e9e9e"
+                        onClick={handleBtnRefreshPhotoClick}
+                      />
+                    </View>
+                  ) : (
+                    <AtActivityIndicator
+                      size={64}
+                      color="var(--color-gray-5)"
+                    />
+                  )}
+                </View>
+              </View>
             </View>
           )}
+
           {strSharePhotoUrl && (
             <View className="panel-share-text">长按图片，可快捷转发哦！</View>
           )}

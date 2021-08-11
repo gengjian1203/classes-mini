@@ -1,11 +1,11 @@
 /**
  * 从日期字符串中提取出来月份
- * @param dayString
+ * @param dayString '2021-08-11'
  * @returns
  */
 export const getMonthFromDayString = (dayString: string) => {
   const arrDate = dayString.split("-");
-  const month = arrDate[1];
+  const month = `${arrDate[0]}-${arrDate[1]}`;
   return month;
 };
 
