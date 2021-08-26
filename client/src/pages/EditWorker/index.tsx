@@ -12,6 +12,8 @@ import useQueryPageList from "@/hooks/useQueryPageList";
 import PinYin from "@/services/PinYin";
 import Utils from "@/utils";
 
+import DialogWorker from "./components/DialogWorker";
+
 import "./index.less";
 
 export default function EditWorker() {
@@ -20,24 +22,15 @@ export default function EditWorker() {
   const arrTagInfoList = useRef<any>([]);
   const strSelectTagCode = useRef<any>("");
 
-  const [isLoadComplete, setLoadComplete] = useState<boolean>(false);
-  const [showListLoadingTip, setShowListLoadingTip] = useState<boolean>(false);
+  const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 数据是否加载完毕
+  const [showListLoadingTip, setShowListLoadingTip] = useState<boolean>(false); // 是否展示分页加载提示
+  const [isShowDialogWorker, setShowDialogWorker] = useState<boolean>(false); // 是否展示编辑职工弹窗
+  const [objEditWorkerInfo, setEditWorkerInfo] = useState<any>({}); // 创建/编辑 员工信息
   const [strSearchWorkerName, setSearchWorkerName] = useState<string>("");
   const [strSelectTagName, setSelectTagName] = useState<string>("");
   const [paramQueryWorkerList, setParamQueryWorkerList] = useState({});
   const [arrTagNameList, setTagNameList] = useState<Array<string>>([]);
   const [arrWorkerList, setWorkerList] = useState<Array<any>>([]);
-
-  // const queryWorkerList = async (name) => {
-  //   const params = {
-  //     pageNum: 0,
-  //     pageSize: 3,
-  //     tag: strSelectTagCode.current,
-  //     name: name,
-  //   };
-  //   const res = await Api.cloud.fetchWorkerInfo.queryWorkerList(params);
-  //   console.log("queryWorkerList", res);
-  // };
 
   const onLoad = () => {
     arrTagInfoList.current = Object.keys(ConfigTag)
@@ -68,13 +61,43 @@ export default function EditWorker() {
       console.log("useQueryPageList", state, list, totalCount);
       switch (state) {
         case "LOADING":
-          Taro.showToast({ title: "加载中", icon: "loading", duration: 20000 });
+          Taro.showToast({
+            title: "加载中",
+            icon: "loading",
+            duration: 20000,
+            mask: true,
+          });
           break;
         case "RESULT":
           setWorkerList(
             list.map((item) => {
               return {
                 ...item,
+                arrSign: item.appBindMemberId
+                  ? [
+                      {
+                        text: "已绑定",
+                        style: {
+                          backgroundColor: "var(--color-golden-light)",
+                          color: "var(--color-golden-dark)",
+                          border: `${Taro.pxTransform(
+                            2
+                          )} solid var(--color-golden-dark)`,
+                        },
+                      },
+                    ]
+                  : [
+                      {
+                        text: "未绑定",
+                        style: {
+                          backgroundColor: "var(--color-gray-7)",
+                          color: "var(--color-gray-4)",
+                          border: `${Taro.pxTransform(
+                            2
+                          )} solid var(--color-golden-dark)`,
+                        },
+                      },
+                    ],
                 strLogoBGImage: Boolean(item?.gender !== 2)
                   ? "linear-gradient(135deg, var(--color-man), 80%, var(--color-white, #ffffff))"
                   : "linear-gradient(135deg, var(--color-woman), 80%, var(--color-white, #ffffff))",
@@ -131,17 +154,25 @@ export default function EditWorker() {
   // 创建职工
   const handleCreateWorkerClick = () => {
     console.log("handleCreateWorkerClick");
-    setLoadComplete(!isLoadComplete);
+    setShowDialogWorker(true);
+    setEditWorkerInfo({});
   };
 
   // 编辑职工
   const handleWorkerEditClick = (info) => {
     console.log("handleWorkerClick", info);
+    setShowDialogWorker(true);
+    setEditWorkerInfo(info);
   };
 
   // 删除职工
   const handleWorkerDeleteClick = (info) => {
     console.log("handleWorkerDeleteClick", info);
+  };
+
+  // 关闭职工编辑弹窗
+  const handleDialogWorkerClose = () => {
+    setShowDialogWorker(false);
   };
 
   return (
@@ -193,6 +224,15 @@ export default function EditWorker() {
           onClick={handleCreateWorkerClick}
         />
       </View>
+
+      {/* 编辑职工弹窗 */}
+      {isShowDialogWorker && (
+        <DialogWorker
+          workerInfo={objEditWorkerInfo}
+          arrTagNameList={arrTagNameList}
+          onDialogWorkerClose={handleDialogWorkerClose}
+        />
+      )}
     </PageContent>
   );
 }

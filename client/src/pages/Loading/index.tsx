@@ -106,7 +106,7 @@ export default function Loading() {
       <Image
         src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2045442301,3285918522&fm=26&gp=0.jpg"
         mode="aspectFill"
-        style="width: 100%; height: 100%;"
+        style="width: 100vw; height: 100vh;"
       />
     </PageContent>
   );

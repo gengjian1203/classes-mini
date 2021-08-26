@@ -62,6 +62,7 @@ const queryWarningList = async (data, db) => {
         // { _id: _.exists(true) },
       ])
     )
+    .orderBy("timestampPubTime", "desc")
     .limit(MAX_LIMIT)
     .get();
   // console.log("queryWarningList", warningList);

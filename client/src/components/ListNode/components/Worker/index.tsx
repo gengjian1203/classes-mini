@@ -47,8 +47,22 @@ export default function Worker(props: IWorkerParam) {
         </View>
       </View>
       <View className="flex-center-v worker-item-mid">
-        <View className="text-ellipsis worker-item-mid-name">
-          {info?.name || ""}
+        <View className="flex-start-h worker-item-mid-name">
+          <Text className="text-ellipsis worker-item-mid-name-text">
+            {info?.name || ""}
+          </Text>
+          {info?.arrSign &&
+            info?.arrSign.map((itemSign, indexSign) => {
+              return (
+                <Text
+                  className="text-ellipsis worker-item-mid-name-sign"
+                  key={`sign-${indexSign}`}
+                  style={itemSign?.style || {}}
+                >
+                  {itemSign?.text || ""}
+                </Text>
+              );
+            })}
         </View>
         <View className="text-ellipsis worker-item-mid-cellphone">
           {info?.cellphone || ""}

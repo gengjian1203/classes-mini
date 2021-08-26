@@ -1,0 +1,63 @@
+.dialog-worker-wrap {
+  position: relative;
+  width: 200%;
+  height: 100%;
+}
+
+.dialog-worker-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.dialog-worker-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+}
+
+.dialog-worker-back-icon {
+  font-size: var(--font-size-bg);
+  font-weight: bold;
+  color: var(--color-white);
+}
+
+.dialog-worker-btn {
+  position: absolute;
+  left: var(--margin-md);
+  right: var(--margin-md);
+  bottom: var(--margin-md);
+}
+
+.animation-content-reset {
+  animation-name: animation-reset;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.animation-content-move {
+  animation-name: animation-move;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animation-reset {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes animation-move {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

@@ -17,6 +17,7 @@ export interface IInfoType {
   author?: string; // 作者
   title?: string; // 标题
   name?: string; // 名称
+  arrSign?: Array<any>; // 标记
   nameSimple?: string; // 名称缩写
   desc?: string; // 简介
   cellphone?: string; // 电话
@@ -170,8 +171,6 @@ export default function ListNode(props: IListNodeProps) {
       }
     }
   };
-
-  console.log("arrList", isLoadCompleteList, arrList);
 
   return (
     <View className="list-node-wrap">

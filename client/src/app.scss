@@ -18,6 +18,11 @@ $color-brand-dark: var(--color-primary-dark);
   background-color: $color-brand !important;
 }
 
+// 重写input样式
+.at-input {
+  margin-left: 24px;
+}
+
 // 重写搜索栏样式
 .at-search-bar {
   width: 100%;

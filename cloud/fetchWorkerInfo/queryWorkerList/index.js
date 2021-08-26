@@ -34,7 +34,7 @@ async function queryWorkerList(data, db, strMemberId) {
         from: "TB_MEMBER",
         localField: "appBindMemberId",
         foreignField: "_id",
-        as: "objMemberInfo",
+        as: "arrMemberInfo",
       })
       .end(),
     db.collection("TB_WORKER").where(rule).count(),

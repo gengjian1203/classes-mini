@@ -85,6 +85,8 @@ export default function HomeDialogWarning(props: IHomeDialogWarningParam) {
       title="气象告警信息"
       titleIcon="iconwarning_fill"
       customClass="dialog-warning-content"
+      isScrollY
+      strShowBottomTip="长按可复制对应信息"
       onDialogClose={handleDialogClose}
     >
       {warningInfoNow &&
