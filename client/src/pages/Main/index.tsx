@@ -22,6 +22,7 @@ import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
 import VpTest from "./componentsVp/VpTest/index";
 import VpWave from "./componentsVp/VpWave/index";
+import VpWeatherNew from "./componentsVp/VpWeatherNew/index";
 
 import "./index.less";
 
@@ -88,7 +89,7 @@ export default function Main() {
     {
       GROUP: (res) => {
         const { state, list, totalCount } = res;
-        console.log("Main useQueryPageList", state, list, totalCount);
+        console.log("useQueryPageList GROUP", state, list, totalCount);
         switch (state) {
           case "LOADING":
             break;
@@ -113,6 +114,10 @@ export default function Main() {
       MINE: (res) => {},
       WAVE: (res) => {},
       SATELLITE: (res) => {},
+      WEATHER_NEW: (res) => {
+        console.log("useQueryPageList WEATHER");
+        setLoadComplete(true);
+      },
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
       GROUP: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
@@ -120,6 +125,7 @@ export default function Main() {
       MINE: null,
       WAVE: null,
       SATELLITE: null,
+      WEATHER_NEW: {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
       GROUP: paramQueryGroupByKeyTitle,
@@ -127,6 +133,7 @@ export default function Main() {
       MINE: {},
       WAVE: {},
       SATELLITE: {},
+      WEATHER_NEW: {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType]
   );
 
@@ -135,8 +142,8 @@ export default function Main() {
     if (nTabBarCurrent === current) {
       return;
     }
+    setLoadComplete(false);
     setTabBarCurrent(current);
-    // setLoadComplete(false);
   };
 
   const handleGroupListSearch = (param) => {
@@ -152,19 +159,18 @@ export default function Main() {
   // 测试按钮
   const handleBtnTestClick = async () => {
     // 新增员工
-    const name = "孙尚香";
-    const params = {
-      name: name,
-      nameSimple: name.substr(-2),
-      nameFirstLetter: PinYin.getCamelChars(name).substr(0, 1),
-      nameLetter: PinYin.getCamelChars(name),
-      gender: 2,
-      cellphone: "9292922929",
-      tag: ConfigTag["WEATHER_TIME"]?.code || "",
-    };
-    const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
-    console.log("handleBtnTestClick", res);
-
+    // const name = "孙尚香";
+    // const params = {
+    //   name: name,
+    //   nameSimple: name.substr(-2),
+    //   nameFirstLetter: PinYin.getCamelChars(name).substr(0, 1),
+    //   nameLetter: PinYin.getCamelChars(name),
+    //   gender: 2,
+    //   cellphone: "9292922929",
+    //   tag: ConfigTag["WEATHER_TIME"]?.code || "",
+    // };
+    // const res = await Api.cloud.fetchWorkerInfo.addWorker(params);
+    // console.log("handleBtnTestClick", res);
     // 新增任务
     // const params = {
     //   fxDate: "2021-07-05",
@@ -249,6 +255,13 @@ export default function Main() {
           title={tabBarInfo?.tabList[nTabBarCurrent].title}
         />
       ),
+      // 气象资讯
+      WEATHER_NEW: (
+        <VpWeatherNew
+          isLoadComplete={isLoadComplete}
+          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+        />
+      ),
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType];
   };
 
@@ -277,12 +290,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      <View>测试</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      />
+      /> */}
       {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"

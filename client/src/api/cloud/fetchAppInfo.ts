@@ -47,6 +47,14 @@ const queryAppTabBar = async (objParams: any = {}) => {
     //   selectedIconType: "iconfont iconbase-satellite-full",
     // },
     {
+      id: "0000005",
+      title: "资讯",
+      permission: ["normal", "weather"],
+      contentType: "WEATHER_NEW",
+      iconType: "iconfont iconbarrage",
+      selectedIconType: "iconfont iconbarrage_fill",
+    },
+    {
       id: "0000000",
       title: "我的",
       permission: ["normal"],
