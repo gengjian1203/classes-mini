@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { AtCalendar } from "taro-ui";
 import { View } from "@tarojs/components";
 
-import Banner from "@/components/banner";
+import Banner from "@/components/Banner";
 
 import "./index.less";
 

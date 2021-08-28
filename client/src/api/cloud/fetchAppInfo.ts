@@ -50,7 +50,7 @@ const queryAppTabBar = async (objParams: any = {}) => {
       id: "0000005",
       title: "资讯",
       permission: ["normal", "weather"],
-      contentType: "WEATHER_NEW",
+      contentType: "WEATHER_ARTICLE",
       iconType: "iconfont iconbarrage",
       selectedIconType: "iconfont iconbarrage_fill",
     },
@@ -97,6 +97,22 @@ const queryWeatherInfo = async (objParams: any = {}) => {
 };
 
 /**
+ * 测试爬取文章内容
+ */
+const spiderArticleInfo = async (objParams: any = {}) => {
+  const params = {
+    type: "WEIXIN",
+    data: {
+      urlServce: "https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA",
+      ...objParams,
+    },
+  };
+  const res = await CloudFetch.callFunction("spiderArticleInfo", params);
+  console.log("spiderArticleInfo", res);
+  return res.data;
+};
+
+/**
  * 测试爬取天气数据
  */
 const spiderWeatherInfo = async (objParams: any = {}) => {
@@ -110,5 +126,6 @@ export default {
   queryAppTabBar,
   queryHomeInfo,
   queryWeatherInfo,
+  spiderArticleInfo,
   spiderWeatherInfo,
 };

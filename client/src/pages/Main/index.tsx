@@ -22,7 +22,7 @@ import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
 import VpTest from "./componentsVp/VpTest/index";
 import VpWave from "./componentsVp/VpWave/index";
-import VpWeatherNew from "./componentsVp/VpWeatherNew/index";
+import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
 
 import "./index.less";
 
@@ -39,6 +39,8 @@ export default function Main() {
     keyTitle: "",
   });
   const [arrGroupList, setGroupList] = useState<Array<any>>([]);
+  //
+  const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
 
   // 底部导航
   const { tabBarInfo } = useSelector((state) => state.appInfo);
@@ -114,9 +116,18 @@ export default function Main() {
       MINE: (res) => {},
       WAVE: (res) => {},
       SATELLITE: (res) => {},
-      WEATHER_NEW: (res) => {
-        console.log("useQueryPageList WEATHER");
-        setLoadComplete(true);
+      WEATHER_ARTICLE: (res) => {
+        const { state, list, totalCount } = res;
+        console.log("useQueryPageList WEATHER", state, list, totalCount);
+        switch (state) {
+          case "LOADING":
+            break;
+          case "RESULT":
+            setWeatherArticleList(list);
+            setLoadComplete(true);
+            Taro.hideLoading();
+            break;
+        }
       },
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
@@ -125,7 +136,7 @@ export default function Main() {
       MINE: null,
       WAVE: null,
       SATELLITE: null,
-      WEATHER_NEW: {},
+      WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryWeatherArticleListInfo,
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
     {
       GROUP: paramQueryGroupByKeyTitle,
@@ -133,7 +144,7 @@ export default function Main() {
       MINE: {},
       WAVE: {},
       SATELLITE: {},
-      WEATHER_NEW: {},
+      WEATHER_ARTICLE: {},
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType]
   );
 
@@ -158,6 +169,12 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnTestClick = async () => {
+    Taro.navigateTo({
+      url: "/pages/ArticleDetail/index",
+    });
+    // const res = await Api.cloud.fetchAppInfo.spiderArticleInfo({});
+    // console.log("handleBtnTestClick", res);
+
     // 新增员工
     // const name = "孙尚香";
     // const params = {
@@ -256,9 +273,10 @@ export default function Main() {
         />
       ),
       // 气象资讯
-      WEATHER_NEW: (
-        <VpWeatherNew
+      WEATHER_ARTICLE: (
+        <VpWeatherArticle
           isLoadComplete={isLoadComplete}
+          arrWeatherArticleList={arrWeatherArticleList}
           title={tabBarInfo?.tabList[nTabBarCurrent].title}
         />
       ),
@@ -290,12 +308,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      {/* <View>测试</View>
+      <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      /> */}
+      />
       {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"

@@ -1,20 +1,26 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Taro from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 
-import Banner from "@/components/banner";
+import Banner from "@/components/Banner";
+import ListNode from "@/components/ListNode";
 import useCheckLogin from "@/hooks/useCheckLogin";
 
 import "./index.less";
 
-interface IVpWeatherNewParam {
+interface IVpWeatherArticleParam {
   title?: string;
+  arrWeatherArticleList?: Array<any>;
+  isShowWeatherArticleListLoadingTip?: boolean;
   isLoadComplete?: boolean;
 }
 
-export default function VpWeatherNew(props: IVpWeatherNewParam) {
+export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
   const {
     title = "", // 标题
+    arrWeatherArticleList = [], //
+    isShowWeatherArticleListLoadingTip = false,
     isLoadComplete = true,
   } = props;
 
@@ -26,9 +32,19 @@ export default function VpWeatherNew(props: IVpWeatherNewParam) {
     console.log("handleBannerClick");
   });
 
+  const handleDetailClick = useCheckLogin((info) => {
+    // e.preventDefault();
+    // e.stopPropagation();
+    console.log("handleDetailClick", info);
+    Taro.navigateTo({
+      url: `/pages/ArticleDetail/index` + `?articleId=${info?._id}`,
+    });
+  });
+
   return (
-    <View className="vp-weather-new-wrap">
-      <View className="vp-weather-new-content">
+    <View className="vp-weather-article-wrap">
+      <View className="vp-weather-article-content">
+        {/*  */}
         <Banner
           isLoadComplete={isLoadComplete}
           arrBannerList={[
@@ -54,6 +70,14 @@ export default function VpWeatherNew(props: IVpWeatherNewParam) {
             },
           ]}
           onBannerClick={handleBannerClick}
+        />
+        {/* 气象文章列表 */}
+        <ListNode
+          isLoadCompleteList={isLoadComplete}
+          strType={"MOMENT"}
+          arrList={arrWeatherArticleList}
+          showBottomLoadingTip={isShowWeatherArticleListLoadingTip}
+          onDetailClick={handleDetailClick}
         />
       </View>
     </View>
