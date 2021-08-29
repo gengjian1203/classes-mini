@@ -1,4 +1,5 @@
 .moment-item {
+  position: relative;
   margin-bottom: var(--margin-xs);
   align-items: flex-start;
 
@@ -61,6 +62,22 @@
         border-radius: var(--border-radius-md);
         color: var(--color-feed-author);
         background-color: var(--color-gray-6);
+      }
+    }
+  }
+
+  .item-float {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .item-float-btn {
+      box-sizing: border-box;
+      padding: var(--padding-base);
+
+      .item-float-delete {
+        font-size: var(--font-size-hd);
+        color: var(--color-gray-2);
       }
     }
   }

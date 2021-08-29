@@ -32,6 +32,7 @@ export interface IInfoType {
 
 interface IListNodeProps {
   isLoadCompleteList?: boolean; // 是否列表加载完毕
+  isShowDelete?: boolean; // 是否展示删除按钮
   strType:
     | "BASE"
     | "GROUP" // 群组类型
@@ -48,6 +49,7 @@ interface IListNodeProps {
 export default function ListNode(props: IListNodeProps) {
   const {
     isLoadCompleteList = true,
+    isShowDelete = false,
     strType = "",
     showBottomLoadingTip = false,
     customClass = "",
@@ -87,8 +89,10 @@ export default function ListNode(props: IListNodeProps) {
           return (
             <Moment
               key={`monent-${index}`}
+              isShowDelete={isShowDelete}
               info={item}
               onDetailClick={onDetailClick}
+              onDeleteClick={onDeleteClick}
             />
           );
         });

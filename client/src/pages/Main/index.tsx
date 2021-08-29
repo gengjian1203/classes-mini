@@ -30,6 +30,7 @@ export default function Main() {
   const {} = useRouter();
 
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 加载完毕
+  const [isUpdateList, setUpdateList] = useState<boolean>(false); // 触发主动列表刷新标识
   const [strNavigationTitle, setNavigationTitle] = useState<string>("");
   const [nTabBarCurrent, setTabBarCurrent] = useState<number>(0);
   const [strTestImageUrl, setTestImageUrl] = useState<string>("");
@@ -138,15 +139,21 @@ export default function Main() {
       WAVE: {},
       SATELLITE: {},
       WEATHER_ARTICLE: {},
-    }[tabBarInfo?.tabList[nTabBarCurrent].contentType]
+    }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+    isUpdateList
   );
+
+  // 主动触发列表更新
+  const handleQueryPageListUpdate = () => {
+    setUpdateList(!isUpdateList);
+  };
 
   // 切换底部导航
   const handleTabbarBottomSelect = (current) => {
     if (nTabBarCurrent === current) {
       return;
     }
-    setLoadComplete(false);
+    // setLoadComplete(false);
     setTabBarCurrent(current);
   };
 
@@ -268,6 +275,7 @@ export default function Main() {
           isLoadComplete={isLoadComplete}
           arrWeatherArticleList={arrWeatherArticleList}
           title={tabBarInfo?.tabList[nTabBarCurrent].title}
+          onWeatherArticleListUpdate={handleQueryPageListUpdate}
         />
       ),
     }[tabBarInfo?.tabList[nTabBarCurrent].contentType];

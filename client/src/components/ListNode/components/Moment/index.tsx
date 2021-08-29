@@ -1,20 +1,33 @@
 import React, { Fragment } from "react";
-import { View, Image } from "@tarojs/components";
+import { View, Image, Text } from "@tarojs/components";
 
 import { IInfoType } from "../../index";
 
 import "./index.less";
 
 interface IMomentProps {
-  info: IInfoType;
+  isShowDelete?: boolean;
+  info?: IInfoType;
   onDetailClick?: (any?: any) => void;
+  onDeleteClick?: (any?: any) => void;
 }
 
 export default function Moment(props: IMomentProps) {
-  const { info = {}, onDetailClick } = props;
+  const {
+    info = {},
+    isShowDelete = false,
+    onDetailClick,
+    onDeleteClick,
+  } = props;
 
   const handleDetailClick = (info) => {
     onDetailClick && onDetailClick(info);
+  };
+
+  const handleDeleteClick = (info, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onDeleteClick && onDeleteClick(info);
   };
 
   return (
@@ -42,6 +55,16 @@ export default function Moment(props: IMomentProps) {
           <View className="item-time">{info.createTime}</View>
           {/* <View className='flex-center-v iconfont icon19 item-options'></View> */}
         </View>
+      </View>
+      <View className="item-float">
+        {isShowDelete && (
+          <View
+            className="flex-center-h item-float-btn"
+            onClick={(e) => handleDeleteClick(info, e)}
+          >
+            <View className="iconfont icondelete item-float-delete" />
+          </View>
+        )}
       </View>
     </View>
   );

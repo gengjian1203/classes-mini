@@ -1,6 +1,7 @@
 // 云函数入口文件
 const cloud = require("wx-server-sdk");
 const md5 = require("blueimp-md5");
+const deleteWeatherArticle = require("deleteWeatherArticle/index.js");
 const queryWeatherArticleDetailInfo = require("queryWeatherArticleDetailInfo/index.js");
 const queryWeatherArticleListInfo = require("queryWeatherArticleListInfo/index.js");
 
@@ -9,6 +10,7 @@ cloud.init({
 });
 
 const objFunction = {
+  DELETE_WEATHER_ARTICLE: deleteWeatherArticle, // 删除对应天气文章
   QUERY_WEATHER_ARTICLE_DETAIL: queryWeatherArticleDetailInfo, // 查询天气文章详细内容
   QUERY_WEATHER_ARTICLE_LIST: queryWeatherArticleListInfo, // 查询天气文章列表内容
 };

@@ -3,6 +3,19 @@ import CloudFetch from "@/services/CloudFetch";
 const CLOUD_NAME = "fetchArticleInfo";
 
 /**
+ * 删除对应天气文章
+ */
+const deleteWeatherArticle = async (objParams: any = {}) => {
+  const params = {
+    type: "DELETE_WEATHER_ARTICLE",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
+  console.log("deleteWeatherArticle", res);
+  return res.code === 200;
+};
+
+/**
  * 查询天气文章详细内容
  */
 const queryWeatherArticleDetailInfo = async (objParams: any = {}) => {
@@ -29,6 +42,7 @@ const queryWeatherArticleListInfo = async (objParams: any = {}) => {
 };
 
 export default {
+  deleteWeatherArticle,
   queryWeatherArticleDetailInfo,
   queryWeatherArticleListInfo,
 };
