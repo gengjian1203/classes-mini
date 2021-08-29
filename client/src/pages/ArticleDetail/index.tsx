@@ -29,6 +29,12 @@ export default function ArticleDetail() {
   const [objArticleInfo, setArticleInfo] = useState<IArticleType>({});
 
   const onLoad = async () => {
+    Taro.showToast({
+      title: "加载中",
+      icon: "loading",
+      mask: true,
+      duration: 20000,
+    });
     const params = {
       articleId: articleId,
     };
@@ -36,6 +42,7 @@ export default function ArticleDetail() {
       params
     );
     setArticleInfo(res);
+    Taro.hideToast();
   };
 
   useEffect(() => {
@@ -46,31 +53,39 @@ export default function ArticleDetail() {
     <PageContent isShowLeftIcon strNavigationTitle="文章详情" isSafeBottom>
       <View className="article-detail-wrap">
         {/* 标题 */}
-        <View className="article-detail-item">
-          <Text className="item-title">{objArticleInfo.title}</Text>
-        </View>
+        {objArticleInfo && objArticleInfo.title && (
+          <View className="article-detail-item">
+            <Text className="item-title">{objArticleInfo.title}</Text>
+          </View>
+        )}
         {/* 作者 */}
-        <View className="article-detail-item">
-          <Text className="item-value text-ellipsis">
-            作者：{objArticleInfo.author}
-          </Text>
-        </View>
+        {objArticleInfo && objArticleInfo.author && (
+          <View className="article-detail-item">
+            <Text className="item-value text-ellipsis">
+              作者：{objArticleInfo.author}
+            </Text>
+          </View>
+        )}
         {/* 时间 */}
-        <View className="article-detail-item">
-          <Text className="item-value text-ellipsis">
-            时间：{objArticleInfo.createTime}
-          </Text>
-        </View>
+        {objArticleInfo && objArticleInfo.createTime && (
+          <View className="article-detail-item">
+            <Text className="item-value text-ellipsis">
+              时间：{objArticleInfo.createTime}
+            </Text>
+          </View>
+        )}
         {/* 富文本翻译 */}
-        <View style="overflow: hidden; width: 100%; ">
-          <poster
-            compress={3}
-            html={objArticleInfo.content}
-            lazy-load
-            selectable
-            show-with-animation
-          />
-        </View>
+        {objArticleInfo && objArticleInfo.content && (
+          <View style="overflow: hidden; width: 100%; ">
+            <poster
+              compress={3}
+              html={objArticleInfo.content}
+              lazy-load
+              selectable
+              show-with-animation
+            />
+          </View>
+        )}
       </View>
     </PageContent>
   );

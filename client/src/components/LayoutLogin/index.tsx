@@ -90,7 +90,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
         <View className="layout-login-header">
           <View className="layout-login-title">
             <Text className="iconfont iconpeople_fill layout-login-icon"></Text>
-            <Text className="layout-login-title-text">班级圈圈</Text>
+            <Text className="layout-login-title-text">气象台历</Text>
           </View>
           <View className="layout-login-content">
             <Text className="layout-login-content-text">

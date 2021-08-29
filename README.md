@@ -1,6 +1,6 @@
 # classes-mini
 
-《班级圈圈》小程序端
+《气象台历》小程序端
 
 ## 项目文档
 
@@ -91,8 +91,8 @@
 6. 封装方法传入的参数应是对象
 
    ```ts
-   dealDateInfo(params) // good
-   dealDateInfo(data, show, tip, success) // bad
+   dealDateInfo(params); // good
+   dealDateInfo(data, show, tip, success); // bad
    ```
 
    如果一个函数需要多个参数实现其逻辑，尽量将这些参数组成一个对象。
@@ -146,39 +146,39 @@
 每项超出部分...
 
 ```tsx
-<View class='flex-start-h module-wrap'>
-	<View class='module-left'>1111</View>
-	<View class='module-mid'>
-		<View class='text-ellipsis mid-text'>abcabcabcabcabcabcabcabcabc</View>
-	</View>
-	<View class='module-right'>2222</View>
+<View class="flex-start-h module-wrap">
+  <View class="module-left">1111</View>
+  <View class="module-mid">
+    <View class="text-ellipsis mid-text">abcabcabcabcabcabcabcabcabc</View>
+  </View>
+  <View class="module-right">2222</View>
 </View>
 ```
 
 ```less
 .text-ellipsis {
-	display: block;
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .module-wrap {
-	width: 100%;
-	.module-left {
-		height: 100%;
-		flex: 0 0 120px;
-	}
-	.module-mid {
-		flex: 1 1 auto;
-		width: 0; /* 此处的宽度为关键 */
-		height: 100%;
-	}
-	.module-right {
-		height: 100%;
-		flex: 0 0 120px;
-	}
+  width: 100%;
+  .module-left {
+    height: 100%;
+    flex: 0 0 120px;
+  }
+  .module-mid {
+    flex: 1 1 auto;
+    width: 0; /* 此处的宽度为关键 */
+    height: 100%;
+  }
+  .module-right {
+    height: 100%;
+    flex: 0 0 120px;
+  }
 }
 ```
 

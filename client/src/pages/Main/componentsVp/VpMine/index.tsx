@@ -27,6 +27,8 @@ export default function VpMine(props: IVpMineParam) {
   const { isEasterEgg } = useSelector((state) => state.appInfo);
   const memberInfo = useSelector((state) => state.memberInfo);
 
+  const isMemberChecked = memberInfo?.appBindWorkerId;
+
   const { setShareInfo } = useActions(shareInfoActions);
 
   const [urlServceWeiXin, setUrlServceWeiXin] = useState<string>("");
@@ -101,23 +103,25 @@ export default function VpMine(props: IVpMineParam) {
       <MineModuleHeader memberInfo={memberInfo} />
       <View className="flex-center-v vp-mine-content">
         {/* 简介面板 */}
-        <ModuleCard
-          customClass="vp-mine-module "
-          customContentClass="flex-between-h vp-mine-module-self "
-        >
-          <View className="flex-center-v vp-mine-module-self-item">
-            <View className="vp-mine-module-self-item-up">下次值班</View>
-            <View className="vp-mine-module-self-item-down">--</View>
-          </View>
-          <View className="flex-center-v vp-mine-module-self-item">
-            <View className="vp-mine-module-self-item-up">欠班情况</View>
-            <View className="vp-mine-module-self-item-down">--</View>
-          </View>
-          <View className="flex-center-v vp-mine-module-self-item">
-            <View className="vp-mine-module-self-item-up">本周代办</View>
-            <View className="vp-mine-module-self-item-down">--</View>
-          </View>
-        </ModuleCard>
+        {isMemberChecked && (
+          <ModuleCard
+            customClass="vp-mine-module "
+            customContentClass="flex-between-h vp-mine-module-self "
+          >
+            <View className="flex-center-v vp-mine-module-self-item">
+              <View className="vp-mine-module-self-item-up">下次值班</View>
+              <View className="vp-mine-module-self-item-down">--</View>
+            </View>
+            <View className="flex-center-v vp-mine-module-self-item">
+              <View className="vp-mine-module-self-item-up">欠班情况</View>
+              <View className="vp-mine-module-self-item-down">--</View>
+            </View>
+            <View className="flex-center-v vp-mine-module-self-item">
+              <View className="vp-mine-module-self-item-up">本周代办</View>
+              <View className="vp-mine-module-self-item-down">--</View>
+            </View>
+          </ModuleCard>
+        )}
 
         {/* 管理模块 */}
         <Permission strCheckPosition={"LEADER"}>

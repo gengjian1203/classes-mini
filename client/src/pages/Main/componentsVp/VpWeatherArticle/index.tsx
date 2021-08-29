@@ -32,14 +32,12 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
     console.log("handleBannerClick");
   });
 
-  const handleDetailClick = useCheckLogin((info) => {
-    // e.preventDefault();
-    // e.stopPropagation();
+  const handleDetailClick = (info) => {
     console.log("handleDetailClick", info);
     Taro.navigateTo({
       url: `/pages/ArticleDetail/index` + `?articleId=${info?._id}`,
     });
-  });
+  };
 
   return (
     <View className="vp-weather-article-wrap">
