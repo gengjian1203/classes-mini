@@ -6,63 +6,26 @@ const CLOUD_NAME = "fetchAppInfo";
  * 查询APP级别底部导航
  */
 const queryAppTabBar = async (objParams: any = {}) => {
-  // const params = {
-  //   type: "QUERY_APP_TAB_BAR",
-  //   data: objParams,
-  // };
-  // const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
-  // console.log("queryAppTabBar", res);
-  // return res.data;
-  return [
-    {
-      id: "0000001",
-      title: "首页",
-      permission: ["normal"],
-      contentType: "HOME",
-      iconType: "iconfont iconhomepage",
-      selectedIconType: "iconfont iconhomepage_fill",
-    },
-    // {
-    //   id: "0000002",
-    //   title: "班级",
-    //   permission: ["teacher", "student", "parent"],
-    //   contentType: "GROUP",
-    //   iconType: "iconfont iconactivity",
-    //   selectedIconType: "iconfont iconactivity_fill",
-    // },
-    // {
-    //   id: "0000003",
-    //   title: "中波",
-    //   permission: ["station"],
-    //   contentType: "WAVE",
-    //   iconType: "iconfont iconbase-station",
-    //   selectedIconType: "iconfont iconbase-station-full",
-    // },
-    // {
-    //   id: "0000004",
-    //   title: "星站",
-    //   permission: ["station"],
-    //   contentType: "SATELLITE",
-    //   iconType: "iconfont iconbase-satellite",
-    //   selectedIconType: "iconfont iconbase-satellite-full",
-    // },
-    {
-      id: "0000005",
-      title: "资讯",
-      permission: ["normal", "weather"],
-      contentType: "WEATHER_ARTICLE",
-      iconType: "iconfont iconbarrage",
-      selectedIconType: "iconfont iconbarrage_fill",
-    },
-    {
-      id: "0000000",
-      title: "我的",
-      permission: ["normal"],
-      contentType: "MINE",
-      iconType: "iconfont iconpeople",
-      selectedIconType: "iconfont iconpeople_fill",
-    },
-  ];
+  const params = {
+    type: "QUERY_APP_TAB_BAR",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
+  console.log("queryAppTabBar", res);
+  return (res && res.data) || [];
+};
+
+/**
+ * 更新APP级别底部导航
+ */
+const updateAppTabBar = async (objParams: any = {}) => {
+  const params = {
+    type: "UPDATE_APP_TAB_BAR",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
+  console.log("updateAppTabBar", res);
+  return res.code === 200;
 };
 
 /**
@@ -121,6 +84,7 @@ const spiderWeatherInfo = async (objParams: any = {}) => {
 
 export default {
   queryAppTabBar,
+  updateAppTabBar,
   queryHomeInfo,
   queryWeatherInfo,
   spiderArticleInfoWeiXin,

@@ -82,8 +82,18 @@ export default function Loading() {
     setAppHomePage("/pages/Main/index");
     console.log("Loading", resQueryAppTabBar, resQueryMember, resQueryQrCode);
     if (resQueryAppTabBar) {
+      const resQueryAppTabBarTmp = resQueryAppTabBar
+        .filter((item) => {
+          return item.enable;
+        })
+        .sort((itemA, itemB) => {
+          const idA = itemA?.id || "";
+          const idB = itemB?.id || "";
+          return idA.localeCompare(idB);
+        });
       setAppTabBarInfo({
-        tabList: resQueryAppTabBar,
+        tabList: resQueryAppTabBarTmp,
+        tabListSource: resQueryAppTabBar,
         strCurrentId: "",
       });
       setMemberInfo(resQueryMember);

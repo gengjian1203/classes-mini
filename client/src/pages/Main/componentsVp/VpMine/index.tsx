@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AtList, AtListItem, AtInput, AtButton } from "taro-ui";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro, { usePageScroll, useReachBottom, useRouter } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
@@ -12,6 +12,7 @@ import useActions from "@/hooks/useActions";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useDebounce from "@/hooks/useDebounce";
 import MineModuleHeader from "@/pages/Main/components/MineModuleHeader";
+import appInfoActions from "@/redux/actions/appInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import Utils from "@/utils";
 
@@ -24,16 +25,32 @@ interface IVpMineParam {
 export default function VpMine(props: IVpMineParam) {
   const { isLoadComplete = true } = props;
 
-  const { isEasterEgg } = useSelector((state) => state.appInfo);
+  const { isEasterEgg, tabBarInfo } = useSelector((state) => state.appInfo);
   const memberInfo = useSelector((state) => state.memberInfo);
 
   const isMemberChecked = memberInfo?.appBindWorkerId;
 
+  const { setAppEasterEgg } = useActions(appInfoActions);
   const { setShareInfo } = useActions(shareInfoActions);
 
+  const [isShowFloatButton, setShowFloatButton] = useState<boolean>(true);
   const [urlServceWeiXin, setUrlServceWeiXin] = useState<string>("");
 
   useEffect(() => {}, []);
+
+  useReachBottom(() => {
+    console.log("useReachBottom");
+    setTimeout(() => {
+      setShowFloatButton(false);
+    }, 800);
+  });
+
+  usePageScroll(
+    useDebounce((res) => {
+      console.log("usePageScroll", res);
+      setShowFloatButton(true);
+    }, 500)
+  );
 
   // 编辑职工
   const handleEditWorkerClick = () => {
@@ -79,6 +96,43 @@ export default function VpMine(props: IVpMineParam) {
     } else {
       Taro.showToast({
         title: "该文章已被收录，或搜索不到该文章。",
+        icon: "none",
+      });
+    }
+  };
+
+  // 点击切换
+  const handleTabBarEnableChange = async (item, index, e) => {
+    const value = e?.detail?.value;
+    console.log("handleTabBarEnableChange", item, value);
+    Taro.showToast({
+      title: "切换中",
+      icon: "loading",
+      mask: true,
+      duration: 20000,
+    });
+    const params = {
+      tabId: item.id,
+      tabIndex: index,
+      enable: value,
+    };
+    const res = await Api.cloud.fetchAppInfo.updateAppTabBar(params);
+    Taro.hideToast({});
+    console.log("handleTabBarEnableChange", res);
+    if (res) {
+      Taro.showToast({
+        title: "切换成功",
+        icon: "success",
+      });
+      setTimeout(() => {
+        setAppEasterEgg(false);
+        Taro.reLaunch({
+          url: "/pages/Loading/index",
+        });
+      }, 1000);
+    } else {
+      Taro.showToast({
+        title: "切换失败",
         icon: "none",
       });
     }
@@ -165,10 +219,10 @@ export default function VpMine(props: IVpMineParam) {
         </Permission>
         {/* 彩蛋模块 */}
         {isEasterEgg && (
-          <ModuleCard title="爬取微信公众号文章" customClass="flex-center-h">
+          <ModuleCard title="彩蛋模块" customClass="flex-center-h">
             <AtInput
               name="weixin_urlServce"
-              title="文章链接"
+              title="爬取公众号"
               type="text"
               placeholder="https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA"
               value={urlServceWeiXin}
@@ -182,20 +236,37 @@ export default function VpMine(props: IVpMineParam) {
             >
               爬取
             </AtButton>
+            <AtList>
+              {tabBarInfo?.tabListSource &&
+                tabBarInfo?.tabListSource.map((item, index) => {
+                  return (
+                    <AtListItem
+                      title={item.title}
+                      isSwitch={item.contentType !== "MINE"}
+                      switchIsCheck={item.enable}
+                      onSwitchChange={(e) =>
+                        handleTabBarEnableChange(item, index, e)
+                      }
+                    />
+                  );
+                })}
+            </AtList>
           </ModuleCard>
         )}
         {/* 分享浮动按钮 */}
-        <View className="safe-bottom flex-center-v vp-mine-float-btn-panel">
-          <ButtonIcon
-            value="iconsend"
-            width={100}
-            height={100}
-            radius={50}
-            size={60}
-            color="var(--color-primary)"
-            onClick={handleBtnShareClick}
-          />
-        </View>
+        {isShowFloatButton && (
+          <View className="safe-bottom flex-center-v vp-mine-float-btn-panel">
+            <ButtonIcon
+              value="iconsend"
+              width={100}
+              height={100}
+              radius={50}
+              size={60}
+              color="var(--color-primary)"
+              onClick={handleBtnShareClick}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

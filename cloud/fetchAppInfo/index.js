@@ -4,6 +4,7 @@ const md5 = require("blueimp-md5");
 const queryAppTabBar = require("queryAppTabBar/index.js");
 const queryHomeInfo = require("queryHomeInfo/index.js");
 const queryWeatherInfo = require("queryWeatherInfo/index.js");
+const updateAppTabBar = require("updateAppTabBar/index.js");
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV, // API 调用都保持和云函数当前所在环境一致
@@ -13,6 +14,7 @@ const objFunction = {
   QUERY_APP_TAB_BAR: queryAppTabBar, // 查询APP级别底部导航
   QUERY_HOME_INFO: queryHomeInfo, // 查询首页的相关信息
   QUERY_WEATHER_INFO: queryWeatherInfo, // 查询天气相关信息
+  UPDATE_APP_TAB_BAR: updateAppTabBar, // 更新APP级别底部导航
 };
 
 const verifyRequest = (event) => {
