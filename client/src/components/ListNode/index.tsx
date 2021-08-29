@@ -39,6 +39,7 @@ interface IListNodeProps {
     | "WORKER"; // 职工类型
   arrList: Array<IInfoType>;
   showBottomLoadingTip?: boolean;
+  customClass?: string;
   onDetailClick?: (any?: any) => void;
   onEditClick?: (any?: any) => void;
   onDeleteClick?: (any?: any) => void;
@@ -49,6 +50,7 @@ export default function ListNode(props: IListNodeProps) {
     isLoadCompleteList = true,
     strType = "",
     showBottomLoadingTip = false,
+    customClass = "",
     arrList = [],
     onDetailClick,
     onEditClick,
@@ -152,6 +154,20 @@ export default function ListNode(props: IListNodeProps) {
       case "BASE": {
       }
       case "MOMENT": {
+        return arrSkeleton.map((item, index) => {
+          return (
+            <Skeleton
+              key={`list-skeleton-${index}`}
+              type="row"
+              title
+              titleWidth="60%"
+              row={2}
+              rowProps={{ width: "100%", height: 24 }}
+              avatar
+              customClass="skeleton-item"
+            />
+          );
+        });
       }
       default: {
         return arrSkeleton.map((item, index) => {
@@ -165,6 +181,7 @@ export default function ListNode(props: IListNodeProps) {
               rowProps={{ width: "100%", height: 20 }}
               action
               avatar
+              customClass="skeleton-item"
             />
           );
         });
@@ -173,7 +190,7 @@ export default function ListNode(props: IListNodeProps) {
   };
 
   return (
-    <View className="list-node-wrap">
+    <View className={`list-node-wrap ` + `${customClass} `}>
       {isLoadCompleteList
         ? arrList && arrList.length > 0
           ? readerList()

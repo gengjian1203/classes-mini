@@ -77,6 +77,7 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
           strType={"MOMENT"}
           arrList={arrWeatherArticleList}
           showBottomLoadingTip={isShowWeatherArticleListLoadingTip}
+          customClass="vp-weather-article-list"
           onDetailClick={handleDetailClick}
         />
       </View>
