@@ -17,6 +17,7 @@ interface IPageContentParam {
   strNavigationTitle?: string; // 顶部导航：导航名称
   colorBackgroud?: string; // 顶部导航：背景颜色
   colorTitle?: string; // 顶部导航：文本颜色
+  isSafeBottom?: boolean; // 是否留出底部的保护距离
   children?: any;
 }
 
@@ -29,6 +30,7 @@ export default function PageContent(props: IPageContentParam) {
     strNavigationTitle = "",
     colorBackgroud = "#ffffff",
     colorTitle = "#000000",
+    isSafeBottom = false,
     children,
   } = props;
 
@@ -58,7 +60,11 @@ export default function PageContent(props: IPageContentParam) {
       />
       {/* 渲染对应内容 */}
       <View
-        className={`page-content-children ${customClass}`}
+        className={
+          `page-content-children ` +
+          `${isSafeBottom ? "safe-bottom " : ""}` +
+          `${customClass} `
+        }
         style={`${customStyle}`}
       >
         {children}

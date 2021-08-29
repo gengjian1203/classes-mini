@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useRef, useState, useEffect, Fragment } from "react";
 import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import Api from "@/api";
@@ -28,6 +28,7 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
   const systemInfo = Config.SYSTEM_INFO;
   const isMemberChecked = memberInfo?.appBindWorkerId;
   const { setMemberInfo } = useActions(memberInfoActions);
+  const nEasterEggCount = useRef<number>(0);
 
   // 登录
   const handleLoginClick = useCheckLogin((e) => {
@@ -77,6 +78,17 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
     });
   };
 
+  // 点击昵称名称
+  const handleNickNameClick = () => {
+    console.log("handleNickNameClick");
+    nEasterEggCount.current = ++nEasterEggCount.current % 10;
+    if (nEasterEggCount.current === 0) {
+      Taro.navigateTo({
+        url: "/pages/EasterEgg/index",
+      });
+    }
+  };
+
   return (
     <View
       className="module-header-wrap"
@@ -116,7 +128,10 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
           </View>
           <View className="flex-center-v module-header-right">
             <View className="flex-start-h module-header-right-up">
-              <Text className="text-ellipsis module-header-right-up-name">
+              <Text
+                className="text-ellipsis module-header-right-up-name"
+                onClick={handleNickNameClick}
+              >
                 {memberInfo?.userNickName}
               </Text>
               {isMemberChecked ? (

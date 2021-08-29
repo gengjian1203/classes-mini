@@ -99,16 +99,13 @@ const queryWeatherInfo = async (objParams: any = {}) => {
 /**
  * 测试爬取文章内容
  */
-const spiderArticleInfo = async (objParams: any = {}) => {
+const spiderArticleInfoWeiXin = async (objParams: any = {}) => {
   const params = {
     type: "WEIXIN",
-    data: {
-      urlServce: "https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA",
-      ...objParams,
-    },
+    data: objParams,
   };
   const res = await CloudFetch.callFunction("spiderArticleInfo", params);
-  console.log("spiderArticleInfo", res);
+  console.log("spiderArticleInfoWeiXin", res);
   return res.data;
 };
 
@@ -126,6 +123,6 @@ export default {
   queryAppTabBar,
   queryHomeInfo,
   queryWeatherInfo,
-  spiderArticleInfo,
+  spiderArticleInfoWeiXin,
   spiderWeatherInfo,
 };

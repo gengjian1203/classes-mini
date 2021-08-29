@@ -8,6 +8,10 @@ export default {
       pages: ["index"], // 文章页
     },
     {
+      root: "pages/EasterEgg",
+      pages: ["index"], // 彩蛋管理页面
+    },
+    {
       root: "pages/ECharts",
       pages: ["index"], // 数据展示页
     },

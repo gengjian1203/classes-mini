@@ -10,14 +10,14 @@ import useCheckLogin from "@/hooks/useCheckLogin";
 import "./index.less";
 
 interface IArticleType {
-  source: String; // "WEIXIN"; // 文章来源
-  href: String; // "https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA"; // 文章Url
-  title: String; // "";
-  author: String; // "吉林省气象局";
-  content: String; // "";
-  posterImg: String; // "";
-  createDate: String; // "";
-  createTime: String; // "";
+  source?: String; // "WEIXIN"; // 文章来源
+  href?: String; // "https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA"; // 文章Url
+  title?: String; // "";
+  author?: String; // "吉林省气象局";
+  content?: String; // "";
+  posterImg?: String; // "";
+  createDate?: String; // "";
+  createTime?: String; // "";
 }
 
 export default function ArticleDetail() {
@@ -43,7 +43,7 @@ export default function ArticleDetail() {
   }, []);
 
   return (
-    <PageContent isShowLeftIcon strNavigationTitle="文章详情">
+    <PageContent isShowLeftIcon strNavigationTitle="文章详情" isSafeBottom>
       <View className="article-detail-wrap">
         {/* 标题 */}
         <View className="article-detail-item">

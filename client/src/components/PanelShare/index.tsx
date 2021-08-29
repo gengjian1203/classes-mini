@@ -165,6 +165,7 @@ export default function PanelShare(props: IPanelShareProps) {
             title: "海报生成中",
             icon: "none",
             mask: true,
+            duration: 20000,
           });
         }
       }

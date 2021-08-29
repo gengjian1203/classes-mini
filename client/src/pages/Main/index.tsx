@@ -172,9 +172,6 @@ export default function Main() {
     Taro.navigateTo({
       url: "/pages/ArticleDetail/index",
     });
-    // const res = await Api.cloud.fetchAppInfo.spiderArticleInfo({});
-    // console.log("handleBtnTestClick", res);
-
     // 新增员工
     // const name = "孙尚香";
     // const params = {
