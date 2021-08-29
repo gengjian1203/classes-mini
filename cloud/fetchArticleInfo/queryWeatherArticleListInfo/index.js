@@ -13,14 +13,14 @@ const MAX_LIMIT = 100; // 每次取100条
 
 async function queryWeatherArticleListInfo(data, db, strMemberId) {
   let objResult = {};
-  const { nPageNum = 0, nPageSize = MAX_LIMIT } = data || {};
+  const { pageNum = 0, pageSize = MAX_LIMIT } = data || {};
 
   const [resDataList, resTotal] = await Promise.all([
     db
       .collection("TB_WEATHER_ARTICLE")
       .orderBy("createDate", "desc")
-      .skip(nPageNum * nPageSize)
-      .limit(nPageSize)
+      .skip(pageNum * pageSize)
+      .limit(pageSize)
       .field({
         _id: true,
         source: true,

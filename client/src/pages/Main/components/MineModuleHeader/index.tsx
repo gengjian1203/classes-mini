@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect, Fragment } from "react";
+import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import Api from "@/api";
 import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useActions from "@/hooks/useActions";
+import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
 import Utils from "@/utils";
 
@@ -27,6 +29,8 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
 
   const systemInfo = Config.SYSTEM_INFO;
   const isMemberChecked = memberInfo?.appBindWorkerId;
+  const { isEasterEgg } = useSelector((state) => state.appInfo);
+  const { setAppEasterEgg } = useActions(appInfoActions);
   const { setMemberInfo } = useActions(memberInfoActions);
   const nEasterEggCount = useRef<number>(0);
 
@@ -83,9 +87,21 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
     console.log("handleNickNameClick");
     nEasterEggCount.current = ++nEasterEggCount.current % 10;
     if (nEasterEggCount.current === 0) {
-      Taro.navigateTo({
-        url: "/pages/EasterEgg/index",
-      });
+      setAppEasterEgg(!isEasterEgg);
+      if (!isEasterEgg) {
+        Taro.showToast({
+          title: "开启彩蛋模式",
+          icon: "none",
+        });
+      } else {
+        Taro.showToast({
+          title: "关闭彩蛋模式",
+          icon: "none",
+        });
+      }
+      // Taro.navigateTo({
+      //   url: "/pages/EasterEgg/index",
+      // });
     }
   };
 

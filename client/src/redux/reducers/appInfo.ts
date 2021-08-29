@@ -4,6 +4,7 @@ import {
   SET_APP_HOME_PAGE,
   SET_APP_TAB_BAR_INFO,
   SET_APP_TAB_BAR_CURRENT_ID,
+  SET_APP_EASTER_EGG,
   SET_SHOW_LAYOUT_LOGIN,
 } from "@/redux/constants/appInfo";
 
@@ -23,6 +24,7 @@ const INITIAL_STATE = {
     ],
     strCurrentId: "",
   }, // 底部导航状态
+  isEasterEgg: false, // 是否为彩蛋模式
   isShowLayoutLogin: false, // 登录弹窗状态
 };
 
@@ -42,6 +44,9 @@ export default function appInfoReducer(state = INITIAL_STATE, action) {
         return draft;
       case SET_APP_TAB_BAR_CURRENT_ID:
         draft.tabBarInfo.strCurrentId = payload;
+        return draft;
+      case SET_APP_EASTER_EGG:
+        draft.isEasterEgg = payload;
         return draft;
       case SET_SHOW_LAYOUT_LOGIN:
         draft.isShowLayoutLogin = payload;

@@ -3,6 +3,7 @@ import {
   SET_APP_HOME_PAGE,
   SET_APP_TAB_BAR_INFO,
   SET_APP_TAB_BAR_CURRENT_ID,
+  SET_APP_EASTER_EGG,
   SET_SHOW_LAYOUT_LOGIN,
 } from "@/redux/constants/appInfo";
 
@@ -33,6 +34,13 @@ const appInfoActions = (dispatch) => {
     setAppTabBarCurrentId: (payload) => {
       dispatch({
         type: SET_APP_TAB_BAR_CURRENT_ID,
+        payload,
+      });
+    },
+    // 设置彩蛋模式
+    setAppEasterEgg: (payload) => {
+      dispatch({
+        type: SET_APP_EASTER_EGG,
         payload,
       });
     },

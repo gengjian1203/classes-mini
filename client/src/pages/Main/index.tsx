@@ -49,14 +49,7 @@ export default function Main() {
   );
   const { setShareInfo } = useActions(shareInfoActions);
 
-  const onLoad = async () => {
-    const params = {
-      nPageNum: 0,
-      nPageSize: 10,
-    };
-    // const res = await WXCloud.articleInfo.queryArticleList(params)
-    // console.log('onLoad', res)
-  };
+  const onLoad = async () => {};
 
   // 监听底部导航数据变化
   const watchTabBarCurrent = async () => {
@@ -305,12 +298,12 @@ export default function Main() {
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
       /> */}
-      <View>测试</View>
+      {/* <View>测试</View>
       <ButtonIcon
         value="iconselect"
         color="var(--color-primary)"
         onClick={handleBtnTestClick}
-      />
+      /> */}
       {/* <View>跳转多图表</View>
       <ButtonIcon
         value="iconselect"

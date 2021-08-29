@@ -24,13 +24,19 @@ const queryWeiXinInfoDetail = async (href, superagent, cheerio, entities) => {
     .html()
     .replace(/\n/g, "")
     .trim();
-  objDetail.posterImg = $("#img-content img").attr("src");
 
-  // const author = $(".author").text(); // 作者信息
-  // objDetail.author = author.slice(0, author.indexOf("，")); // 取逗号之前的字符
-  // objDetail.author = objDetail.author.replace(/知乎/g, "");
-  // objDetail.content = entities.decode($(".content").html()); // 文章内容
-  // objDetail.content = objDetail.content.replace(/知乎/g, "");
+  const listImage = $("#img-content").find("img");
+  const arrImage = [];
+  for (let index in listImage) {
+    const objHtml = listImage.eq(index);
+    const srcImage = objHtml.attr("data-src");
+    if (srcImage) {
+      arrImage.push(srcImage);
+    }
+  }
+  console.log("posterImg", arrImage);
+  objDetail.posterImg =
+    arrImage && (arrImage[1] || arrImage[2] || arrImage[0] || "");
 
   return objDetail;
 };

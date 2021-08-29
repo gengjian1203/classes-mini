@@ -19,14 +19,18 @@ export default function Moment(props: IMomentProps) {
 
   return (
     <View
-      className="moment-item border-bottom-line"
+      className="flex-center-h moment-item border-bottom-line"
       onClick={() => handleDetailClick(info)}
     >
       <View className="item-left">
         <Image
           className="item-logo"
-          src={info.logo || ""}
-          mode="widthFix"
+          src={
+            info.logo ||
+            info.posterImg ||
+            "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/logo-mini.jpg"
+          }
+          mode="scaleToFill"
         ></Image>
       </View>
       <View className="flex-center-v item-right">
