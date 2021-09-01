@@ -35,6 +35,7 @@ const queryWeiXinInfoDetail = async (href, superagent, cheerio, entities) => {
     }
   }
   console.log("posterImg", arrImage);
+  objDetail.arrImage = arrImage;
   objDetail.posterImg =
     arrImage && (arrImage[1] || arrImage[2] || arrImage[0] || "");
 
@@ -46,24 +47,20 @@ async function spiderWeiXinInfo(db, superagent, cheerio, entities, urlServce) {
   const arrResultList = [];
 
   const dateNow = Utils.getStringDate(new Date());
-
-  const objInfo = {
-    createDate: dateNow.date, // 创建时间
-    createTime: dateNow.timeString, // 创建时间
-  };
-
-  const { title, author, content, posterImg } = await queryWeiXinInfoDetail(
+  const objDetail = await queryWeiXinInfoDetail(
     urlServce,
     superagent,
     cheerio,
     entities
   );
-  objInfo.source = "WEIXIN"; // 文章来源
-  objInfo.href = urlServce; // 文章Url
-  objInfo.title = title;
-  objInfo.author = author;
-  objInfo.content = content;
-  objInfo.posterImg = posterImg;
+
+  const objInfo = {
+    createDate: dateNow.date, // 创建时间
+    createTime: dateNow.timeString, // 创建时间
+    source: "WEIXIN", // 文章来源
+    href: urlServce, // 文章Url
+    ...objDetail,
+  };
 
   arrResultList.push(objInfo);
 

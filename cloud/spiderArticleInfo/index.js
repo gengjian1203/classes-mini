@@ -8,6 +8,7 @@ const Entities = require("html-entities").XmlEntities;
 const entities = new Entities(); // 解析html
 charset(superagent);
 
+const sendEmail = require("sendEmail/index.js");
 const spiderZhiHuInfo = require("spiderZhiHuInfo/index.js");
 const spiderWeiXinInfo = require("spiderWeiXinInfo/index.js");
 
@@ -70,6 +71,18 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
         const res = await db.collection(strDBTable).add({ data: item });
         arrResult.push(item);
       }
+    }
+
+    if (arrResult && arrResult.length > 0) {
+      const arrArticleTitle = arrResult.map((item) => {
+        return `《${item.title}》`;
+      });
+      const contentHTML =
+        `尊敬的主人：<br>` +
+        `你好！<br>` +
+        `今天共为您爬取到${arrArticleTitle.length}篇文章，` +
+        `分别为${arrArticleTitle.join(",")}。`;
+      sendEmail(contentHTML);
     }
   } catch (e) {
     console.error("pushArticleInfoList error.", e, arrData);

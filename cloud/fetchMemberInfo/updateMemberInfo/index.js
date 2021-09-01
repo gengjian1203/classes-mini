@@ -43,6 +43,27 @@ async function updateMemberInfo(data, db, strMemberId) {
     console.error("updateMemberInfo error", e);
   }
 
+  try {
+    if (objResult && objResult.data && objResult.data.appBindWorkerId) {
+      const objWorker = await db
+        .collection("TB_WORKER")
+        .doc(objResult.data.appBindWorkerId)
+        .get();
+      objResult.data.objWorker = objWorker.data;
+    }
+  } catch (e) {
+    objResult.data.appBindWorkerId = "";
+    db.collection("TB_MEMBER")
+      .doc(strMemberId)
+      .update({
+        data: {
+          appBindWorkerId: "",
+        },
+      });
+    // 没有查到。异常。
+    console.error("queryWorkerInfo error", e);
+  }
+
   return objResult;
 }
 

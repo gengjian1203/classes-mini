@@ -215,20 +215,24 @@ export default function VpHome(props: IVpHomeParam) {
           selectedDate={strSelectDay}
           currentView={strSelectMonth}
           mode="lunar"
-          marks={[
-            { value: "2021-08-11", color: "red", markSize: "9px" },
-            { value: "2021-08-12", color: "pink", markSize: "9px" },
-            { value: "2021-08-13", color: "gray", markSize: "9px" },
-            { value: "2021-08-14", color: "yellow", markSize: "9px" },
-            { value: "2021-08-15", color: "darkblue", markSize: "9px" },
-            { value: "2021-08-16", color: "pink", markSize: "9px" },
-            { value: "2021-09-17", color: "green", markSize: "9px" },
-          ]}
-          extraInfo={[
-            { value: "2021-09-21", text: "生日", color: "red" },
-            { value: "2021-09-22", text: "休假", color: "darkblue" },
-            { value: "2021-09-23", text: "会议", color: "gray" },
-          ]}
+          marks={
+            [
+              // { value: "2021-08-11", color: "red", markSize: "9px" },
+              // { value: "2021-08-12", color: "pink", markSize: "9px" },
+              // { value: "2021-08-13", color: "gray", markSize: "9px" },
+              // { value: "2021-08-14", color: "yellow", markSize: "9px" },
+              // { value: "2021-08-15", color: "darkblue", markSize: "9px" },
+              // { value: "2021-08-16", color: "pink", markSize: "9px" },
+              // { value: "2021-09-17", color: "green", markSize: "9px" },
+            ]
+          }
+          extraInfo={
+            [
+              // { value: "2021-09-21", text: "生日", color: "red" },
+              // { value: "2021-09-22", text: "休假", color: "darkblue" },
+              // { value: "2021-09-23", text: "会议", color: "gray" },
+            ]
+          }
           bodyStyle={{ marginBottom: "-1rem" }}
           customStyleGenerator={customStyleGenerator}
           onDayClick={handleCalendarDayClick}
