@@ -1,11 +1,12 @@
 {
   "permissions": {
-    "openapi": [
-    ]
+    "openapi": []
   },
-  "triggers": [{
-    "name": "updateArticleInfo",
-    "type": "timer",
-    "config": "0 0 12 * * * *"
-  }]
+  "triggers": [
+    {
+      "name": "spiderArticleInfo",
+      "type": "timer",
+      "config": "0 0 12 * * * *"
+    }
+  ]
 }

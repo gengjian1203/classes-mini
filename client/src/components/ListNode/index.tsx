@@ -28,6 +28,7 @@ export interface IInfoType {
   address?: string; // 地理位置
   source?: string; // 源类型
   images?: Array<string>; // 缩略图
+  arrImages?: Array<string>; // 缩略图
 }
 
 interface IListNodeProps {

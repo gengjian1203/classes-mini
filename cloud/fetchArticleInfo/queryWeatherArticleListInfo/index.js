@@ -30,6 +30,7 @@ async function queryWeatherArticleListInfo(data, db, strMemberId) {
         posterImg: true,
         createDate: true,
         createTime: true,
+        arrImages: true,
       })
       .get(),
     db.collection("TB_WEATHER_ARTICLE").count(),

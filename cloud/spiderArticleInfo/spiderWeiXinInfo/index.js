@@ -26,18 +26,18 @@ const queryWeiXinInfoDetail = async (href, superagent, cheerio, entities) => {
     .trim();
 
   const listImage = $("#img-content").find("img");
-  const arrImage = [];
+  const arrImages = [];
   for (let index in listImage) {
     const objHtml = listImage.eq(index);
     const srcImage = objHtml.attr("data-src");
     if (srcImage) {
-      arrImage.push(srcImage);
+      arrImages.push(srcImage);
     }
   }
-  console.log("posterImg", arrImage);
-  objDetail.arrImage = arrImage;
+  console.log("posterImg", arrImages);
+  objDetail.arrImages = Array.from(new Set(arrImages));
   objDetail.posterImg =
-    arrImage && (arrImage[1] || arrImage[2] || arrImage[0] || "");
+    (arrImages && (arrImages[1] || arrImages[2] || arrImages[0] || "")) || "";
 
   return objDetail;
 };
