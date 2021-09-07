@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchMemberInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 /**
  * 注册成员

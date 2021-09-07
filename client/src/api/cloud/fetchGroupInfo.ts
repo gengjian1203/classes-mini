@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchGroupInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 /**
  * 新建群组

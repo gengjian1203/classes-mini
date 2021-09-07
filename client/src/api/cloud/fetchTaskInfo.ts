@@ -1,11 +1,11 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchTaskInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 interface IAddTaskParams {
-  fxDate: string;
-  keyName: string;
-  arrData: Array<any>;
+  fxDate?: string;
+  keyName?: string;
+  arrData?: Array<any>;
 }
 /**
  * 新增任务

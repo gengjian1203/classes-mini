@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchAppInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 /**
  * 查询APP级别底部导航

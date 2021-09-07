@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchArticleInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 /**
  * 删除对应天气文章

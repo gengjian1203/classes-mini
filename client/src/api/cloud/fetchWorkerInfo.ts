@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchWorkerInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 interface IAddWorkerParams {
   name?: string; // 名称

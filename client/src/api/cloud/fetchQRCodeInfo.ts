@@ -1,6 +1,6 @@
 import CloudFetch from "@/services/CloudFetch";
 
-const CLOUD_NAME = "fetchQRCodeInfo";
+const CLOUD_NAME = "fetchCloudInfo";
 
 /**
  * 创建二维码
