@@ -1,7 +1,7 @@
 const Utils = require("../utils/index.js");
 /**
- * spiderZhiHuInfo
- * 爬取知乎日报文章
+ * queryWeiXinInfoDetail
+ * 爬取微信公众号文章
  * @param {*} data
  * @param {*} db
  * @returns

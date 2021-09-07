@@ -1,8 +1,17 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { AtForm, AtList, AtListItem, AtInput, AtButton } from "taro-ui";
+import {
+  AtForm,
+  AtList,
+  AtListItem,
+  AtInput,
+  AtButton,
+  AtSearchBar,
+} from "taro-ui";
 import Taro from "@tarojs/taro";
-import { View, Image, Text, Picker } from "@tarojs/components";
+import { View, Image, Text, Picker, ScrollView } from "@tarojs/components";
+import Api from "@/api";
 import Dialog from "@/components/Dialog";
+import ListNode from "@/components/ListNode";
 import ConfigTag from "@/config/tag";
 import useDebounce from "@/hooks/useDebounce";
 import Utils from "@/utils";
@@ -43,12 +52,23 @@ export default function DialogWorker(props: IDialogWorkerParam) {
   const [isShowMemberListFirst, setShowMemberListFirst] = useState<boolean>(
     true
   );
+  // 第一分页
   const [strWorkerId, setWorkerId] = useState<string>("");
   const [strWorkerName, setWorkerName] = useState<string>("");
   const [strWorkerCellphone, setWorkerCellphone] = useState<string>("");
   const [strWorkerGender, setWorkerGender] = useState<number>(2);
   const [strWorkerTag, setWorkerTag] = useState<string>("");
   const [objBindMemberInfo, setBindMemberInfo] = useState<any>({});
+  // 第二分页
+  const [isLoadCompleteMemberList, setLoadCompleteMemberList] = useState<
+    boolean
+  >(false);
+  const [strSearchMemberName, setSearchMemberName] = useState<string>("");
+  const [arrMemberList, setMemberList] = useState<Array<any>>([]);
+  const [nMemberCount, setMemberCount] = useState<number>(0);
+  const [showMemberListLoadingTip, setMemberListLoadingTip] = useState<boolean>(
+    false
+  );
 
   useEffect(() => {
     setWorkerId(workerInfo?._id || "");
@@ -60,6 +80,14 @@ export default function DialogWorker(props: IDialogWorkerParam) {
     setBindMemberInfo(objBindMemberInfoTmp);
   }, [workerInfo]);
 
+  const resetPageMember = () => {
+    setLoadCompleteMemberList(false);
+    setSearchMemberName("");
+    setMemberList([]);
+    setMemberCount(0);
+    setMemberListLoadingTip(false);
+  };
+
   // 关闭职工编辑弹窗
   const handleDialogWorkerClose = (e) => {
     onDialogWorkerClose && onDialogWorkerClose(e);
@@ -69,13 +97,13 @@ export default function DialogWorker(props: IDialogWorkerParam) {
   const handleNameChange = useDebounce((value) => {
     console.log("handleNameChange", value);
     setWorkerName(value);
-  }, 500);
+  }, 200);
 
   // 手机数值变化
   const handleCellphoneChange = useDebounce((value) => {
     console.log("handleNameChange", value);
     setWorkerCellphone(value);
-  }, 500);
+  }, 200);
 
   // 性别数值变化
   const handleGenderChange = useDebounce((e) => {
@@ -100,17 +128,54 @@ export default function DialogWorker(props: IDialogWorkerParam) {
     setWorkerTag(selectTagCode);
   }, 200);
 
+  // 搜索成员姓名
+  const handleSearchMemberNameChange = useDebounce((value) => {
+    console.log("handleNameChange", value);
+    setSearchMemberName(value);
+  }, 200);
+
+  // 确认搜索
+  const handleSearchMemberNameClick = useDebounce(async () => {
+    setLoadCompleteMemberList(false);
+    const param = {
+      name: strSearchMemberName,
+    };
+    const res = await Api.cloud.fetchMemberInfo.queryMemberList(param);
+    console.log("handleSearchMemberNameClick", res);
+    const { dataList, totalCount } = res || {};
+    const list = new Array(10).fill(dataList[0]);
+    setMemberList(
+      list.map((item) => {
+        return {
+          // ...item,
+          name: item?.userNickName,
+          logo: item?.userAvatarUrl,
+        };
+      })
+    );
+    setMemberCount(totalCount);
+    setLoadCompleteMemberList(true);
+  }, 200);
+
+  const hanldeBtnBindClick = useDebounce(() => {
+    console.log("hanldeBtnBindClick");
+  }, 200);
+
   // 点击切换至绑定用户页面
   const handleBindMemberClick = (value) => {
     console.log("handleBindMemberClick", value);
     setShowMemberList(true);
     setShowMemberListFirst(false);
+    handleSearchMemberNameClick();
   };
 
   // 点击切换回编辑员工页面
   const handleDialogWorkBackClick = (value) => {
     console.log("handleBindMemberClick", value);
     setShowMemberList(false);
+    setTimeout(() => {
+      resetPageMember();
+    }, 500);
   };
 
   // 保存按钮
@@ -222,8 +287,31 @@ export default function DialogWorker(props: IDialogWorkerParam) {
           )}
         </View>
         {/* 绑定成员面板 */}
-        <View className="dialog-worker-content">
-          <View className="demo-text-2">2</View>
+        <View className="flex-center-v dialog-member-content">
+          <AtSearchBar
+            value={strSearchMemberName}
+            placeholder="请输入微信昵称（如：张三）"
+            showActionButton
+            onChange={handleSearchMemberNameChange}
+            onActionClick={handleSearchMemberNameClick}
+          />
+          <ScrollView scrollY className="dialog-member-scroll">
+            <ListNode
+              isLoadCompleteList={isLoadCompleteMemberList}
+              strType="MEMBER"
+              customClass="dialog-member-list"
+              showBottomLoadingTip={showMemberListLoadingTip}
+              arrList={arrMemberList}
+            />
+          </ScrollView>
+          <AtButton
+            className="dialog-worker-btn"
+            type="primary"
+            circle
+            onClick={hanldeBtnBindClick}
+          >
+            绑定
+          </AtButton>
         </View>
       </View>
     </Dialog>

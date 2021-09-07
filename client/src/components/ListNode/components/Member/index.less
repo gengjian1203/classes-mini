@@ -1,0 +1,76 @@
+.member-item {
+  box-sizing: border-box;
+  height: 140px;
+  flex: 1;
+  justify-content: flex-start;
+  border-bottom: 2px solid var(--color-gray-7);
+}
+
+.member-item:last-child {
+  border-bottom: 0;
+}
+
+.member-item-left {
+  flex: 0 0 100px;
+}
+
+.member-item-left-logo {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--border-radius-max);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--color-white);
+  box-shadow: 4px 4px 4px var(--color-gray-7);
+}
+
+.member-item-mid {
+  margin-left: var(--margin-xs);
+  width: 0;
+  flex: 1;
+}
+
+.member-item-mid-name {
+  width: 100%;
+}
+
+.member-item-mid-name-text {
+  margin-right: var(--margin-base);
+  font-size: var(--font-size-md);
+  color: var(--color-gray-1);
+}
+
+.member-item-mid-name-sign {
+  padding: var(--padding-mini) var(--padding-base);
+  text-align: center;
+  font-size: var(--font-size-xs);
+  line-height: var(--font-size-xs);
+  border-radius: var(--border-radius-md);
+}
+
+.member-item-mid-cellphone {
+  width: 100%;
+  font-size: var(--font-size-md);
+  color: var(--color-gray-1);
+}
+
+.member-item-right {
+  flex: 0 0 200px;
+  height: 100%;
+}
+
+.member-item-right-edit {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+}
+
+.member-item-right-delete {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-red);
+}

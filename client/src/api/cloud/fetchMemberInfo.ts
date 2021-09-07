@@ -29,6 +29,21 @@ const queryMember = async (objParams: any = {}) => {
 };
 
 /**
+ * 查询成员列表
+ * @param objParams
+ * @returns
+ */
+const queryMemberList = async (objParams: any = {}) => {
+  const params = {
+    type: "QUERY_MEMBER_LIST",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
+  console.log("queryMemberList", res);
+  return res.data;
+};
+
+/**
  * 查询成员
  */
 const updateMember = async (objParams: any = {}) => {
@@ -44,5 +59,6 @@ const updateMember = async (objParams: any = {}) => {
 export default {
   addMember,
   queryMember,
+  queryMemberList,
   updateMember,
 };

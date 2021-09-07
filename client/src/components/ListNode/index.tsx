@@ -7,6 +7,7 @@ import emptyList from "@/images/emptyList.png";
 
 import Base from "./components/Base";
 import Group from "./components/Group";
+import Member from "./components/Member";
 import Moment from "./components/Moment";
 import Worker from "./components/Worker";
 
@@ -37,6 +38,7 @@ interface IListNodeProps {
   strType:
     | "BASE"
     | "GROUP" // 群组类型
+    | "MEMBER" // 成员类型
     | "MOMENT" // 朋友圈类型
     | "WORKER"; // 职工类型
   arrList: Array<IInfoType>;
@@ -79,6 +81,17 @@ export default function ListNode(props: IListNodeProps) {
           return (
             <Group
               key={`group-${index}`}
+              info={item}
+              onDetailClick={onDetailClick}
+            />
+          );
+        });
+      }
+      case "MEMBER": {
+        return arrList.map((item, index) => {
+          return (
+            <Member
+              key={`member-${index}`}
               info={item}
               onDetailClick={onDetailClick}
             />
@@ -136,6 +149,42 @@ export default function ListNode(props: IListNodeProps) {
     const arrSkeleton = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     switch (strType) {
+      case "BASE": {
+      }
+      case "MEMBER": {
+        return arrSkeleton.map((item, index) => {
+          return (
+            <Skeleton
+              key={`list-skeleton-${index}`}
+              type="row"
+              titleWidth="100%"
+              row={2}
+              rowProps={{ width: "80%", height: 26 }}
+              avatar
+              customStyle={{
+                height: Taro.pxTransform(140),
+                borderBottom: "1px solid var(--color-gray-7)",
+              }}
+            />
+          );
+        });
+      }
+      case "MOMENT": {
+        return arrSkeleton.map((item, index) => {
+          return (
+            <Skeleton
+              key={`list-skeleton-${index}`}
+              type="row"
+              title
+              titleWidth="60%"
+              row={2}
+              rowProps={{ width: "100%", height: 24 }}
+              avatar
+              customClass="skeleton-item"
+            />
+          );
+        });
+      }
       case "WORKER": {
         return arrSkeleton.map((item, index) => {
           return (
@@ -152,24 +201,6 @@ export default function ListNode(props: IListNodeProps) {
                 height: Taro.pxTransform(140),
                 borderBottom: "1px solid var(--color-gray-7)",
               }}
-            />
-          );
-        });
-      }
-      case "BASE": {
-      }
-      case "MOMENT": {
-        return arrSkeleton.map((item, index) => {
-          return (
-            <Skeleton
-              key={`list-skeleton-${index}`}
-              type="row"
-              title
-              titleWidth="60%"
-              row={2}
-              rowProps={{ width: "100%", height: 24 }}
-              avatar
-              customClass="skeleton-item"
             />
           );
         });
