@@ -24,7 +24,7 @@ export default class AppInitDataService {
     // 初始化云函数
     if (process.env.TARO_ENV === "weapp") {
       Taro.cloud.init({
-        env: Config.env,
+        env: Config.cloudName,
       });
     }
   };

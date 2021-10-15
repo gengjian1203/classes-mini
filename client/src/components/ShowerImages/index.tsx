@@ -63,9 +63,9 @@ export default function ShowerImages(props: IShowerImagesParam) {
                     className="image-multiple-item"
                     onClick={(e) => hanldeImagesClick(e, index)}
                   >
-                    {index === 8 && nLength > 8 && (
+                    {index === 8 && nLength > 9 && (
                       <View className="flex-center-v image-multiple-item-more">
-                        +{nLength}
+                        +{nLength - 9}
                       </View>
                     )}
                   </Image>

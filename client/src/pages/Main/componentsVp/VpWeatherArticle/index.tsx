@@ -15,7 +15,7 @@ interface IVpWeatherArticleParam {
   arrWeatherArticleList?: Array<any>;
   isShowWeatherArticleListLoadingTip?: boolean;
   isLoadComplete?: boolean;
-  onWeatherArticleListUpdate?: () => {};
+  onWeatherArticleListUpdate?: () => void;
 }
 
 export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
