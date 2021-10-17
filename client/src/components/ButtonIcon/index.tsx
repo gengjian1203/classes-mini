@@ -12,8 +12,9 @@ interface IButtonIconParam {
   radius?: number; // 边角
   size?: number; // 字号
   color?: string; // 按钮背景色（仅为iconfont可用）
-  openType?: string; // 按钮开发功能类型
-  customStyle?: string; // 自定义样式
+  openType?: string; // 按钮开放功能类型
+  customButtonStyle?: any; // 自定义样式
+  customStyle?: any; // 自定义样式
   onClick?: (e?: any) => void; // 按钮点击事件回调
 }
 
@@ -26,7 +27,8 @@ export default function ButtonIcon(props: IButtonIconParam) {
     size = 80,
     color = "var(--color-primary)",
     openType = "",
-    customStyle = "",
+    customButtonStyle = {},
+    customStyle = {},
     onClick = () => {},
   } = props;
 
@@ -40,34 +42,38 @@ export default function ButtonIcon(props: IButtonIconParam) {
     <AtButton
       className="button-icon-wrap"
       openType={openType}
-      customStyle={
-        `width: ${Taro.pxTransform(width, systemInfo.screenWidth)}; ` +
-        `height: ${Taro.pxTransform(height, systemInfo.screenWidth)}; ` +
-        `border-radius: ${Taro.pxTransform(radius, systemInfo.screenWidth)}; `
-      }
+      customStyle={{
+        width: `${Taro.pxTransform(width)}`,
+        height: `${Taro.pxTransform(height)}`,
+        borderRadius: `${Taro.pxTransform(radius)}`,
+      }}
       onClick={handleIconClick}
     >
-      {value.includes("icon") ? (
-        <View
-          className={
-            `flex-center-v ` +
-            `iconfont ` +
-            `${value} ` +
-            `button-iconfont-content `
-          }
-          style={
-            `background-image: linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff)); ` +
-            `font-size: ${Taro.pxTransform(size, systemInfo.screenWidth)}; ` +
-            `${customStyle}; `
-          }
-        ></View>
-      ) : (
-        <Image
-          src={value}
-          className="button-iconimg-content"
-          mode="aspectFill"
-        />
-      )}
+      <View
+        className={`flex-center-v ` + `button-content`}
+        style={{
+          backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
+          ...customButtonStyle,
+        }}
+      >
+        {value.includes("icon") ? (
+          <View
+            className={`iconfont ` + `${value} ` + `button-iconfont-content `}
+            style={{
+              lineHeight: `${Taro.pxTransform(height)}`,
+              fontSize: `${Taro.pxTransform(size)}`,
+              ...customStyle,
+            }}
+          />
+        ) : (
+          <Image
+            src={value}
+            className="button-iconimg-content"
+            style={customStyle}
+            mode="aspectFill"
+          />
+        )}
+      </View>
     </AtButton>
   );
 }

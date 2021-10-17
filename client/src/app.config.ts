@@ -27,6 +27,10 @@ export default {
       root: "pages/Main",
       pages: ["index"], // 首页
     },
+    {
+      root: "pages/PersonDetail",
+      pages: ["index"], // 个人详情页
+    },
   ],
   preloadRule: {},
   window: {

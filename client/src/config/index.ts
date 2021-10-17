@@ -13,6 +13,7 @@ const cloudInfo = cloud[appId][env];
 const config = {
   cloudName: cloudInfo?.cloudName || "",
   cloudPath: cloudInfo?.cloudPath || "",
+  cloudDownLoad: cloudInfo?.cloudDownLoad || "",
   SYSTEM_INFO: resSystemInfo || {},
   ACCOUNT_INFO: resAccountInfo || {},
 };
