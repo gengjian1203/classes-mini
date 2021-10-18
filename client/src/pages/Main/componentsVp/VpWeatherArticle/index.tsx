@@ -6,6 +6,7 @@ import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import Banner from "@/components/Banner";
 import ListNode from "@/components/ListNode";
+import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
 
 import "./index.less";
@@ -93,24 +94,19 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
           isLoadComplete={isLoadComplete}
           arrBannerList={[
             {
-              url:
-                "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/weather-banner_0.jpg",
+              url: `${Config.cloudPath}/resource/weather-banner_0.jpg`,
             },
             {
-              url:
-                "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/weather-banner_1.jpg",
+              url: `${Config.cloudPath}/resource/weather-banner_1.jpg`,
             },
             {
-              url:
-                "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/weather-banner_2.jpg",
+              url: `${Config.cloudPath}/resource/weather-banner_2.jpg`,
             },
             {
-              url:
-                "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/weather-banner_3.jpg",
+              url: `${Config.cloudPath}/resource/weather-banner_3.jpg`,
             },
             {
-              url:
-                "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/weather-banner_4.jpg",
+              url: `${Config.cloudPath}/resource/weather-banner_4.jpg`,
             },
           ]}
           onBannerClick={handleBannerClick}

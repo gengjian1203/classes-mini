@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { View, Image, Text } from "@tarojs/components";
 import ShowerImages from "@/components/ShowerImages";
+import Config from "@/config";
 
 import { IInfoType } from "../../index";
 
@@ -42,7 +43,7 @@ export default function Moment(props: IMomentProps) {
           src={
             info?.logo ||
             info?.posterImg ||
-            "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/logo-mini.jpg"
+            `${Config.cloudPath}resource/logo-mini.jpg`
           }
           mode="scaleToFill"
         ></Image>

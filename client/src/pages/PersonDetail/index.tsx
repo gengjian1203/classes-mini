@@ -34,7 +34,7 @@ export default function PersonDetail() {
     });
     setLoadComplete(false);
     const jsonUrl =
-      `${Config.cloudDownLoad}person/list/${persionId}.json` +
+      `${Config.cloudDownLoad}person/${persionId}.json` +
       `?t=${new Date().getTime()}`;
     const res: any = await Api.file.getUrl(jsonUrl);
     Taro.hideToast();

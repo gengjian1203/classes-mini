@@ -2,19 +2,25 @@ const cloud = {
   // 即将放飞理想的工具箱
   wx821aadcd431646f9: {
     prod: {
-      cloudName: "",
-      cloudPath: "",
-      cloudDownLoad: "",
+      cloudName: "prod-5gkxku5cdb510bb2",
+      cloudPath:
+        "cloud://prod-5gkxku5cdb510bb2.7072-prod-5gkxku5cdb510bb2-1259256375/",
+      cloudDownLoad:
+        "https://7072-prod-5gkxku5cdb510bb2-1259256375.tcb.qcloud.la/",
     },
     dev: {
-      cloudName: "",
-      cloudPath: "",
-      cloudDownLoad: "",
+      cloudName: "dev-9gred941ab89c01d",
+      cloudPath:
+        "cloud://dev-9gred941ab89c01d.6465-dev-9gred941ab89c01d-1259256375/",
+      cloudDownLoad:
+        "https://6465-dev-9gred941ab89c01d-1259256375.tcb.qcloud.la/",
     },
     test: {
-      cloudName: "",
-      cloudPath: "",
-      cloudDownLoad: "",
+      cloudName: "dev-9gred941ab89c01d",
+      cloudPath:
+        "cloud://dev-9gred941ab89c01d.6465-dev-9gred941ab89c01d-1259256375/",
+      cloudDownLoad:
+        "https://6465-dev-9gred941ab89c01d-1259256375.tcb.qcloud.la/",
     },
   },
   // 气象台历

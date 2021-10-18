@@ -7,6 +7,7 @@ import { View, Image, Canvas } from "@tarojs/components";
 import ButtonIcon from "@/components/ButtonIcon";
 import Skeleton from "@/components/Skeleton";
 import Mask from "@/components/Mask";
+import Config from "@/config";
 import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useThrottle from "@/hooks/useThrottle";
@@ -50,10 +51,10 @@ export default function PanelShare(props: IPanelShareProps) {
     const [srcQRCode, strShareContentUrlTmp] = await Promise.all([
       QRCodeManager.getQRCode(objShareParam),
       await ResourceManager.getUrl(
-        "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg"
+        `${Config.cloudPath}resource/share_thumb.jpg`
       ),
     ]);
-    // console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
+    console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
     await drawCanvasShare(canvasShare, strShareContentUrlTmp, srcQRCode, 2);
     canvasShare.draw(true, () => {
       // Taro.hideLoading();
@@ -99,8 +100,7 @@ export default function PanelShare(props: IPanelShareProps) {
     console.log("useShareAppMessage1", objShareParam, objShareParamDefault);
     const title = strShareTitle || "分享一个小程序，快来看看吧！";
     const imageUrl =
-      strShareImage ||
-      "cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg";
+      strShareImage || `${Config.cloudPath}resource/share_thumb.jpg`;
     const path =
       objShareParam?.sharePathFull ||
       objShareParamDefault?.sharePathFull ||
@@ -209,7 +209,7 @@ export default function PanelShare(props: IPanelShareProps) {
             >
               <Image
                 className="panel-share-img"
-                src="cloud://dev-8panu.6465-dev-8panu-1300943416/resource/share_thumb.jpg"
+                src={`${Config.cloudPath}resource/share_thumb.jpg`}
                 mode="aspectFill"
               />
               <View className="flex-center-h panel-share-simple-footer">
