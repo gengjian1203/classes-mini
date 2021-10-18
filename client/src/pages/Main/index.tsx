@@ -32,7 +32,6 @@ export default function Main() {
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 加载完毕
   const [isUpdateList, setUpdateList] = useState<boolean>(false); // 触发主动列表刷新标识
   const [strNavigationTitle, setNavigationTitle] = useState<string>("");
-  const [nTabBarCurrent, setTabBarCurrent] = useState<number>(0);
   const [strTestImageUrl, setTestImageUrl] = useState<string>("");
 
   // 班级列表
@@ -44,8 +43,10 @@ export default function Main() {
   const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
 
   // 底部导航
-  const { tabBarInfo } = useSelector((state) => state.appInfo);
-  const { setAppTabBarCurrentId, setShowLayoutLogin } = useActions(
+  const {
+    tabBarInfo: { tabList, nTabListCurrent },
+  } = useSelector((state) => state.appInfo);
+  const { setAppTabBarCurrent, setShowLayoutLogin } = useActions(
     appInfoActions
   );
   const { setShareInfo } = useActions(shareInfoActions);
@@ -54,9 +55,8 @@ export default function Main() {
 
   // 监听底部导航数据变化
   const watchTabBarCurrent = async () => {
-    setNavigationTitle(tabBarInfo?.tabList[nTabBarCurrent].title);
-    setAppTabBarCurrentId(tabBarInfo?.tabList[nTabBarCurrent].id);
-    switch (tabBarInfo?.tabList[nTabBarCurrent].contentType) {
+    setNavigationTitle(tabList[nTabListCurrent].title);
+    switch (tabList[nTabListCurrent].contentType) {
       case "GROUP":
         return;
         break;
@@ -79,7 +79,7 @@ export default function Main() {
   // 监听底部导航数据变化
   useEffect(() => {
     watchTabBarCurrent();
-  }, [tabBarInfo?.tabList, nTabBarCurrent]);
+  }, [tabList, nTabListCurrent]);
 
   useQueryPageList(
     {
@@ -123,7 +123,7 @@ export default function Main() {
             break;
         }
       },
-    }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+    }[tabList[nTabListCurrent].contentType],
     {
       GROUP: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
@@ -131,7 +131,7 @@ export default function Main() {
       WAVE: null,
       SATELLITE: null,
       WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryWeatherArticleListInfo,
-    }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+    }[tabList[nTabListCurrent].contentType],
     {
       GROUP: paramQueryGroupByKeyTitle,
       HOME: {},
@@ -139,7 +139,7 @@ export default function Main() {
       WAVE: {},
       SATELLITE: {},
       WEATHER_ARTICLE: {},
-    }[tabBarInfo?.tabList[nTabBarCurrent].contentType],
+    }[tabList[nTabListCurrent].contentType],
     isUpdateList
   );
 
@@ -150,11 +150,11 @@ export default function Main() {
 
   // 切换底部导航
   const handleTabbarBottomSelect = (current) => {
-    if (nTabBarCurrent === current) {
+    if (nTabListCurrent === current) {
       return;
     }
     // setLoadComplete(false);
-    setTabBarCurrent(current);
+    setAppTabBarCurrent(current);
   };
 
   const handleGroupListSearch = (param) => {
@@ -259,14 +259,14 @@ export default function Main() {
       WAVE: (
         <VpWave
           isLoadComplete={isLoadComplete}
-          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+          title={tabList[nTabListCurrent].title}
         />
       ),
       // 星站
       SATELLITE: (
         <VpSatellite
           isLoadComplete={isLoadComplete}
-          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+          title={tabList[nTabListCurrent].title}
         />
       ),
       // 气象资讯
@@ -274,11 +274,11 @@ export default function Main() {
         <VpWeatherArticle
           isLoadComplete={isLoadComplete}
           arrWeatherArticleList={arrWeatherArticleList}
-          title={tabBarInfo?.tabList[nTabBarCurrent].title}
+          title={tabList[nTabListCurrent].title}
           onWeatherArticleListUpdate={handleQueryPageListUpdate}
         />
       ),
-    }[tabBarInfo?.tabList[nTabBarCurrent].contentType];
+    }[tabList[nTabListCurrent].contentType];
   };
 
   return (
@@ -287,12 +287,12 @@ export default function Main() {
       isTransparent={false}
       strNavigationTitle={strNavigationTitle}
       colorBackgroud={
-        ["MINE"].includes(tabBarInfo?.tabList[nTabBarCurrent].contentType)
+        ["MINE"].includes(tabList[nTabListCurrent].contentType)
           ? "transparent"
           : "var(--color-gray-9)"
       }
       colorTitle={
-        ["MINE"].includes(tabBarInfo?.tabList[nTabBarCurrent].contentType)
+        ["MINE"].includes(tabList[nTabListCurrent].contentType)
           ? "transparent"
           : "#000000"
       }
@@ -333,8 +333,8 @@ export default function Main() {
       <Image src={strTestImageUrl} /> */}
       {/* 底部导航 */}
       <TabbarBottom
-        arrTabBarList={tabBarInfo.tabList}
-        nTabBarCurrent={nTabBarCurrent}
+        arrTabBarList={tabList}
+        nTabBarCurrent={nTabListCurrent}
         onTabBarSelect={handleTabbarBottomSelect}
       />
     </PageContent>

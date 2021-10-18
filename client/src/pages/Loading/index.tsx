@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import Taro, { useRouter } from "@tarojs/taro";
 import { Image } from "@tarojs/components";
 import useActions from "@/hooks/useActions";
@@ -20,6 +20,7 @@ export default function Loading() {
     setAppTabBarInfo,
     setShowLayoutLogin,
   } = useActions(appInfoActions);
+  const timeShowToast = useRef<NodeJS.Timeout>(null);
   const { setMemberInfo } = useActions(memberInfoActions);
   const { setShareInfo, setSourceInfo } = useActions(shareInfoActions);
 
@@ -60,15 +61,32 @@ export default function Loading() {
     setShareInfo({ isShowPanelShare: false });
   };
 
+  const delay3000 = async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 3000);
+    });
+  };
+
   const onLoad = async () => {
     if (process.env.TARO_ENV === "weapp") {
       Taro.hideShareMenu();
     }
     initAppState();
 
+    timeShowToast.current = setTimeout(() => {
+      Taro.showToast({
+        title: "首次加载中，请耐心等待",
+        icon: "none",
+        duration: 60000,
+      });
+    }, 1000);
+
     const arrQueryList = [
       Api.cloud.fetchAppInfo.queryAppTabBar(),
       Api.cloud.fetchMemberInfo.queryMember(),
+      // delay3000(),
     ];
     if (params.scene) {
       arrQueryList.push(Api.cloud.fetchQRCodeInfo.queryQRCode(params));
@@ -78,6 +96,8 @@ export default function Loading() {
       resQueryMember,
       resQueryQrCode,
     ] = await Promise.all(arrQueryList);
+
+    clearTimeout(timeShowToast.current);
 
     setAppHomePage("/pages/Main/index");
     console.log("Loading", resQueryAppTabBar, resQueryMember, resQueryQrCode);
@@ -91,14 +111,22 @@ export default function Loading() {
           const idB = itemB?.id || "";
           return idA.localeCompare(idB);
         });
-      setAppTabBarInfo({
-        tabList: resQueryAppTabBarTmp,
-        tabListSource: resQueryAppTabBar,
-        strCurrentId: "",
-      });
-      setMemberInfo(resQueryMember);
+
+      if (resQueryAppTabBarTmp?.length > 0) {
+        setAppTabBarInfo({
+          tabList: resQueryAppTabBarTmp,
+          tabListSource: resQueryAppTabBar,
+          nTabListCurrent: 0,
+        });
+        setMemberInfo(resQueryMember);
+        jumpPage(resQueryQrCode, params);
+      } else {
+        Taro.showToast({
+          title: "未找到入口页面",
+          icon: "none",
+        });
+      }
     }
-    jumpPage(resQueryQrCode, params);
   };
 
   useEffect(() => {
