@@ -29,7 +29,8 @@ const cloud = {
       cloudName: "prod-1gggp1e8827b372f",
       cloudPath:
         "cloud://prod-1gggp1e8827b372f.7072-prod-1gggp1e8827b372f-1300943416/",
-      cloudDownLoad: "",
+      cloudDownLoad:
+        "https://7072-prod-1gggp1e8827b372f-1300943416.tcb.qcloud.la/",
     },
     dev: {
       cloudName: "dev-8panu",
