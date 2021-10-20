@@ -3,6 +3,19 @@ import CloudFetch from "@/services/CloudFetch";
 const CLOUD_NAME = "fetchCloudInfo";
 
 /**
+ * 查询APP级别相关配置
+ */
+const queryConfig = async (objParams: any = {}) => {
+  const params = {
+    type: "QUERY_APP_CONFIG",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
+  console.log("queryConfig", res);
+  return (res && res.data) || [];
+};
+
+/**
  * 查询APP级别底部导航
  */
 const queryAppTabBar = async (objParams: any = {}) => {
@@ -83,6 +96,7 @@ const spiderWeatherInfo = async (objParams: any = {}) => {
 };
 
 export default {
+  queryConfig,
   queryAppTabBar,
   updateAppTabBar,
   queryHomeInfo,

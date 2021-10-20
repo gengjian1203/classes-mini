@@ -25,7 +25,7 @@ interface IVpMineParam {
 export default function VpMine(props: IVpMineParam) {
   const { isLoadComplete = true } = props;
 
-  const { isEasterEgg, tabBarInfo } = useSelector((state) => state.appInfo);
+  const { isEasterEgg, configInfo } = useSelector((state) => state.appInfo);
   const memberInfo = useSelector((state) => state.memberInfo);
 
   const isMemberChecked = memberInfo?.appBindWorkerId;
@@ -237,8 +237,8 @@ export default function VpMine(props: IVpMineParam) {
               爬取
             </AtButton>
             <AtList>
-              {tabBarInfo?.tabListSource &&
-                tabBarInfo?.tabListSource.map((item, index) => {
+              {configInfo?.tabListSource &&
+                configInfo?.tabListSource.map((item, index) => {
                   return (
                     <AtListItem
                       title={item.title}

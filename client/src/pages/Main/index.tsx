@@ -18,6 +18,7 @@ import Utils from "@/utils";
 
 import VpGroup from "./componentsVp/VpGroup/index";
 import VpHome from "./componentsVp/VpHome/index";
+import VpHomeNormal from "./componentsVp/VpHomeNormal/index";
 import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
 import VpTest from "./componentsVp/VpTest/index";
@@ -44,7 +45,7 @@ export default function Main() {
 
   // 底部导航
   const {
-    tabBarInfo: { tabList, nTabListCurrent },
+    configInfo: { tabList, nTabListCurrent },
   } = useSelector((state) => state.appInfo);
   const { setAppTabBarCurrent, setShowLayoutLogin } = useActions(
     appInfoActions
@@ -57,15 +58,21 @@ export default function Main() {
   const watchTabBarCurrent = async () => {
     setNavigationTitle(tabList[nTabListCurrent].title);
     switch (tabList[nTabListCurrent].contentType) {
-      case "GROUP":
-        return;
+      case "GROUP": {
         break;
-      case "HOME":
+      }
+      case "HOME": {
         break;
-      case "MINE":
+      }
+      case "HOME_NORMAL": {
         break;
-      default:
+      }
+      case "MINE": {
         break;
+      }
+      default: {
+        break;
+      }
     }
     // setTimeout(() => {
     //   setLoadComplete(true);
@@ -107,6 +114,7 @@ export default function Main() {
         }
       },
       HOME: (res) => {},
+      HOME_NORMAL: (res) => {},
       MINE: (res) => {},
       WAVE: (res) => {},
       SATELLITE: (res) => {},
@@ -127,6 +135,7 @@ export default function Main() {
     {
       GROUP: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
+      HOME_NORMAL: null,
       MINE: null,
       WAVE: null,
       SATELLITE: null,
@@ -135,6 +144,7 @@ export default function Main() {
     {
       GROUP: paramQueryGroupByKeyTitle,
       HOME: {},
+      HOME_NORMAL: {},
       MINE: {},
       WAVE: {},
       SATELLITE: {},
@@ -243,6 +253,7 @@ export default function Main() {
 
   const renderVPage = () => {
     return {
+      // 常规首页
       // 班级
       GROUP: (
         <VpGroup
@@ -253,6 +264,8 @@ export default function Main() {
       ),
       // 首页
       HOME: <VpHome isLoadComplete={isLoadComplete} />,
+      // 首页常规
+      HOME_NORMAL: <VpHomeNormal isLoadComplete={isLoadComplete} />,
       // 我的
       MINE: <VpMine isLoadComplete={isLoadComplete} />,
       // 中波

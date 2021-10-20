@@ -3,6 +3,7 @@ import Taro, { useRouter } from "@tarojs/taro";
 import { Image } from "@tarojs/components";
 import useActions from "@/hooks/useActions";
 import Api from "@/api";
+import Config from "@/config";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
@@ -84,7 +85,8 @@ export default function Loading() {
     }, 1000);
 
     const arrQueryList = [
-      Api.cloud.fetchAppInfo.queryAppTabBar(),
+      Api.cloud.fetchAppInfo.queryConfig({ appId: Config.appId }),
+      // Api.cloud.fetchAppInfo.queryAppTabBar(),
       Api.cloud.fetchMemberInfo.queryMember(),
       // delay3000(),
     ];
@@ -92,7 +94,8 @@ export default function Loading() {
       arrQueryList.push(Api.cloud.fetchQRCodeInfo.queryQRCode(params));
     }
     const [
-      resQueryAppTabBar,
+      resQueryConfig,
+      // resQueryAppTabBar,
       resQueryMember,
       resQueryQrCode,
     ] = await Promise.all(arrQueryList);
@@ -100,23 +103,31 @@ export default function Loading() {
     clearTimeout(timeShowToast.current);
 
     setAppHomePage("/pages/Main/index");
-    console.log("Loading", resQueryAppTabBar, resQueryMember, resQueryQrCode);
-    if (resQueryAppTabBar) {
-      const resQueryAppTabBarTmp = resQueryAppTabBar
-        .filter((item) => {
-          return item.enable;
-        })
-        .sort((itemA, itemB) => {
-          const idA = itemA?.id || "";
-          const idB = itemB?.id || "";
-          return idA.localeCompare(idB);
-        });
+    console.log(
+      "Loading",
+      resQueryConfig,
+      // resQueryAppTabBar,
+      resQueryMember,
+      resQueryQrCode
+    );
+    if (resQueryConfig) {
+      const { arrTabbarList = [], colorPrimary = "#60b968" } = resQueryConfig;
+      const arrTabbarListTmp = arrTabbarList.filter((item) => {
+        return item.enable;
+      });
+      console.log("Loading1", arrTabbarListTmp, arrTabbarList);
+      // .sort((itemA, itemB) => {
+      //   const idA = itemA?.id || "";
+      //   const idB = itemB?.id || "";
+      //   return idA.localeCompare(idB);
+      // });
 
-      if (resQueryAppTabBarTmp?.length > 0) {
-        setAppTabBarInfo({
-          tabList: resQueryAppTabBarTmp,
-          tabListSource: resQueryAppTabBar,
+      if (arrTabbarListTmp?.length > 0) {
+        setAppConfigInfo({
+          tabList: arrTabbarListTmp,
+          tabListSource: arrTabbarList,
           nTabListCurrent: 0,
+          colorPrimary: colorPrimary,
         });
         setMemberInfo(resQueryMember);
         jumpPage(resQueryQrCode, params);

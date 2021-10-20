@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import cloud from "./cloud";
 
-const env = "prod"; // 'prod' - 生产环境 'dev' - 开发环境 'test' - 测试环境
+const env = "dev"; // 'prod' - 生产环境 'dev' - 开发环境 'test' - 测试环境
 const resSystemInfo = Taro.getSystemInfoSync();
 const resAccountInfo = Taro.getAccountInfoSync();
 
@@ -16,6 +16,9 @@ const config = {
   cloudDownLoad: cloudInfo?.cloudDownLoad || "",
   SYSTEM_INFO: resSystemInfo || {},
   ACCOUNT_INFO: resAccountInfo || {},
+  appId,
+  envVersion,
+  version,
 };
 
 console.log("config", config);
