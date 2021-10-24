@@ -1,52 +1,91 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
-import { AtSearchBar } from "taro-ui";
-import Taro from "@tarojs/taro";
-import Api from "@/api";
+import React, { Fragment, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { View } from "@tarojs/components";
-import ListNode from "@/components/ListNode";
+import Api from "@/api";
+import Banner from "@/components/Banner";
+import GroupInfo from "@/pages/Main/components/GroupInfo";
+import GroupNotive from "@/pages/Main/components/GroupNotive";
+import GroupTab from "@/pages/Main/components/GroupTab";
+import CloudFileManager from "@/services/CloudFileManager";
 
 import "./index.less";
 
 interface IVpGroupParam {
   isLoadComplete?: boolean;
-  arrGroupList?: Array<any>;
-  onGroupListSearch?: (...arg: any) => any;
 }
 
 export default function VpGroup(props: IVpGroupParam) {
-  const { isLoadComplete = true, arrGroupList = [], onGroupListSearch } = props;
+  const { isLoadComplete = true } = props;
 
-  const valueSearch = useRef<string>("");
+  const {
+    configInfo: { strGroupId },
+  } = useSelector((state) => state.appInfo);
 
-  // 编辑框变化
-  const handleSearchChange = (value) => {
-    console.log("handleSearchChange", value);
-    valueSearch.current = value;
-  };
+  const [objGroupDetail, setGroupDetail] = useState<any>({});
 
-  // 确认搜索
-  const handleSearchActionClick = async (e) => {
-    console.log("handleSearchActionClick", e);
-    Taro.showLoading();
+  const onLoad = async () => {
     const params = {
-      keyTitle: valueSearch.current,
+      groupId: strGroupId,
     };
-    onGroupListSearch && onGroupListSearch(params);
+    const res = await Api.cloud.fetchGroupInfo.queryGroupDetail(params);
+    console.log("VpGroup", res);
+    setGroupDetail(res);
   };
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  const handleBannerClick = (e) => {
+    console.log("handleBannerClick", e);
+  };
+
+  const renderGroupModule = () => {
+    return objGroupDetail?.moduleTemplate?.map((itemModule, indexModule) => {
+      let objAny: any = null;
+
+      switch (itemModule.type) {
+        case "BANNER": {
+          objAny = itemModule?.content?.map((item, index) => {
+            return {
+              url: CloudFileManager.getCloudUrl(item),
+            };
+          });
+          break;
+        }
+        case "INFO": {
+          break;
+        }
+        case "NOTICE": {
+          break;
+        }
+        case "TAB": {
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+
+      return {
+        BANNER: (
+          <Banner
+            arrBannerList={objAny}
+            key={`group-module-${indexModule}`}
+            onBannerClick={handleBannerClick}
+          />
+        ),
+        INFO: <GroupInfo key={`group-module-${indexModule}`} />,
+        NOTICE: <GroupNotive key={`group-module-${indexModule}`} />,
+        TAB: <GroupTab key={`group-module-${indexModule}`} />,
+      }[itemModule.type];
+    });
+  };
+
   return (
     <View className="vp-group-wrap">
-      <AtSearchBar
-        value=""
-        onChange={handleSearchChange}
-        onActionClick={handleSearchActionClick}
-      />
       <View className="flex-start-v vp-group-content">
-        <ListNode
-          isLoadCompleteList={isLoadComplete}
-          strType={"GROUP"}
-          arrList={arrGroupList}
-          onDetailClick={() => {}}
-        />
+        {renderGroupModule()}
       </View>
     </View>
   );

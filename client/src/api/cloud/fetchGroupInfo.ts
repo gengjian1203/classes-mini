@@ -61,8 +61,25 @@ const queryGroupByMemberId = async (
   return res.data;
 };
 
+/**
+ * 通过groupId查询社区详情
+ */
+interface IQueryGroupDetailParams {
+  groupId?: string; // 搜索关键字
+}
+const queryGroupDetail = async (objParams: IQueryGroupDetailParams = {}) => {
+  const params = {
+    type: "QUERY_GROUP_DETAIL",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params);
+  console.log("queryGroupDetail", res);
+  return res.data;
+};
+
 export default {
   addGroup,
   queryGroupByKeyTitle,
   queryGroupByMemberId,
+  queryGroupDetail,
 };

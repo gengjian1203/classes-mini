@@ -111,16 +111,21 @@ export default function Loading() {
       resQueryQrCode
     );
     if (resQueryConfig) {
-      const { arrTabbarList = [], colorPrimary = "#60b968" } = resQueryConfig;
-      const arrTabbarListTmp = arrTabbarList.filter((item) => {
-        return item.enable;
-      });
+      const {
+        arrTabbarList = [],
+        colorPrimary = "#60b968",
+        strGroupId = "",
+      } = resQueryConfig;
+      const arrTabbarListTmp = arrTabbarList
+        .filter((item) => {
+          return item.enable;
+        })
+        .sort((itemA, itemB) => {
+          const idA = itemA?.id || "";
+          const idB = itemB?.id || "";
+          return idA.localeCompare(idB);
+        });
       console.log("Loading1", arrTabbarListTmp, arrTabbarList);
-      // .sort((itemA, itemB) => {
-      //   const idA = itemA?.id || "";
-      //   const idB = itemB?.id || "";
-      //   return idA.localeCompare(idB);
-      // });
 
       if (arrTabbarListTmp?.length > 0) {
         setAppConfigInfo({
@@ -128,6 +133,7 @@ export default function Loading() {
           tabListSource: arrTabbarList,
           nTabListCurrent: 0,
           colorPrimary: colorPrimary,
+          strGroupId: strGroupId,
         });
         setMemberInfo(resQueryMember);
         jumpPage(resQueryQrCode, params);

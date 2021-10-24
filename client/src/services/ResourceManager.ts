@@ -1,5 +1,4 @@
 import ResourceDownLoadAdaptor from "@/services/ResourceDownLoadAdaptor";
-// import * as imagesLocal from '@/services/ResourceImage'
 
 /**
  * 资源加载器

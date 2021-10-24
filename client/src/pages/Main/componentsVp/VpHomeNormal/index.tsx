@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { AtCalendar } from "taro-ui";
 import { View } from "@tarojs/components";
-
 import Banner from "@/components/Banner";
+import CloudFileManager from "@/services/CloudFileManager";
 
 import "./index.less";
 
@@ -31,20 +31,24 @@ export default function VpHomeNormal(props: IVpHomeNormalParam) {
           isLoadComplete={isLoadComplete}
           arrBannerList={[
             {
-              url:
-                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=286001186,4224766682&fm=26&gp=0.jpg",
+              url: CloudFileManager.getCloudUrl(
+                "resource/weather-banner_0.jpg"
+              ),
             },
             {
-              url:
-                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fbackgd%2Fcover%2F00%2F46%2F24%2F5bfe5ed55c592.jpg%21%2Ffw%2F780%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg",
+              url: CloudFileManager.getCloudUrl(
+                "resource/weather-banner_1.jpg"
+              ),
             },
             {
-              url:
-                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F05%2F11%2F58%2F2459931d5988c17.jpg%21r850%2Ffw%2F800&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg",
+              url: CloudFileManager.getCloudUrl(
+                "resource/weather-banner_2.jpg"
+              ),
             },
             {
-              url:
-                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F05%2F64%2F84%2F555b6a4513d156d.jpg&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg",
+              url: CloudFileManager.getCloudUrl(
+                "resource/weather-banner_3.jpg"
+              ),
             },
           ]}
           onBannerClick={handleBannerClick}

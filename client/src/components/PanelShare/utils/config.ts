@@ -1,5 +1,3 @@
-// import * as imagesLocal from '@/services/ResourceImage'
-
 export const PANEL_SHARE_WIDTH = 300;
 export const PANEL_SHARE_HEIGHT = 400;
 

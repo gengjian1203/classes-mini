@@ -23,7 +23,7 @@ interface IArticleType {
 export default function ArticleDetail() {
   const {
     path,
-    params: { articleId = "" },
+    params: { type = "", articleId = "" },
   } = useRouter();
 
   const [objArticleInfo, setArticleInfo] = useState<IArticleType>({});
@@ -38,9 +38,24 @@ export default function ArticleDetail() {
     const params = {
       articleId: articleId,
     };
-    const res = await Api.cloud.fetchArticleInfo.queryWeatherArticleDetailInfo(
-      params
-    );
+    let funFetch: any = (any?: any) => {
+      return {};
+    };
+    switch (type) {
+      case "article": {
+        funFetch = Api.cloud.fetchArticleInfo.queryArticleDetail;
+        break;
+      }
+      case "weather": {
+        funFetch = Api.cloud.fetchArticleInfo.queryWeatherArticleDetailInfo;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    const res = await funFetch(params);
     setArticleInfo(res);
     Taro.hideToast();
   };

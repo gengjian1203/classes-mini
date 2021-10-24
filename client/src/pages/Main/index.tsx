@@ -16,11 +16,14 @@ import shareInfoActions from "@/redux/actions/shareInfo";
 import PinYin from "@/services/PinYin";
 import Utils from "@/utils";
 
+import VpArticleList from "./componentsVp/VpArticleList/index";
 import VpGroup from "./componentsVp/VpGroup/index";
+import VpGroupList from "./componentsVp/VpGroupList/index";
 import VpHome from "./componentsVp/VpHome/index";
 import VpHomeNormal from "./componentsVp/VpHomeNormal/index";
 import VpMine from "./componentsVp/VpMine/index";
 import VpSatellite from "./componentsVp/VpSatellite/index";
+import VpStoryMap from "./componentsVp/VpStoryMap/index";
 import VpTest from "./componentsVp/VpTest/index";
 import VpWave from "./componentsVp/VpWave/index";
 import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
@@ -41,6 +44,14 @@ export default function Main() {
   });
   const [arrGroupList, setGroupList] = useState<Array<any>>([]);
   //
+  const [isShowArticleListLoadingTip, setShowArticleListLoadingTip] = useState(
+    false
+  );
+  const [arrArticleList, setArticleList] = useState([]);
+  const [
+    isShowWeatherArticleListLoadingTip,
+    setShowWeatherArticleListLoadingTip,
+  ] = useState(false);
   const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
 
   // 底部导航
@@ -56,9 +67,16 @@ export default function Main() {
 
   // 监听底部导航数据变化
   const watchTabBarCurrent = async () => {
+    setLoadComplete(false);
     setNavigationTitle(tabList[nTabListCurrent].title);
     switch (tabList[nTabListCurrent].contentType) {
+      case "ARTICLE_LIST": {
+        break;
+      }
       case "GROUP": {
+        break;
+      }
+      case "GROUP_LIST": {
         break;
       }
       case "HOME": {
@@ -68,6 +86,21 @@ export default function Main() {
         break;
       }
       case "MINE": {
+        break;
+      }
+      case "SATELLITE": {
+        break;
+      }
+      case "STORY_MAP": {
+        break;
+      }
+      case "TEST": {
+        break;
+      }
+      case "WAVE": {
+        break;
+      }
+      case "WEATHER_ARTICLE": {
         break;
       }
       default: {
@@ -90,9 +123,27 @@ export default function Main() {
 
   useQueryPageList(
     {
-      GROUP: (res) => {
+      ARTICLE_LIST: (res) => {
         const { state, list, totalCount } = res;
-        console.log("useQueryPageList GROUP", state, list, totalCount);
+        console.log("useQueryPageList ARTICLE_LIST", state, list, totalCount);
+        switch (state) {
+          case "LOADING":
+            setShowArticleListLoadingTip(true);
+            break;
+          case "RESULT":
+            setArticleList(list);
+            setLoadComplete(true);
+            setShowArticleListLoadingTip(false);
+            Taro.hideLoading();
+            break;
+        }
+      },
+      GROUP: (res) => {
+        setLoadComplete(true);
+      },
+      GROUP_LIST: (res) => {
+        const { state, list, totalCount } = res;
+        console.log("useQueryPageList GROUP_LIST", state, list, totalCount);
         switch (state) {
           case "LOADING":
             break;
@@ -113,41 +164,57 @@ export default function Main() {
             break;
         }
       },
-      HOME: (res) => {},
-      HOME_NORMAL: (res) => {},
+      HOME: (res) => {
+        setLoadComplete(true);
+      },
+      HOME_NORMAL: (res) => {
+        setLoadComplete(true);
+      },
       MINE: (res) => {},
-      WAVE: (res) => {},
       SATELLITE: (res) => {},
+      STORY_MAP: (res) => {},
+      TEST: (res) => {},
+      WAVE: (res) => {},
       WEATHER_ARTICLE: (res) => {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList WEATHER", state, list, totalCount);
         switch (state) {
           case "LOADING":
+            setShowWeatherArticleListLoadingTip(true);
             break;
           case "RESULT":
             setWeatherArticleList(list);
             setLoadComplete(true);
+            setShowWeatherArticleListLoadingTip(false);
             Taro.hideLoading();
             break;
         }
       },
     }[tabList[nTabListCurrent].contentType],
     {
-      GROUP: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
+      ARTICLE_LIST: Api.cloud.fetchArticleInfo.queryArticleList,
+      GROUP: null,
+      GROUP_LIST: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
       HOME_NORMAL: null,
       MINE: null,
-      WAVE: null,
       SATELLITE: null,
+      STORY_MAP: null,
+      TEST: null,
+      WAVE: null,
       WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryWeatherArticleListInfo,
     }[tabList[nTabListCurrent].contentType],
     {
-      GROUP: paramQueryGroupByKeyTitle,
+      ARTICLE_LIST: {},
+      GROUP: {},
+      GROUP_LIST: paramQueryGroupByKeyTitle,
       HOME: {},
       HOME_NORMAL: {},
       MINE: {},
-      WAVE: {},
       SATELLITE: {},
+      STORY_MAP: {},
+      TEST: {},
+      WAVE: {},
       WEATHER_ARTICLE: {},
     }[tabList[nTabListCurrent].contentType],
     isUpdateList
@@ -253,10 +320,20 @@ export default function Main() {
 
   const renderVPage = () => {
     return {
-      // 常规首页
-      // 班级
-      GROUP: (
-        <VpGroup
+      // 资讯列表
+      ARTICLE_LIST: (
+        <VpArticleList
+          isLoadComplete={isLoadComplete}
+          isShowArticleListLoadingTip={isShowArticleListLoadingTip}
+          arrArticleList={arrArticleList}
+          onArticleListUpdate={handleQueryPageListUpdate}
+        />
+      ),
+      // 社群详情
+      GROUP: <VpGroup isLoadComplete={isLoadComplete} />,
+      // 社群列表
+      GROUP_LIST: (
+        <VpGroupList
           isLoadComplete={isLoadComplete}
           arrGroupList={arrGroupList}
           onGroupListSearch={handleGroupListSearch}
@@ -268,16 +345,20 @@ export default function Main() {
       HOME_NORMAL: <VpHomeNormal isLoadComplete={isLoadComplete} />,
       // 我的
       MINE: <VpMine isLoadComplete={isLoadComplete} />,
-      // 中波
-      WAVE: (
-        <VpWave
+      // 星站
+      SATELLITE: (
+        <VpSatellite
           isLoadComplete={isLoadComplete}
           title={tabList[nTabListCurrent].title}
         />
       ),
-      // 星站
-      SATELLITE: (
-        <VpSatellite
+      // 故事墙
+      STORY_MAP: <VpStoryMap isLoadComplete={isLoadComplete} />,
+      // 测试
+      TEST: <VpTest />,
+      // 中波
+      WAVE: (
+        <VpWave
           isLoadComplete={isLoadComplete}
           title={tabList[nTabListCurrent].title}
         />
@@ -286,6 +367,9 @@ export default function Main() {
       WEATHER_ARTICLE: (
         <VpWeatherArticle
           isLoadComplete={isLoadComplete}
+          isShowWeatherArticleListLoadingTip={
+            isShowWeatherArticleListLoadingTip
+          }
           arrWeatherArticleList={arrWeatherArticleList}
           title={tabList[nTabListCurrent].title}
           onWeatherArticleListUpdate={handleQueryPageListUpdate}

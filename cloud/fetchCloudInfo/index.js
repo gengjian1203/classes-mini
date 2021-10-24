@@ -9,12 +9,15 @@ const queryWeatherInfo = require("./fetchAppInfo/queryWeatherInfo/index.js");
 const updateAppTabBar = require("./fetchAppInfo/updateAppTabBar/index.js");
 // fetchArticleInfo
 const deleteWeatherArticle = require("./fetchArticleInfo/deleteWeatherArticle/index.js");
+const queryArticleDetail = require("./fetchArticleInfo/queryArticleDetail/index.js");
+const queryArticleList = require("./fetchArticleInfo/queryArticleList/index.js");
 const queryWeatherArticleDetailInfo = require("./fetchArticleInfo/queryWeatherArticleDetailInfo/index.js");
 const queryWeatherArticleListInfo = require("./fetchArticleInfo/queryWeatherArticleListInfo/index.js");
 // fetchGroupInfo
 const addGroup = require("./fetchGroupInfo/addGroup/index.js");
 const queryGroupByKeyTitle = require("./fetchGroupInfo/queryGroupByKeyTitle/index.js");
 const queryGroupByMemberId = require("./fetchGroupInfo/queryGroupByMemberId/index.js");
+const queryGroupDetail = require("./fetchGroupInfo/queryGroupDetail/index.js");
 // fetchMemberInfo
 const addMemberInfo = require("./fetchMemberInfo/addMemberInfo/index.js");
 const queryMemberInfo = require("./fetchMemberInfo/queryMemberInfo/index.js");
@@ -45,12 +48,15 @@ const objFunction = {
   UPDATE_APP_TAB_BAR: updateAppTabBar, // 更新APP级别底部导航
   // fetchArticleInfo
   DELETE_WEATHER_ARTICLE: deleteWeatherArticle, // 删除对应天气文章
+  QUERY_ARTICLE_DETAIL: queryArticleDetail, // 查询资讯文章详细内容
+  QUERY_ARTICLE_LIST: queryArticleList, // 查询资讯文章列表内容
   QUERY_WEATHER_ARTICLE_DETAIL: queryWeatherArticleDetailInfo, // 查询天气文章详细内容
   QUERY_WEATHER_ARTICLE_LIST: queryWeatherArticleListInfo, // 查询天气文章列表内容
   // fetchGroupInfo
   ADD_GROUP: addGroup, // 新建班级
   QUERY_GROUP_BY_KEY_TITLE: queryGroupByKeyTitle, // 通过关键字查询班级列表
   QUERY_GROUP_BY_MEMBER_ID: queryGroupByMemberId, // 通过MemberId查询班级列表
+  QUERY_GROUP_DETAIL: queryGroupDetail, // 通过groupId查询社区详情
   // fetchMemberInfo
   ADD_MEMBER: addMemberInfo, // 新增成员
   QUERY_MEMBER: queryMemberInfo, // 查询成员

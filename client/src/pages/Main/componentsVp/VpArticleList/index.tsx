@@ -8,43 +8,34 @@ import Banner from "@/components/Banner";
 import ListNode from "@/components/ListNode";
 import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
-import CloudFileManager from "@/services/CloudFileManager";
 
 import "./index.less";
 
-interface IVpWeatherArticleParam {
-  title?: string;
-  arrWeatherArticleList?: Array<any>;
-  isShowWeatherArticleListLoadingTip?: boolean;
+interface IVpArticleListParam {
   isLoadComplete?: boolean;
-  onWeatherArticleListUpdate?: () => void;
+  arrArticleList?: Array<any>;
+  isShowArticleListLoadingTip?: boolean;
+  onArticleListUpdate?: () => void;
 }
 
-export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
+export default function VpArticleList(props: IVpArticleListParam) {
   const {
-    title = "", // 标题
-    arrWeatherArticleList = [], //
-    isShowWeatherArticleListLoadingTip = false,
     isLoadComplete = true,
-    onWeatherArticleListUpdate,
+    arrArticleList = [], //
+    isShowArticleListLoadingTip = false,
+    onArticleListUpdate,
   } = props;
 
   const { isEasterEgg } = useSelector((state) => state.appInfo);
 
   useEffect(() => {}, []);
 
-  const handleBannerClick = useCheckLogin((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("handleBannerClick");
-  });
-
   const handleDetailClick = (info) => {
     console.log("handleDetailClick", info);
     Taro.navigateTo({
       url:
         `/pages/ArticleDetail/index` +
-        `?type=weather` +
+        `?type=article` +
         `&articleId=${info?._id}`,
     });
   };
@@ -74,7 +65,7 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
           );
           Taro.hideToast({});
           if (res) {
-            onWeatherArticleListUpdate && onWeatherArticleListUpdate();
+            onArticleListUpdate && onArticleListUpdate();
             Taro.showToast({
               title: "删除成功",
               icon: "success",
@@ -91,48 +82,16 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
   };
 
   return (
-    <View className="vp-weather-article-wrap">
-      <View className="vp-weather-article-content">
-        {/*  */}
-        <Banner
-          isLoadComplete={isLoadComplete}
-          arrBannerList={[
-            {
-              url: CloudFileManager.getCloudUrl(
-                "resource/weather-banner_0.jpg"
-              ),
-            },
-            {
-              url: CloudFileManager.getCloudUrl(
-                "resource/weather-banner_1.jpg"
-              ),
-            },
-            {
-              url: CloudFileManager.getCloudUrl(
-                "resource/weather-banner_2.jpg"
-              ),
-            },
-            {
-              url: CloudFileManager.getCloudUrl(
-                "resource/weather-banner_3.jpg"
-              ),
-            },
-            {
-              url: CloudFileManager.getCloudUrl(
-                "resource/weather-banner_4.jpg"
-              ),
-            },
-          ]}
-          onBannerClick={handleBannerClick}
-        />
-        {/* 气象文章列表 */}
+    <View className="vp-article-list-wrap">
+      <View className="vp-article-list-content">
+        {/* 资讯文章列表 */}
         <ListNode
           isLoadCompleteList={isLoadComplete}
           isShowDelete={isEasterEgg}
           strType={"MOMENT"}
-          arrList={arrWeatherArticleList}
-          showBottomLoadingTip={isShowWeatherArticleListLoadingTip}
-          customClass="vp-weather-article-list"
+          arrList={arrArticleList}
+          showBottomLoadingTip={isShowArticleListLoadingTip}
+          customClass="vp-article-list-list"
           onDetailClick={handleDetailClick}
           onDeleteClick={handleDeleteClick}
         />
