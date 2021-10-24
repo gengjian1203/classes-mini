@@ -38,7 +38,7 @@ export default function PageContent(props: IPageContentParam) {
 
   // console.log('PageContent', configInfo)
 
-  const colorPrimary = "#60b968";
+  const colorPrimary = configInfo.colorPrimary; // "#60b968";
   const colorPrimaryL = "#80d988";
   const colorPrimaryD = "#409948";
 

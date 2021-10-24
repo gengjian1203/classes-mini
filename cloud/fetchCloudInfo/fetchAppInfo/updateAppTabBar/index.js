@@ -8,18 +8,19 @@
  */
 
 async function updateAppTabBar(data, db, memberId) {
-  const { tabId = "", enable = false } = data;
+  const { appId = "", tabId = "", tabIndex = 0, enable = false } = data;
   const objResult = await db
-    .collection("TB_APP_TAB_BAR")
+    .collection("TB_APP_CONFIG")
     .where({
-      id: tabId,
+      _id: appId,
+      "arrTabbarList.id": tabId,
     })
     .update({
       data: {
-        enable: enable,
+        "arrTabbarList.$.enable": enable,
       },
     });
-  console.log("updateAppTabBar", objResult);
+  console.log("updateAppTabBar", data, objResult);
   return objResult;
 }
 
