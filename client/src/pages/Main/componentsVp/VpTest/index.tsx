@@ -20,7 +20,7 @@ export default function VpTest(props: IVpTestParam) {
   }, []);
 
   const handleBannerClick = (e) => {
-    console.log("handleBannerClick", e);
+    // console.log("handleBannerClick", e);
   };
 
   return (

@@ -12,9 +12,9 @@ import appInfoActions from "@/redux/actions/appInfo";
 
 import "./index.less";
 
-interface IMineModuleEasterEggParam {}
+interface IModuleEasterEggParam {}
 
-export default function MineModuleEasterEgg(props: IMineModuleEasterEggParam) {
+export default function ModuleEasterEgg(props: IModuleEasterEggParam) {
   const {} = props;
 
   const { isEasterEgg, configInfo } = useSelector((state) => state.appInfo);

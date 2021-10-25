@@ -9,14 +9,20 @@ import "./index.less";
 interface IBannerProps {
   isLoadComplete?: boolean;
   arrBannerList?: Array<any>;
+  customClass?: string;
   onBannerClick?: (...arg: any) => any;
 }
 
 export default function Banner(props: IBannerProps) {
-  const { isLoadComplete = true, arrBannerList = [], onBannerClick } = props;
+  const {
+    isLoadComplete = true,
+    arrBannerList = [],
+    customClass = "",
+    onBannerClick,
+  } = props;
 
   const handleBannerClick = (item) => {
-    console.log("handleBannerClick", item);
+    // console.log("handleBannerClick", item);
     onBannerClick && onBannerClick(item);
   };
 
@@ -25,7 +31,7 @@ export default function Banner(props: IBannerProps) {
       loading={!isLoadComplete}
       row={1}
       rowProps={{ width: "100%", height: 300 }}
-      customClass="banner-wrap"
+      customClass={`banner-wrap ${customClass} `}
     >
       <Swiper
         indicatorColor="var(--color-gray-2)"

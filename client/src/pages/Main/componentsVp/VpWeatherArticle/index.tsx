@@ -36,7 +36,7 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
   const handleBannerClick = useCheckLogin((e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("handleBannerClick");
+    // console.log("handleBannerClick");
   });
 
   const handleDetailClick = (info) => {

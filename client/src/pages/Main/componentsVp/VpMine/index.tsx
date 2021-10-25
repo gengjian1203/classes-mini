@@ -9,7 +9,6 @@ import Permission from "@/components/Permission";
 import useActions from "@/hooks/useActions";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useDebounce from "@/hooks/useDebounce";
-import MineModuleEasterEgg from "@/pages/Main/components/MineModuleEasterEgg";
 import MineModuleHeader from "@/pages/Main/components/MineModuleHeader";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import Utils from "@/utils";
@@ -143,8 +142,6 @@ export default function VpMine(props: IVpMineParam) {
             </AtList>
           </ModuleCard>
         </Permission>
-        {/* 彩蛋模块 */}
-        <MineModuleEasterEgg />
         {/* 分享浮动按钮 */}
         {isShowFloatButton && (
           <View className="safe-bottom flex-center-v vp-mine-float-btn-panel">

@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { View } from "@tarojs/components";
 import Api from "@/api";
 import Banner from "@/components/Banner";
+import Menu from "@/components/Menu";
+import Tab from "@/components/Tab";
 import GroupInfo from "@/pages/Main/components/GroupInfo";
 import GroupNotive from "@/pages/Main/components/GroupNotive";
-import GroupTab from "@/pages/Main/components/GroupTab";
 import CloudFileManager from "@/services/CloudFileManager";
 
 import "./index.less";
@@ -37,7 +38,7 @@ export default function VpGroup(props: IVpGroupParam) {
   }, []);
 
   const handleBannerClick = (e) => {
-    console.log("handleBannerClick", e);
+    // console.log("handleBannerClick", e);
   };
 
   const renderGroupModule = () => {
@@ -54,9 +55,19 @@ export default function VpGroup(props: IVpGroupParam) {
           break;
         }
         case "INFO": {
+          objAny = {
+            dataAddress: objGroupDetail?.dataAddress,
+            dataDescribe: objGroupDetail?.dataDescribe,
+            dataLogo: objGroupDetail?.dataLogo,
+            dataTitle: objGroupDetail?.dataTitle,
+            dataCellphone: objGroupDetail?.dataCellphone,
+          };
           break;
         }
         case "NOTICE": {
+          break;
+        }
+        case "MENU": {
           break;
         }
         case "TAB": {
@@ -70,14 +81,46 @@ export default function VpGroup(props: IVpGroupParam) {
       return {
         BANNER: (
           <Banner
+            customClass="group-module-wrap"
             arrBannerList={objAny}
             key={`group-module-${indexModule}`}
             onBannerClick={handleBannerClick}
           />
         ),
-        INFO: <GroupInfo key={`group-module-${indexModule}`} />,
-        NOTICE: <GroupNotive key={`group-module-${indexModule}`} />,
-        TAB: <GroupTab key={`group-module-${indexModule}`} />,
+        INFO: (
+          <GroupInfo
+            customClass="group-module-wrap"
+            key={`group-module-${indexModule}`}
+            dataAddress={objAny?.dataAddress}
+            dataDescribe={objAny?.dataDescribe}
+            dataLogo={objAny?.dataLogo}
+            dataTitle={objAny?.dataTitle}
+            dataCellphone={objAny?.dataCellphone}
+          />
+        ),
+        MENU: (
+          <Menu
+            customClass="group-module-wrap"
+            key={`group-module-${indexModule}`}
+          />
+        ),
+        NOTICE: (
+          <GroupNotive
+            customClass="group-module-wrap"
+            key={`group-module-${indexModule}`}
+          />
+        ),
+        TAB: (
+          <Tab
+            customClass="group-module-wrap"
+            key={`group-module-${indexModule}`}
+            showModuleValView={[
+              { title: "全部" },
+              { title: "日常" },
+              { title: "推荐" },
+            ]}
+          />
+        ),
       }[itemModule.type];
     });
   };

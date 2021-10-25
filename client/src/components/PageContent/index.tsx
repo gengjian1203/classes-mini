@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { View } from "@tarojs/components";
+import Taro, { useRouter } from "@tarojs/taro";
+import { View, MovableArea, MovableView } from "@tarojs/components";
+import Config from "@/config";
 import PanelShare from "@/components/PanelShare"; // 位置warning
 import LayoutLogin from "@/components/LayoutLogin";
 import NavigationHeader from "@/components/NavigationHeader";
@@ -34,9 +36,11 @@ export default function PageContent(props: IPageContentParam) {
     children,
   } = props;
 
-  const { configInfo } = useSelector((state) => state.appInfo);
+  const { path } = useRouter();
 
-  // console.log('PageContent', configInfo)
+  const { isEasterEgg, configInfo } = useSelector((state) => state.appInfo);
+
+  // console.log("PageContent", path);
 
   const colorPrimary = configInfo.colorPrimary; // "#60b968";
   const colorPrimaryL = "#80d988";
@@ -48,8 +52,33 @@ export default function PageContent(props: IPageContentParam) {
     `--color-primary-light: ${colorPrimaryL ? colorPrimaryL : "#80d988"};` +
     `--color-primary-dark: ${colorPrimaryD ? colorPrimaryD : "#409948"};`;
 
+  const handleBtnTestClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!["/pages/EasterEgg/index"].includes(path)) {
+      Taro.navigateTo({
+        url: "/pages/EasterEgg/index",
+      });
+    }
+  };
+
   return (
-    <View className={`flex-center-v page-content-wrap`} style={`${themeStyle}`}>
+    <MovableArea
+      className={`flex-center-v page-content-wrap`}
+      style={`${themeStyle}`}
+    >
+      {/* 环境标识 */}
+      {(Config.env !== "prod" || isEasterEgg) && (
+        <MovableView
+          className="flex-center-v page-content-test-btn"
+          direction="all"
+          x={1000}
+          y={100}
+          onClick={handleBtnTestClick}
+        >
+          {Config.env}
+        </MovableView>
+      )}
       {/* 顶部导航 */}
       <NavigationHeader
         isShowLeftIcon={isShowLeftIcon}
@@ -73,6 +102,6 @@ export default function PageContent(props: IPageContentParam) {
       <LayoutLogin />
       {/* 分享弹窗 */}
       <PanelShare />
-    </View>
+    </MovableArea>
   );
 }

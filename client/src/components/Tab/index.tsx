@@ -12,6 +12,7 @@ interface ITabParam {
   showModuleValView?: Array<any>;
   arrList?: any; // 帖子列表
   showBottomLoadingTip?: boolean; // 是否展示触底加载提示
+  customClass?: string;
   onTabChange?: (any?: any) => void; // 切换tab
   onDetailClick?: (any?: any) => void; // 点击帖子
 }
@@ -23,6 +24,7 @@ export default function Tab(props: ITabParam) {
     showModuleValView = [],
     arrList = [],
     showBottomLoadingTip = false,
+    customClass = "",
     onTabChange,
     onDetailClick,
   } = props;
@@ -44,7 +46,7 @@ export default function Tab(props: ITabParam) {
   };
 
   return (
-    <Fragment>
+    <View className={`tab-wrap ${customClass} `}>
       {isLoadComplete ? (
         <AtTabs
           animated
@@ -78,6 +80,6 @@ export default function Tab(props: ITabParam) {
           })}
         </View>
       )}
-    </Fragment>
+    </View>
   );
 }

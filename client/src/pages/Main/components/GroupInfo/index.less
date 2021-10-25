@@ -1,2 +1,35 @@
 .group-info-wrap {
+  align-items: flex-start;
+  .group-info-left {
+    height: 100%;
+    margin-right: var(--margin-xs);
+  }
+
+  .group-info-right {
+    flex: 1 1 auto;
+    align-items: flex-start;
+    .group-info-item {
+      align-items: flex-start;
+    }
+    .group-info-icon {
+      margin-right: var(--margin-xs);
+      font-size: var(--font-size-xl);
+    }
+    .group-info-title-text {
+      font-size: var(--font-size-xl);
+      color: var(--color-text-primary);
+    }
+    .group-info-desc-text {
+      font-size: var(--font-size-md);
+      color: var(--color-text-secondary);
+    }
+    .group-info-address-text {
+      font-size: var(--font-size-md);
+      color: var(--color-text-secondary);
+    }
+    .group-info-cellphone-text {
+      font-size: var(--font-size-md);
+      color: var(--color-link-normal);
+    }
+  }
 }

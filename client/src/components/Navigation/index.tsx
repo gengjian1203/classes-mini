@@ -21,14 +21,13 @@ export default function Navigation(props: INavigationProps) {
   } = props;
 
   const [strLeftIcon, setLeftIcon] = useState<string>("");
-  const [objPageInfo, setPageInfo] = useState<any>({});
 
   const appInfo = useSelector((state) => state.appInfo);
 
   const onLoad = async () => {
-    const objPageInfo = Taro.getCurrentPages(); // 路由信息
+    const arrPageInfo = Taro.getCurrentPages(); // 路由信息
     if (isShowLeftIcon) {
-      if (objPageInfo.length === 1) {
+      if (arrPageInfo.length === 1) {
         // 首页
         setLeftIcon("left-icon iconfont iconhomepage");
       } else {
@@ -36,7 +35,6 @@ export default function Navigation(props: INavigationProps) {
         setLeftIcon("left-icon iconfont iconreturn");
       }
     }
-    setPageInfo(objPageInfo);
   };
 
   useEffect(() => {
@@ -45,10 +43,13 @@ export default function Navigation(props: INavigationProps) {
   }, []);
 
   const handleLeftIconClick = (e) => {
+    const arrPageInfo = Taro.getCurrentPages(); // 路由信息
+    console.log("handleLeftIconClick", arrPageInfo);
+
     if (!isShowLeftIcon) {
       return;
     }
-    if (objPageInfo.length === 1) {
+    if (arrPageInfo.length === 1) {
       // 首页
       Taro.reLaunch({
         url: "/pages/Loading/index",

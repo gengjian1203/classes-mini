@@ -16,6 +16,7 @@ const config = {
   cloudDownLoad: cloudInfo?.cloudDownLoad || "",
   SYSTEM_INFO: resSystemInfo || {},
   ACCOUNT_INFO: resAccountInfo || {},
+  env,
   appId,
   envVersion,
   version,

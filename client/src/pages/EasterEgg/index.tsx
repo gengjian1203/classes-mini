@@ -6,45 +6,12 @@ import Api from "@/api";
 import PageContent from "@/components/PageContent";
 import ModuleCard from "@/components/ModuleCard";
 import useDebounce from "@/hooks/useDebounce";
+import ModuleEasterEgg from "@/pages/EasterEgg/components/ModuleEasterEgg";
 
 import "./index.less";
 
-export default function ECharts() {
+export default function EasterEgg() {
   const { params } = useRouter();
-
-  const [urlServceWeiXin, setUrlServceWeiXin] = useState<string>("");
-
-  // 输入微信公众号文章链接
-  const handleUrlServceWeiXinChange = useDebounce((value) => {
-    setUrlServceWeiXin(value);
-  }, 500);
-
-  // 点击爬取微信公众号文章
-  const hanldeUrlServceWeiXinClick = async () => {
-    Taro.showToast({
-      title: "文章爬取中",
-      icon: "loading",
-      mask: true,
-      duration: 20000,
-    });
-    const params = {
-      urlServce: urlServceWeiXin,
-    };
-    const res = await Api.cloud.fetchAppInfo.spiderArticleInfoWeiXin(params);
-    console.log("handleUrl", res);
-    Taro.hideToast();
-    if (res && res.length > 0) {
-      Taro.showToast({
-        title: "爬取成功",
-        icon: "success",
-      });
-    } else {
-      Taro.showToast({
-        title: "该文章已被收录，或搜索不到该文章。",
-        icon: "none",
-      });
-    }
-  };
 
   return (
     <PageContent
@@ -55,24 +22,8 @@ export default function ECharts() {
       isSafeBottom
       customClass="flex-center-v easter-egg-wrap"
     >
-      <ModuleCard title="爬取微信公众号文章" customClass="flex-center-h">
-        <AtInput
-          name="weixin_urlServce"
-          title="文章链接"
-          type="text"
-          placeholder="https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA"
-          value={urlServceWeiXin}
-          onChange={handleUrlServceWeiXinChange}
-        />
-        <AtButton
-          className=""
-          type="primary"
-          circle
-          onClick={hanldeUrlServceWeiXinClick}
-        >
-          爬取
-        </AtButton>
-      </ModuleCard>
+      {/* 彩蛋模块 */}
+      <ModuleEasterEgg />
     </PageContent>
   );
 }

@@ -20,7 +20,7 @@ export default function VpHomeNormal(props: IVpHomeNormalParam) {
   }, []);
 
   const handleBannerClick = (e) => {
-    console.log("handleBannerClick", e);
+    // console.log("handleBannerClick", e);
   };
 
   return (

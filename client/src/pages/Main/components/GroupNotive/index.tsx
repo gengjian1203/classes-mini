@@ -5,13 +5,14 @@ import "./index.less";
 
 interface IGroupNotiveParam {
   isLoadComplete?: boolean;
+  customClass?: string;
 }
 
 export default function GroupNotive(props: IGroupNotiveParam) {
-  const { isLoadComplete = true } = props;
+  const { isLoadComplete = true, customClass = "" } = props;
 
   return (
-    <View className="flex-between-h group-notive-wrap">
+    <View className={`flex-between-h group-notive-wrap ${customClass}`}>
       <View>GroupNotive</View>
     </View>
   );
