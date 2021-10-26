@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Taro, { useRouter } from "@tarojs/taro";
-import { View, Image } from "@tarojs/components";
+import { View, Image, Video } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
 import useActions from "@/hooks/useActions";

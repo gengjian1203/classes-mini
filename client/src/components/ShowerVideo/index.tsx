@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { View, Image, Video } from "@tarojs/components";
 import Taro from "@tarojs/taro";
@@ -8,29 +8,28 @@ import Utils from "@/utils";
 
 import "./index.less";
 
-interface IShowerImagesParam {
+interface IShowerVideoParam {
   strUrlVideo?: string;
   strUrlVideoThumbnail?: string;
 }
 
-export default function ShowerImages(props: IShowerImagesParam) {
+export default function ShowerVideo(props: IShowerVideoParam) {
   const { strUrlVideo = "", strUrlVideoThumbnail = "" } = props;
 
   const { strPlayingMediaId } = useSelector((state) => state.mediaInfo);
 
-  const [videoId, setVideoId] = useState<string>("");
+  const videoId = useRef<string>("none");
 
   const { setPlayingMediaId } = useActions(mediaInfoActions);
 
   useEffect(() => {
-    const strVideoId = Utils.UUID();
-    setVideoId(strVideoId);
+    videoId.current = Utils.UUID();
   }, []);
 
-  const hanldeImagesClick = (e) => {
+  const hanldeVideoThumbnailClick = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    setPlayingMediaId(videoId);
+    setPlayingMediaId(id);
   };
 
   const handleVideoEnded = () => {
@@ -39,9 +38,9 @@ export default function ShowerImages(props: IShowerImagesParam) {
 
   return (
     <View className={`showr-video-wrap`}>
-      {strPlayingMediaId === videoId ? (
+      {strPlayingMediaId === videoId.current ? (
         <Video
-          id={videoId}
+          id={videoId.current}
           className="showr-video-real"
           src={strUrlVideo}
           autoplay
@@ -55,8 +54,12 @@ export default function ShowerImages(props: IShowerImagesParam) {
           className="showr-video-thumbnail"
           src={strUrlVideoThumbnail}
           mode="widthFix"
-          onClick={hanldeImagesClick}
-        />
+          onClick={(e) => hanldeVideoThumbnailClick(e, videoId.current)}
+        >
+          <View className="flex-center-v showr-video-thumbnail-icon">
+            <View className="iconfont iconplay_fill showr-video-thumbnail-icon-text" />
+          </View>
+        </Image>
       )}
     </View>
   );

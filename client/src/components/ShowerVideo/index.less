@@ -2,7 +2,25 @@
   width: 100%;
 
   .showr-video-thumbnail {
+    position: relative;
     width: 100%;
+    .showr-video-thumbnail-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-sizing: border-box;
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--color-gray-6);
+      border-radius: var(--border-radius-max);
+
+      .showr-video-thumbnail-icon-text {
+        margin-left: var(--margin-mini);
+        color: var(--color-gray-6);
+        font-size: var(--font-size-icon);
+      }
+    }
   }
 
   .showr-video-real {
