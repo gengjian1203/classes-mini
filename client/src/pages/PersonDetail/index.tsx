@@ -115,7 +115,6 @@ export default function PersonDetail() {
     <PageContent
       isShowLeftIcon
       strNavigationTitle={strNavigationTitle}
-      isSafeBottom
       customClass="personality-detail-wrap flex-center-v"
     >
       {/* 渲染内容 */}

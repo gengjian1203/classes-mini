@@ -1,6 +1,6 @@
 import Config from "@/config";
 
-// 持久化管理器
+// 云存储文件管理器
 class CloudFileManager {
   static instance: any = null;
 
