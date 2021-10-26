@@ -73,7 +73,7 @@ export default function PageContent(props: IPageContentParam) {
           className="flex-center-v page-content-test-btn"
           direction="all"
           x={1000}
-          y={100}
+          y={80}
           onClick={handleBtnTestClick}
         >
           {Config.env}
