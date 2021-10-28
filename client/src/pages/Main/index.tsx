@@ -48,11 +48,18 @@ export default function Main() {
     false
   );
   const [arrArticleList, setArticleList] = useState([]);
+  //
   const [
     isShowWeatherArticleListLoadingTip,
     setShowWeatherArticleListLoadingTip,
   ] = useState(false);
   const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
+  // GROUP
+  const [isTabListLoadComplete, setTabListLoadComplete] = useState<boolean>(
+    false
+  );
+  const [objQueryPostListParams, setQueryPostListParams] = useState({});
+  const [arrTabPostList, setTabPostList] = useState<Array<any>>([]);
 
   // 底部导航
   const {
@@ -139,7 +146,23 @@ export default function Main() {
         }
       },
       GROUP: (res) => {
-        setLoadComplete(true);
+        const { state, list, totalCount } = res;
+        console.log("useQueryPageList GROUP", state, list, totalCount);
+        switch (state) {
+          case "LOADING":
+            break;
+          case "RESULT":
+            setTabPostList(
+              list.map((item) => {
+                return {
+                  ...item,
+                };
+              })
+            );
+            setTabListLoadComplete(true);
+            Taro.hideLoading();
+            break;
+        }
       },
       GROUP_LIST: (res) => {
         const { state, list, totalCount } = res;
@@ -193,7 +216,7 @@ export default function Main() {
     }[tabList[nTabListCurrent].contentType],
     {
       ARTICLE_LIST: Api.cloud.fetchArticleInfo.queryArticleList,
-      GROUP: null,
+      GROUP: Api.cloud.fetchPostInfo.queryPostList,
       GROUP_LIST: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
       HOME_NORMAL: null,
@@ -206,7 +229,7 @@ export default function Main() {
     }[tabList[nTabListCurrent].contentType],
     {
       ARTICLE_LIST: {},
-      GROUP: {},
+      GROUP: objQueryPostListParams,
       GROUP_LIST: paramQueryGroupByKeyTitle,
       HOME: {},
       HOME_NORMAL: {},
@@ -223,6 +246,14 @@ export default function Main() {
   // 主动触发列表更新
   const handleQueryPageListUpdate = () => {
     setUpdateList(!isUpdateList);
+  };
+
+  // GROUP切换tab切
+  const handleGroupTabChange = (objTab) => {
+    console.log("handleTabChange", objTab);
+    const params = { tabId: objTab?.id };
+    setTabListLoadComplete(false);
+    setQueryPostListParams(params);
   };
 
   // 切换底部导航
@@ -330,7 +361,14 @@ export default function Main() {
         />
       ),
       // 社群详情
-      GROUP: <VpGroup isLoadComplete={isLoadComplete} />,
+      GROUP: (
+        <VpGroup
+          isLoadComplete={isLoadComplete}
+          isTabListLoadComplete={isTabListLoadComplete}
+          arrTabPostList={arrTabPostList}
+          onTabChange={handleGroupTabChange}
+        />
+      ),
       // 社群列表
       GROUP_LIST: (
         <VpGroupList

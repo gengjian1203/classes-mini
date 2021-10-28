@@ -73,6 +73,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
             style={{
               lineHeight: `${Taro.pxTransform(height)}`,
               fontSize: `${Taro.pxTransform(size)}`,
+              backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
               ...customStyle,
             }}
           />

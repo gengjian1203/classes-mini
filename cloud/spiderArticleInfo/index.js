@@ -99,7 +99,7 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { type = "", data = {} } = event || {};
-  const { urlServce = "" } = data || {};
+  const { urlServce = "", strDBTable = "", tabId = "" } = data || {};
   let objResult = {};
   let arrData = [];
   let arrDataResult = [];
@@ -119,6 +119,17 @@ exports.main = async (event, context) => {
           cheerio,
           entities,
           urlServce
+        );
+        break;
+      case "POST":
+        strDBTable = "TB_POST";
+        arrData = await spiderWeiXinInfo(
+          db,
+          superagent,
+          cheerio,
+          entities,
+          urlServce,
+          { tabId }
         );
         break;
       default:

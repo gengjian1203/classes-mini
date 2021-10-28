@@ -6,17 +6,24 @@ import Banner from "@/components/Banner";
 import Menu from "@/components/Menu";
 import Tab from "@/components/Tab";
 import GroupInfo from "@/pages/Main/components/GroupInfo";
-import GroupNotive from "@/pages/Main/components/GroupNotive";
 import CloudFileManager from "@/services/CloudFileManager";
 
 import "./index.less";
 
 interface IVpGroupParam {
   isLoadComplete?: boolean;
+  isTabListLoadComplete?: boolean;
+  arrTabPostList?: any; // 帖子列表
+  onTabChange?: (any?: any) => void; // 切换tab
 }
 
 export default function VpGroup(props: IVpGroupParam) {
-  const { isLoadComplete = true } = props;
+  const {
+    isLoadComplete = true,
+    isTabListLoadComplete = true,
+    arrTabPostList = [],
+    onTabChange,
+  } = props;
 
   const {
     configInfo: { strGroupId },
@@ -31,6 +38,19 @@ export default function VpGroup(props: IVpGroupParam) {
     const res = await Api.cloud.fetchGroupInfo.queryGroupDetail(params);
     console.log("VpGroup", res);
     setGroupDetail(res);
+    // 如果有TAB类型，则触发加载第一项tab
+    const nIndexTab = res?.moduleTemplate?.findIndex(
+      (itemModule, indexModule) => {
+        return itemModule.type === "TAB";
+      }
+    );
+    if (nIndexTab >= 0) {
+      const itemModule = res?.moduleTemplate[nIndexTab];
+      if (itemModule?.content?.length > 0) {
+        const itemTab = itemModule?.content[0];
+        onTabChange && onTabChange(itemTab);
+      }
+    }
   };
 
   useEffect(() => {
@@ -39,6 +59,11 @@ export default function VpGroup(props: IVpGroupParam) {
 
   const handleBannerClick = (e) => {
     // console.log("handleBannerClick", e);
+  };
+
+  const handleTabChange = (objTab) => {
+    // console.log("handleTabChange", objTab);
+    onTabChange && onTabChange(objTab);
   };
 
   const renderGroupModule = () => {
@@ -66,9 +91,6 @@ export default function VpGroup(props: IVpGroupParam) {
           };
           break;
         }
-        case "NOTICE": {
-          break;
-        }
         case "MENU": {
           objAny = itemModule?.content?.map((item, index) => {
             return {
@@ -79,6 +101,7 @@ export default function VpGroup(props: IVpGroupParam) {
           break;
         }
         case "TAB": {
+          objAny = itemModule?.content;
           break;
         }
         default: {
@@ -115,21 +138,14 @@ export default function VpGroup(props: IVpGroupParam) {
             key={`group-module-${indexModule}`}
           />
         ),
-        NOTICE: (
-          <GroupNotive
-            customClass="group-module-wrap"
-            key={`group-module-${indexModule}`}
-          />
-        ),
         TAB: (
           <Tab
+            isLoadCompleteList={isTabListLoadComplete}
             customClass="group-module-wrap"
             key={`group-module-${indexModule}`}
-            showModuleValView={[
-              { title: "全部" },
-              { title: "日常" },
-              { title: "推荐" },
-            ]}
+            showModuleValView={objAny}
+            arrList={arrTabPostList}
+            onTabChange={handleTabChange}
           />
         ),
       }[itemModule.type];

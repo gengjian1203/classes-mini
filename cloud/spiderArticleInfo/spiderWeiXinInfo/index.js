@@ -42,7 +42,14 @@ const queryWeiXinInfoDetail = async (href, superagent, cheerio, entities) => {
   return objDetail;
 };
 
-async function spiderWeiXinInfo(db, superagent, cheerio, entities, urlServce) {
+async function spiderWeiXinInfo(
+  db,
+  superagent,
+  cheerio,
+  entities,
+  urlServce,
+  objExtend
+) {
   console.log("spiderWeiXinInfo");
   const arrResultList = [];
 
@@ -60,6 +67,7 @@ async function spiderWeiXinInfo(db, superagent, cheerio, entities, urlServce) {
     source: "WEIXIN", // 文章来源
     href: urlServce, // 文章Url
     ...objDetail,
+    ...objExtend,
   };
 
   arrResultList.push(objInfo);

@@ -23,6 +23,10 @@ const addMemberInfo = require("./fetchMemberInfo/addMemberInfo/index.js");
 const queryMemberInfo = require("./fetchMemberInfo/queryMemberInfo/index.js");
 const queryMemberList = require("./fetchMemberInfo/queryMemberList/index.js");
 const updateMemberInfo = require("./fetchMemberInfo/updateMemberInfo/index.js");
+// fetchPostInfo
+const deletePost = require("./fetchPostInfo/deletePost/index.js");
+const queryPostDetail = require("./fetchPostInfo/queryPostDetail/index.js");
+const queryPostList = require("./fetchPostInfo/queryPostList/index.js");
 // fetchQRCodeInfo
 const createQRCode = require("./fetchQRCodeInfo/createQRCode/index.js");
 const queryQRCode = require("./fetchQRCodeInfo/queryQRCode/index.js");
@@ -62,6 +66,10 @@ const objFunction = {
   QUERY_MEMBER: queryMemberInfo, // 查询成员
   QUERY_MEMBER_LIST: queryMemberList, // 查询成员列表
   UPDATE_MEMBER: updateMemberInfo, // 更新成员
+  // fetchPostInfo
+  DELETE_POST: deletePost, // 删除对应帖子
+  QUERY_POST_DETAIL: queryPostDetail, // 查询帖子详细内容
+  QUERY_POST_LIST: queryPostList, // 查询帖子列表
   // fetchQRCodeInfo
   CREATE_QRCODE: createQRCode, // 创建二维码
   QUERY_QRCODE: queryQRCode, // 查询二维码
