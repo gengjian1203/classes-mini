@@ -58,6 +58,8 @@ export default function VpGroup(props: IVpGroupParam) {
           objAny = {
             dataAddress: objGroupDetail?.dataAddress,
             dataDescribe: objGroupDetail?.dataDescribe,
+            dataLatitude: objGroupDetail?.dataLatitude,
+            dataLongitude: objGroupDetail?.dataLongitude,
             dataLogo: objGroupDetail?.dataLogo,
             dataTitle: objGroupDetail?.dataTitle,
             dataCellphone: objGroupDetail?.dataCellphone,
@@ -68,6 +70,12 @@ export default function VpGroup(props: IVpGroupParam) {
           break;
         }
         case "MENU": {
+          objAny = itemModule?.content?.map((item, index) => {
+            return {
+              ...item,
+              icon: CloudFileManager.getCloudUrl(item.icon),
+            };
+          });
           break;
         }
         case "TAB": {
@@ -93,6 +101,8 @@ export default function VpGroup(props: IVpGroupParam) {
             key={`group-module-${indexModule}`}
             dataAddress={objAny?.dataAddress}
             dataDescribe={objAny?.dataDescribe}
+            dataLatitude={objAny?.dataLatitude}
+            dataLongitude={objAny?.dataLongitude}
             dataLogo={objAny?.dataLogo}
             dataTitle={objAny?.dataTitle}
             dataCellphone={objAny?.dataCellphone}
@@ -101,6 +111,7 @@ export default function VpGroup(props: IVpGroupParam) {
         MENU: (
           <Menu
             customClass="group-module-wrap"
+            showModuleValView={objAny}
             key={`group-module-${indexModule}`}
           />
         ),

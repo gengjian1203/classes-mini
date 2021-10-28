@@ -15,44 +15,7 @@ interface IMenuParam {
 export default function Menu(props: IMenuParam) {
   const {
     isLoadComplete = true,
-    showModuleValView = [
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书1",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书2",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书3",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书4",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书5555",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书6",
-      },
-      {
-        icon:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3221441550,2057240005&fm=26&gp=0.jpg",
-        title: "子书777777",
-      },
-      ,
-    ],
+    showModuleValView = [],
     customClass = "",
     onMenuItemClick = () => {},
   } = props;
@@ -64,11 +27,13 @@ export default function Menu(props: IMenuParam) {
     onMenuItemClick && onMenuItemClick(item);
   };
 
+  console.log("showModuleValView", showModuleValView);
+
   return (
     <View className={`flex-between-h menu-wrap ${customClass} `}>
       {isLoadComplete ? (
         <Fragment>
-          {showModuleValView.map((item, index) => (
+          {showModuleValView?.map((item, index) => (
             <View key={index} className="flex-center-v menu-item">
               <ButtonIcon
                 value={item.icon}

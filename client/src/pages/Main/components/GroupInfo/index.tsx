@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import ButtonIcon from "@/components/ButtonIcon";
 
@@ -9,6 +10,8 @@ interface IGroupInfoParam {
   customClass?: string;
   dataAddress?: string;
   dataDescribe?: string;
+  dataLatitude?: number | null;
+  dataLongitude?: number | null;
   dataLogo?: string;
   dataTitle?: string;
   dataCellphone?: string;
@@ -20,10 +23,32 @@ export default function GroupInfo(props: IGroupInfoParam) {
     customClass = "",
     dataAddress = "",
     dataDescribe = "",
+    dataLatitude = null,
+    dataLongitude = null,
     dataLogo = "",
     dataTitle = "",
     dataCellphone = "",
   } = props;
+
+  const hasLocation = dataLatitude !== null && dataLongitude !== null;
+
+  const handleAddressClick = () => {
+    if (hasLocation) {
+      Taro.openLocation({
+        latitude: dataLatitude,
+        longitude: dataLongitude,
+        scale: 16,
+        name: dataTitle,
+        address: dataAddress,
+      });
+    }
+  };
+
+  const handleCellphoneClick = (cellphone) => {
+    Taro.makePhoneCall({
+      phoneNumber: cellphone,
+    });
+  };
 
   return (
     <View className={`flex-between-h group-info-wrap ${customClass}`}>
@@ -45,17 +70,29 @@ export default function GroupInfo(props: IGroupInfoParam) {
           </View>
         )}
         {dataAddress && (
-          <View className="flex-start-h group-info-item group-info-address">
+          <View
+            className="flex-start-h group-info-item group-info-address"
+            onClick={() => handleAddressClick()}
+          >
             <View className="iconfont iconcoordinates group-info-icon" />
-            <View className="text-justify group-info-address-text">
+            <View
+              className={`text-justify group-info-address-text ${
+                hasLocation ? "group-info-activated" : ""
+              } `}
+            >
               {dataAddress}
             </View>
           </View>
         )}
         {dataCellphone && (
-          <View className="flex-start-h group-info-item group-info-cellphone">
+          <View
+            className="flex-start-h group-info-item group-info-cellphone"
+            onClick={() => handleCellphoneClick(dataCellphone)}
+          >
             <View className="iconfont iconmobilephone group-info-icon" />
-            <View className="group-info-cellphone-text">{dataCellphone}</View>
+            <View className="group-info-cellphone-text group-info-activated">
+              {dataCellphone}
+            </View>
           </View>
         )}
       </View>

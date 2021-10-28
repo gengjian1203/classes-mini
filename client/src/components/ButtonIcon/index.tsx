@@ -50,15 +50,26 @@ export default function ButtonIcon(props: IButtonIconParam) {
       onClick={handleIconClick}
     >
       <View
-        className={`flex-center-v ` + `button-content`}
+        className={`flex-center-v ` + `button-content `}
         style={{
-          backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
+          // backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
           ...customButtonStyle,
         }}
       >
+        <View
+          className={`button-content-bg ` + `iconfont ` + `iconpicture `}
+          style={{
+            lineHeight: `${Taro.pxTransform(height)}`,
+          }}
+        />
         {value.includes("icon") ? (
           <View
-            className={`iconfont ` + `${value} ` + `button-iconfont-content `}
+            className={
+              `iconfont ` +
+              `${value} ` +
+              `button-real ` +
+              `button-iconfont-content `
+            }
             style={{
               lineHeight: `${Taro.pxTransform(height)}`,
               fontSize: `${Taro.pxTransform(size)}`,
@@ -68,7 +79,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
         ) : (
           <Image
             src={value}
-            className="button-iconimg-content"
+            className={`button-real ` + `button-iconimg-content `}
             style={customStyle}
             mode="aspectFill"
           />
