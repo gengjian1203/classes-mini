@@ -46,6 +46,10 @@ export default function ArticleDetail() {
         funFetch = Api.cloud.fetchArticleInfo.queryArticleDetail;
         break;
       }
+      case "post": {
+        funFetch = Api.cloud.fetchPostInfo.queryPostDetail;
+        break;
+      }
       case "weather": {
         funFetch = Api.cloud.fetchArticleInfo.queryWeatherArticleDetailInfo;
         break;

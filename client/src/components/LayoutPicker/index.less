@@ -1,0 +1,26 @@
+.layout-picker-wrap {
+  // 重写taro-ui样式
+  .at-float-layout__container {
+    min-height: 10px !important;
+    .layout-body {
+      min-height: 10px !important;
+      .layout-body__content {
+        min-height: 10px !important;
+      }
+    }
+  }
+
+  .layout-picker-panel {
+    width: 100%;
+    .layout-picker-item {
+      width: 100%;
+      height: 88px;
+      font-size: var(--font-size-lg);
+      color: var(--color-text-primary);
+      border-bottom: 2px solid var(--color-shadow);
+    }
+    .layout-picker-item:last-child {
+      border-bottom: 0;
+    }
+  }
+}

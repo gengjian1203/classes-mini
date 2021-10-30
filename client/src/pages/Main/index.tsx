@@ -277,9 +277,10 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnTestClick = async () => {
-    Taro.navigateTo({
-      url: "/pages/ArticleDetail/index",
-    });
+    // Taro.navigateTo({
+    //   url: "/pages/ArticleDetail/index",
+    // });
+    const res = await Api.cloud.fetchAppInfo.spiderWeiXinInfo({});
     // 新增员工
     // const name = "孙尚香";
     // const params = {
@@ -367,6 +368,7 @@ export default function Main() {
           isTabListLoadComplete={isTabListLoadComplete}
           arrTabPostList={arrTabPostList}
           onTabChange={handleGroupTabChange}
+          onTabListUpdate={handleQueryPageListUpdate}
         />
       ),
       // 社群列表

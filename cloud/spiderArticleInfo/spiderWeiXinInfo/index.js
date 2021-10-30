@@ -48,7 +48,7 @@ async function spiderWeiXinInfo(
   cheerio,
   entities,
   urlServce,
-  objExtend
+  objExtend = {}
 ) {
   console.log("spiderWeiXinInfo");
   const arrResultList = [];

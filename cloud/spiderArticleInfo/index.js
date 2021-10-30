@@ -46,6 +46,7 @@ const checkBlackString = (item) => {
  */
 const pushArticleInfoList = async (arrData, strDBTable) => {
   const arrResult = [];
+  let contentHTML = "";
 
   try {
     for (let item of arrData) {
@@ -77,7 +78,7 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
       const arrArticleTitle = arrResult.map((item) => {
         return `《${item.title}》`;
       });
-      const contentHTML =
+      contentHTML =
         `尊敬的主人：<br>` +
         `你好！<br>` +
         `今天共为您爬取到${arrArticleTitle.length}篇文章，` +
@@ -88,7 +89,7 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
     console.error("pushArticleInfoList error.", e, arrData);
   }
 
-  return arrResult;
+  return contentHTML;
 };
 
 /**
@@ -99,11 +100,11 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { type = "", data = {} } = event || {};
-  const { urlServce = "", strDBTable = "", tabId = "" } = data || {};
+  let { urlServce = "", tabId = "" } = data || {};
   let objResult = {};
   let arrData = [];
-  let arrDataResult = [];
   let strDBTable = "TB_ARTICLE";
+  let resContentHTML = "";
 
   try {
     switch (type) {
@@ -118,7 +119,8 @@ exports.main = async (event, context) => {
           superagent,
           cheerio,
           entities,
-          urlServce
+          urlServce,
+          {}
         );
         break;
       case "POST":
@@ -147,7 +149,7 @@ exports.main = async (event, context) => {
   }
 
   try {
-    arrDataResult = await pushArticleInfoList(arrData, strDBTable);
+    resContentHTML = await pushArticleInfoList(arrData, strDBTable);
   } catch (e) {
     objResult = {
       code: 500,
@@ -156,7 +158,7 @@ exports.main = async (event, context) => {
     console.error("信息存入数据库error.", e);
   }
 
-  objResult.data = arrDataResult;
+  objResult.data = resContentHTML;
 
   return validResult(objResult);
 };

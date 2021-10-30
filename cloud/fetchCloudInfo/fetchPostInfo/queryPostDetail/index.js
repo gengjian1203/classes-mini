@@ -11,10 +11,10 @@ const Utils = require("../../utils/index.js");
 
 async function queryPostDetail(data, db, strMemberId) {
   let objResult = {};
-  const { postId = "" } = data || {};
+  const { articleId = "" } = data || {};
 
   try {
-    objResult = await db.collection("TB_POST").doc(postId).get();
+    objResult = await db.collection("TB_POST").doc(articleId).get();
   } catch (e) {
     // 没有查到。异常。
     objResult = { ...e };

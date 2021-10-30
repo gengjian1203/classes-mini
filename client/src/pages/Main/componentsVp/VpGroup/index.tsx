@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import Api from "@/api";
 import Banner from "@/components/Banner";
@@ -15,6 +16,7 @@ interface IVpGroupParam {
   isTabListLoadComplete?: boolean;
   arrTabPostList?: any; // 帖子列表
   onTabChange?: (any?: any) => void; // 切换tab
+  onTabListUpdate?: (any?: any) => void;
 }
 
 export default function VpGroup(props: IVpGroupParam) {
@@ -23,6 +25,7 @@ export default function VpGroup(props: IVpGroupParam) {
     isTabListLoadComplete = true,
     arrTabPostList = [],
     onTabChange,
+    onTabListUpdate,
   } = props;
 
   const {
@@ -61,9 +64,21 @@ export default function VpGroup(props: IVpGroupParam) {
     // console.log("handleBannerClick", e);
   };
 
+  const handleTabItemDetailClick = (item) => {
+    console.log("handleTabItemDetailClick", item);
+    Taro.navigateTo({
+      url:
+        `/pages/ArticleDetail/index` + `?type=post` + `&articleId=${item?._id}`,
+    });
+  };
+
   const handleTabChange = (objTab) => {
     // console.log("handleTabChange", objTab);
     onTabChange && onTabChange(objTab);
+  };
+
+  const handleTabListUpdate = () => {
+    onTabListUpdate && onTabListUpdate();
   };
 
   const renderGroupModule = () => {
@@ -145,7 +160,9 @@ export default function VpGroup(props: IVpGroupParam) {
             key={`group-module-${indexModule}`}
             showModuleValView={objAny}
             arrList={arrTabPostList}
+            onDetailClick={handleTabItemDetailClick}
             onTabChange={handleTabChange}
+            onTabListUpdate={handleTabListUpdate}
           />
         ),
       }[itemModule.type];
