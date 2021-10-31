@@ -42,16 +42,12 @@ export default function ArticleDetail() {
       return {};
     };
     switch (type) {
-      case "article": {
-        funFetch = Api.cloud.fetchArticleInfo.queryArticleDetail;
+      case "ZHIHU": {
+        funFetch = Api.cloud.fetchArticleInfo.queryZhiHuDetail;
         break;
       }
-      case "post": {
-        funFetch = Api.cloud.fetchPostInfo.queryPostDetail;
-        break;
-      }
-      case "weather": {
-        funFetch = Api.cloud.fetchArticleInfo.queryWeatherArticleDetailInfo;
+      case "NOTICE": {
+        funFetch = Api.cloud.fetchArticleInfo.queryNoticeDetail;
         break;
       }
       default: {

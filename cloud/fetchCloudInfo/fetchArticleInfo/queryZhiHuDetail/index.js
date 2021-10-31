@@ -1,20 +1,20 @@
 const Utils = require("../../utils/index.js");
 
 /**
- * queryArticleDetail
- * 查询资讯文章详细内容
+ * queryZhiHuDetail
+ * 查询知乎文章详细内容
  * @param {*} event
  * @param {*} db
  * @param {*} strMemberId
  * @returns
  */
 
-async function queryArticleDetail(data, db, strMemberId) {
+async function queryZhiHuDetail(data, db, strMemberId) {
   let objResult = {};
   const { articleId = "" } = data || {};
 
   try {
-    objResult = await db.collection("TB_ARTICLE").doc(articleId).get();
+    objResult = await db.collection("TB_ZHIHU").doc(articleId).get();
   } catch (e) {
     // 没有查到。异常。
     objResult = { ...e };
@@ -24,4 +24,4 @@ async function queryArticleDetail(data, db, strMemberId) {
   return objResult;
 }
 
-module.exports = queryArticleDetail;
+module.exports = queryZhiHuDetail;

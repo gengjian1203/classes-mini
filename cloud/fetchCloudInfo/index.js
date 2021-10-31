@@ -8,11 +8,11 @@ const queryHomeInfo = require("./fetchAppInfo/queryHomeInfo/index.js");
 const queryWeatherInfo = require("./fetchAppInfo/queryWeatherInfo/index.js");
 const updateAppTabBar = require("./fetchAppInfo/updateAppTabBar/index.js");
 // fetchArticleInfo
-const deleteWeatherArticle = require("./fetchArticleInfo/deleteWeatherArticle/index.js");
-const queryArticleDetail = require("./fetchArticleInfo/queryArticleDetail/index.js");
-const queryArticleList = require("./fetchArticleInfo/queryArticleList/index.js");
-const queryWeatherArticleDetailInfo = require("./fetchArticleInfo/queryWeatherArticleDetailInfo/index.js");
-const queryWeatherArticleListInfo = require("./fetchArticleInfo/queryWeatherArticleListInfo/index.js");
+const deleteNotice = require("./fetchArticleInfo/deleteNotice/index.js");
+const queryNoticeDetail = require("./fetchArticleInfo/queryNoticeDetail/index.js");
+const queryNoticeList = require("./fetchArticleInfo/queryNoticeList/index.js");
+const queryZhiHuDetail = require("./fetchArticleInfo/queryZhiHuDetail/index.js");
+const queryZhiHuList = require("./fetchArticleInfo/queryZhiHuList/index.js");
 // fetchGroupInfo
 const addGroup = require("./fetchGroupInfo/addGroup/index.js");
 const queryGroupByKeyTitle = require("./fetchGroupInfo/queryGroupByKeyTitle/index.js");
@@ -23,10 +23,6 @@ const addMemberInfo = require("./fetchMemberInfo/addMemberInfo/index.js");
 const queryMemberInfo = require("./fetchMemberInfo/queryMemberInfo/index.js");
 const queryMemberList = require("./fetchMemberInfo/queryMemberList/index.js");
 const updateMemberInfo = require("./fetchMemberInfo/updateMemberInfo/index.js");
-// fetchPostInfo
-const deletePost = require("./fetchPostInfo/deletePost/index.js");
-const queryPostDetail = require("./fetchPostInfo/queryPostDetail/index.js");
-const queryPostList = require("./fetchPostInfo/queryPostList/index.js");
 // fetchQRCodeInfo
 const createQRCode = require("./fetchQRCodeInfo/createQRCode/index.js");
 const queryQRCode = require("./fetchQRCodeInfo/queryQRCode/index.js");
@@ -51,11 +47,11 @@ const objFunction = {
   QUERY_WEATHER_INFO: queryWeatherInfo, // 查询天气相关信息
   UPDATE_APP_TAB_BAR: updateAppTabBar, // 更新APP级别底部导航
   // fetchArticleInfo
-  DELETE_WEATHER_ARTICLE: deleteWeatherArticle, // 删除对应天气文章
-  QUERY_ARTICLE_DETAIL: queryArticleDetail, // 查询资讯文章详细内容
-  QUERY_ARTICLE_LIST: queryArticleList, // 查询资讯文章列表内容
-  QUERY_WEATHER_ARTICLE_DETAIL: queryWeatherArticleDetailInfo, // 查询天气文章详细内容
-  QUERY_WEATHER_ARTICLE_LIST: queryWeatherArticleListInfo, // 查询天气文章列表内容
+  DELETE_NOTICE: deleteNotice, // 删除对应资讯文章
+  QUERY_NOTICE_DETAIL: queryNoticeDetail, // 查询资讯文章详细内容
+  QUERY_NOTICE_LIST: queryNoticeList, // 查询资讯文章列表内容
+  QUERY_ZHIHU_DETAIL: queryZhiHuDetail, // 查询知乎文章详细内容
+  QUERY_ZHIHU_LIST: queryZhiHuList, // 查询知乎列表内容
   // fetchGroupInfo
   ADD_GROUP: addGroup, // 新建班级
   QUERY_GROUP_BY_KEY_TITLE: queryGroupByKeyTitle, // 通过关键字查询班级列表
@@ -66,10 +62,6 @@ const objFunction = {
   QUERY_MEMBER: queryMemberInfo, // 查询成员
   QUERY_MEMBER_LIST: queryMemberList, // 查询成员列表
   UPDATE_MEMBER: updateMemberInfo, // 更新成员
-  // fetchPostInfo
-  DELETE_POST: deletePost, // 删除对应帖子
-  QUERY_POST_DETAIL: queryPostDetail, // 查询帖子详细内容
-  QUERY_POST_LIST: queryPostList, // 查询帖子列表
   // fetchQRCodeInfo
   CREATE_QRCODE: createQRCode, // 创建二维码
   QUERY_QRCODE: queryQRCode, // 查询二维码

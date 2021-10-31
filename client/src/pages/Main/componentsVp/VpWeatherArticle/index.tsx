@@ -44,7 +44,7 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
     Taro.navigateTo({
       url:
         `/pages/ArticleDetail/index` +
-        `?type=weather` +
+        `?type=NOTICE` +
         `&articleId=${info?._id}`,
     });
   };

@@ -47,7 +47,7 @@ export default function DialogSpider(props: IDialogSpiderParam) {
       urlServce: urlServceSpider,
       tabId: objParentInfo?.id, // showModuleValView[tabCurrent]?.id,
     };
-    const res = await Api.cloud.fetchAppInfo.spiderPostInfo(params);
+    const res = await Api.cloud.fetchSpiderInfo.spiderArticleWeiXin(params);
     console.log("handleUrl", res);
     Taro.hideToast();
     if (res && res.length > 0) {

@@ -3,73 +3,73 @@ import CloudFetch from "@/services/CloudFetch";
 const CLOUD_NAME = "fetchCloudInfo";
 
 /**
- * 删除对应天气文章
+ * 删除对应资讯文章
  */
-const deleteWeatherArticle = async (objParams: any = {}) => {
+const deleteNotice = async (objParams: any = {}) => {
   const params = {
-    type: "DELETE_WEATHER_ARTICLE",
+    type: "DELETE_NOTICE",
     data: objParams,
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
-  console.log("deleteWeatherArticle", res);
+  console.log("deleteNotice", res);
   return res.code === 200;
 };
 
 /**
  * 查询资讯文章详细内容
  */
-const queryArticleDetail = async (objParams: any = {}) => {
+const queryNoticeDetail = async (objParams: any = {}) => {
   const params = {
-    type: "QUERY_ARTICLE_DETAIL",
+    type: "QUERY_NOTICE_DETAIL",
     data: objParams,
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
-  console.log("queryArticleDetail", res);
+  console.log("queryNoticeDetail", res);
   return res.data;
 };
 /**
  * 查询资讯文章列表内容
  */
-const queryArticleList = async (objParams: any = {}) => {
+const queryNoticeList = async (objParams: any = {}) => {
   const params = {
-    type: "QUERY_ARTICLE_LIST",
+    type: "QUERY_NOTICE_LIST",
     data: objParams,
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
-  console.log("queryArticleList", res);
+  console.log("queryNoticeList", res);
   return res.data;
 };
 
 /**
- * 查询天气文章详细内容
+ * 查询知乎文章详细内容
  */
-const queryWeatherArticleDetailInfo = async (objParams: any = {}) => {
+const queryZhiHuDetail = async (objParams: any = {}) => {
   const params = {
-    type: "QUERY_WEATHER_ARTICLE_DETAIL",
+    type: "QUERY_ZHIHU_DETAIL",
     data: objParams,
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
-  console.log("queryWeatherArticleDetailInfo", res);
+  console.log("queryZhiHuDetail", res);
   return res.data;
 };
 
 /**
- * 查询天气文章列表内容
+ * 查询知乎列表内容
  */
-const queryWeatherArticleListInfo = async (objParams: any = {}) => {
+const queryZhiHuList = async (objParams: any = {}) => {
   const params = {
-    type: "QUERY_WEATHER_ARTICLE_LIST",
+    type: "QUERY_ZHIHU_LIST",
     data: objParams,
   };
   const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
-  console.log("queryWeatherArticleListInfo", res);
+  console.log("queryZhiHuList", res);
   return res.data;
 };
 
 export default {
-  deleteWeatherArticle,
-  queryArticleDetail,
-  queryArticleList,
-  queryWeatherArticleDetailInfo,
-  queryWeatherArticleListInfo,
+  deleteNotice,
+  queryNoticeDetail,
+  queryNoticeList,
+  queryZhiHuDetail,
+  queryZhiHuList,
 };

@@ -1,8 +1,8 @@
 const Utils = require("../../utils/index.js");
 
 /**
- * queryWeatherArticleListInfo
- * 查询天气文章列表内容
+ * queryNoticeList
+ * 查询资讯文章列表内容
  * @param {*} event
  * @param {*} db
  * @param {*} strMemberId
@@ -11,13 +11,16 @@ const Utils = require("../../utils/index.js");
 
 const MAX_LIMIT = 100; // 每次取100条
 
-async function queryWeatherArticleListInfo(data, db, strMemberId) {
+async function queryNoticeList(data, db, strMemberId) {
   let objResult = {};
-  const { pageNum = 0, pageSize = MAX_LIMIT } = data || {};
+  const { pageNum = 0, pageSize = MAX_LIMIT, tabId = "" } = data || {};
 
   const [resDataList, resTotal] = await Promise.all([
     db
-      .collection("TB_WEATHER_ARTICLE")
+      .collection("TB_NOTICE")
+      .where({
+        tabId: tabId,
+      })
       .orderBy("createDate", "desc")
       .skip(pageNum * pageSize)
       .limit(pageSize)
@@ -33,7 +36,12 @@ async function queryWeatherArticleListInfo(data, db, strMemberId) {
         arrImages: true,
       })
       .get(),
-    db.collection("TB_WEATHER_ARTICLE").count(),
+    db
+      .collection("TB_NOTICE")
+      .where({
+        tabId: tabId,
+      })
+      .count(),
   ]);
 
   try {
@@ -46,10 +54,10 @@ async function queryWeatherArticleListInfo(data, db, strMemberId) {
   } catch (e) {
     // 没有查到。异常。
     objResult = { ...e };
-    console.error("queryMemberInfo error", e);
+    console.error("queryNoticeList error", e);
   }
 
   return objResult;
 }
 
-module.exports = queryWeatherArticleListInfo;
+module.exports = queryNoticeList;

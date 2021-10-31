@@ -1,8 +1,8 @@
 const Utils = require("../../utils/index.js");
 
 /**
- * queryPostList
- * 查询帖子列表
+ * queryZhiHuList
+ * 查询知乎列表内容
  * @param {*} event
  * @param {*} db
  * @param {*} strMemberId
@@ -11,16 +11,13 @@ const Utils = require("../../utils/index.js");
 
 const MAX_LIMIT = 100; // 每次取100条
 
-async function queryPostList(data, db, strMemberId) {
+async function queryZhiHuList(data, db, strMemberId) {
   let objResult = {};
-  const { pageNum = 0, pageSize = MAX_LIMIT, tabId = "" } = data || {};
+  const { pageNum = 0, pageSize = MAX_LIMIT } = data || {};
 
   const [resDataList, resTotal] = await Promise.all([
     db
-      .collection("TB_POST")
-      .where({
-        tabId: tabId,
-      })
+      .collection("TB_ZHIHU")
       .orderBy("createDate", "desc")
       .skip(pageNum * pageSize)
       .limit(pageSize)
@@ -36,12 +33,7 @@ async function queryPostList(data, db, strMemberId) {
         arrImages: true,
       })
       .get(),
-    db
-      .collection("TB_POST")
-      .where({
-        tabId: tabId,
-      })
-      .count(),
+    db.collection("TB_ZHIHU").count(),
   ]);
 
   try {
@@ -54,10 +46,10 @@ async function queryPostList(data, db, strMemberId) {
   } catch (e) {
     // 没有查到。异常。
     objResult = { ...e };
-    console.error("queryPostList error", e);
+    console.error("queryZhiHuList error", e);
   }
 
   return objResult;
 }
 
-module.exports = queryPostList;
+module.exports = queryZhiHuList;

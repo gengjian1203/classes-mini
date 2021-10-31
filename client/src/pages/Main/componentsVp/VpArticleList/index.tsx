@@ -35,7 +35,7 @@ export default function VpArticleList(props: IVpArticleListParam) {
     Taro.navigateTo({
       url:
         `/pages/ArticleDetail/index` +
-        `?type=article` +
+        `?type=ZHIHU` +
         `&articleId=${info?._id}`,
     });
   };

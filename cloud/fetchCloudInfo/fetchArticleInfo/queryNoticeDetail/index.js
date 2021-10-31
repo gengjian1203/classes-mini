@@ -1,30 +1,27 @@
 const Utils = require("../../utils/index.js");
 
 /**
- * deleteWeatherArticle
- * 删除对应天气文章
+ * queryNoticeDetail
+ * 查询资讯文章详细内容
  * @param {*} event
  * @param {*} db
  * @param {*} strMemberId
  * @returns
  */
 
-async function deleteWeatherArticle(data, db, strMemberId) {
+async function queryNoticeDetail(data, db, strMemberId) {
   let objResult = {};
   const { articleId = "" } = data || {};
 
   try {
-    objResult = await db
-      .collection("TB_WEATHER_ARTICLE")
-      .doc(articleId)
-      .remove();
+    objResult = await db.collection("TB_NOTICE").doc(articleId).get();
   } catch (e) {
     // 没有查到。异常。
     objResult = { ...e };
-    console.error("queryMemberInfo error", e);
+    console.error("queryNoticeDetail error", e);
   }
 
   return objResult;
 }
 
-module.exports = deleteWeatherArticle;
+module.exports = queryNoticeDetail;

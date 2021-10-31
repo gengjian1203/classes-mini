@@ -50,6 +50,8 @@ export default function ShowerImages(props: IShowerImagesParam) {
                   ? "image-multiple-two"
                   : nLength <= 4
                   ? "image-multiple-four"
+                  : nLength <= 6
+                  ? "image-multiple-six"
                   : "image-multiple-nine"
               }`
             }

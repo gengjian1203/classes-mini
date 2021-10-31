@@ -75,6 +75,7 @@ const pushArticleInfoList = async (arrData, strDBTable, type) => {
     }
 
     if (arrResult && arrResult.length > 0) {
+      const { ENV, SOURCE } = cloud.getWXContext();
       const arrArticleTitle = arrResult.map((item) => {
         return `《${item.title}》`;
       });
@@ -82,7 +83,9 @@ const pushArticleInfoList = async (arrData, strDBTable, type) => {
         `尊敬的主人：<br>` +
         `你好！<br>` +
         `今天共为您爬取到${arrArticleTitle.length}篇文章，` +
-        `分别为${arrArticleTitle.join(",")}。`;
+        `分别为${arrArticleTitle.join(",")}。` +
+        `<br>` +
+        `————本条消息来自${ENV} ${SOURCE}`;
 
       if (type === "") {
         sendEmail(contentHTML);
@@ -103,43 +106,27 @@ const pushArticleInfoList = async (arrData, strDBTable, type) => {
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { type = "", data = {} } = event || {};
-  let { urlServce = "", tabId = "" } = data || {};
   let objResult = {};
   let arrData = [];
-  let strDBTable = "TB_ARTICLE";
+  let strDBTable = "TB_ZHIHU";
   let resContentHTML = "";
 
   try {
     switch (type) {
       case "ZHIHU":
-        strDBTable = "TB_ARTICLE";
+        strDBTable = "TB_ZHIHU";
         arrData = await spiderZhiHuInfo(db, superagent, cheerio, entities);
         break;
       case "WEIXIN":
-        strDBTable = "TB_WEATHER_ARTICLE";
-        arrData = await spiderWeiXinInfo(
-          db,
-          superagent,
-          cheerio,
-          entities,
-          urlServce,
-          {}
-        );
-        break;
-      case "POST":
-        strDBTable = "TB_POST";
-        arrData = await spiderWeiXinInfo(
-          db,
-          superagent,
-          cheerio,
-          entities,
-          urlServce,
-          { tabId }
-        );
+        strDBTable = "TB_NOTICE";
+        arrData = await spiderWeiXinInfo(db, superagent, cheerio, entities, {
+          type,
+          ...data,
+        });
         break;
       default:
-        // 默认爬取知乎文章
-        strDBTable = "TB_ARTICLE";
+        // 定时任务：默认爬取知乎文章
+        strDBTable = "TB_ZHIHU";
         arrData = await spiderZhiHuInfo(db, superagent, cheerio, entities);
         break;
     }

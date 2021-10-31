@@ -14,7 +14,7 @@ import "./index.less";
 interface IVpGroupParam {
   isLoadComplete?: boolean;
   isTabListLoadComplete?: boolean;
-  arrTabPostList?: any; // 帖子列表
+  arrTabNoticeList?: any; // 帖子列表
   onTabChange?: (any?: any) => void; // 切换tab
   onTabListUpdate?: (any?: any) => void;
 }
@@ -23,7 +23,7 @@ export default function VpGroup(props: IVpGroupParam) {
   const {
     isLoadComplete = true,
     isTabListLoadComplete = true,
-    arrTabPostList = [],
+    arrTabNoticeList = [],
     onTabChange,
     onTabListUpdate,
   } = props;
@@ -118,7 +118,9 @@ export default function VpGroup(props: IVpGroupParam) {
     console.log("handleTabItemDetailClick", item);
     Taro.navigateTo({
       url:
-        `/pages/ArticleDetail/index` + `?type=post` + `&articleId=${item?._id}`,
+        `/pages/ArticleDetail/index` +
+        `?type=NOTICE` +
+        `&articleId=${item?._id}`,
     });
   };
 
@@ -169,7 +171,7 @@ export default function VpGroup(props: IVpGroupParam) {
             customClass="group-module-wrap"
             key={`group-module-${indexModule}`}
             showModuleValView={objAny}
-            arrList={arrTabPostList}
+            arrList={arrTabNoticeList}
             onDetailClick={handleTabItemDetailClick}
             onTabChange={handleTabChange}
             onTabListUpdate={handleTabListUpdate}

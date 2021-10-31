@@ -72,60 +72,10 @@ const queryWeatherInfo = async (objParams: any = {}) => {
   return res;
 };
 
-/**
- * 测试爬取文章内容
- */
-const spiderWeiXinInfo = async (objParams: any = {}) => {
-  const params = {};
-  const res = await CloudFetch.callFunction("spiderArticleInfo", params);
-  console.log("spiderArticleInfo", res);
-  return res.data;
-};
-
-/**
- * 爬取帖子内容
- */
-const spiderPostInfo = async (objParams: any = {}) => {
-  const params = {
-    type: "POST",
-    data: objParams,
-  };
-  const res = await CloudFetch.callFunction("spiderArticleInfo", params);
-  console.log("spiderPostInfo", res);
-  return res.data;
-};
-
-/**
- * 爬取文章内容
- */
-const spiderArticleInfoWeiXin = async (objParams: any = {}) => {
-  const params = {
-    type: "WEIXIN",
-    data: objParams,
-  };
-  const res = await CloudFetch.callFunction("spiderArticleInfo", params);
-  console.log("spiderArticleInfoWeiXin", res);
-  return res.data;
-};
-
-/**
- * 测试爬取天气数据
- */
-const spiderWeatherInfo = async (objParams: any = {}) => {
-  const params = {};
-  const res = await CloudFetch.callFunction("spiderWeatherInfo", params);
-  console.log("spiderWeatherInfo", res);
-  return res.data;
-};
-
 export default {
   queryConfig,
   queryAppTabBar,
   updateAppTabBar,
   queryHomeInfo,
   queryWeatherInfo,
-  spiderWeiXinInfo,
-  spiderPostInfo,
-  spiderArticleInfoWeiXin,
-  spiderWeatherInfo,
 };

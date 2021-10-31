@@ -58,8 +58,8 @@ export default function Main() {
   const [isTabListLoadComplete, setTabListLoadComplete] = useState<boolean>(
     false
   );
-  const [objQueryPostListParams, setQueryPostListParams] = useState({});
-  const [arrTabPostList, setTabPostList] = useState<Array<any>>([]);
+  const [objQueryNoticeListParams, setQueryNoticeListParams] = useState({});
+  const [arrTabNoticeList, setTabNoticeList] = useState<Array<any>>([]);
 
   // 底部导航
   const {
@@ -137,9 +137,11 @@ export default function Main() {
             break;
           case "RESULT":
             setArticleList(list);
-            setLoadComplete(true);
-            setShowArticleListLoadingTip(false);
             Taro.hideLoading();
+            setTimeout(() => {
+              setLoadComplete(true);
+              setShowArticleListLoadingTip(false);
+            }, 100);
             break;
         }
       },
@@ -150,15 +152,17 @@ export default function Main() {
           case "LOADING":
             break;
           case "RESULT":
-            setTabPostList(
+            setTabNoticeList(
               list.map((item) => {
                 return {
                   ...item,
                 };
               })
             );
-            setTabListLoadComplete(true);
             Taro.hideLoading();
+            setTimeout(() => {
+              setTabListLoadComplete(true);
+            }, 100);
             break;
         }
       },
@@ -180,16 +184,22 @@ export default function Main() {
                 };
               })
             );
-            setLoadComplete(true);
             Taro.hideLoading();
+            setTimeout(() => {
+              setLoadComplete(true);
+            }, 100);
             break;
         }
       },
       HOME: (res) => {
-        setLoadComplete(true);
+        setTimeout(() => {
+          setLoadComplete(true);
+        }, 100);
       },
       HOME_NORMAL: (res) => {
-        setLoadComplete(true);
+        setTimeout(() => {
+          setLoadComplete(true);
+        }, 100);
       },
       MINE: (res) => {},
       SATELLITE: (res) => {},
@@ -205,16 +215,18 @@ export default function Main() {
             break;
           case "RESULT":
             setWeatherArticleList(list);
-            setLoadComplete(true);
-            setShowWeatherArticleListLoadingTip(false);
             Taro.hideLoading();
+            setTimeout(() => {
+              setLoadComplete(true);
+              setShowWeatherArticleListLoadingTip(false);
+            }, 100);
             break;
         }
       },
     }[tabList[nTabListCurrent].contentType],
     {
-      ARTICLE_LIST: Api.cloud.fetchArticleInfo.queryArticleList,
-      GROUP: Api.cloud.fetchPostInfo.queryPostList,
+      ARTICLE_LIST: Api.cloud.fetchArticleInfo.queryZhiHuList,
+      GROUP: Api.cloud.fetchArticleInfo.queryNoticeList,
       GROUP_LIST: Api.cloud.fetchGroupInfo.queryGroupByKeyTitle,
       HOME: null,
       HOME_NORMAL: null,
@@ -223,11 +235,11 @@ export default function Main() {
       STORY_MAP: null,
       TEST: null,
       WAVE: null,
-      WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryWeatherArticleListInfo,
+      WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryNoticeList,
     }[tabList[nTabListCurrent].contentType],
     {
       ARTICLE_LIST: {},
-      GROUP: objQueryPostListParams,
+      GROUP: objQueryNoticeListParams,
       GROUP_LIST: paramQueryGroupByKeyTitle,
       HOME: {},
       HOME_NORMAL: {},
@@ -251,7 +263,7 @@ export default function Main() {
     console.log("handleTabChange", objTab);
     const params = { tabId: objTab?.id };
     setTabListLoadComplete(false);
-    setQueryPostListParams(params);
+    setQueryNoticeListParams(params);
   };
 
   // 切换底部导航
@@ -269,7 +281,7 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnSpiderClick = useCheckLogin(async () => {
-    const res = await Api.cloud.fetchAppInfo.spiderWeatherInfo({});
+    const res = await Api.cloud.fetchSpiderInfo.spiderWeatherInfo({});
     console.log("handleBtnSpiderClick", res);
   });
 
@@ -278,7 +290,7 @@ export default function Main() {
     // Taro.navigateTo({
     //   url: "/pages/ArticleDetail/index",
     // });
-    const res = await Api.cloud.fetchAppInfo.spiderWeiXinInfo({});
+    const res = await Api.cloud.fetchSpiderInfo.spiderArticleZhiHu({});
     // 新增员工
     // const name = "孙尚香";
     // const params = {
@@ -364,7 +376,7 @@ export default function Main() {
         <VpGroup
           isLoadComplete={isLoadComplete}
           isTabListLoadComplete={isTabListLoadComplete}
-          arrTabPostList={arrTabPostList}
+          arrTabNoticeList={arrTabNoticeList}
           onTabChange={handleGroupTabChange}
           onTabListUpdate={handleQueryPageListUpdate}
         />
