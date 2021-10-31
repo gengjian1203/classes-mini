@@ -1,37 +1,115 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Taro from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
-
-import ModuleHeader from "../../components/ModuleHeader";
+import Api from "@/api";
+import ButtonFloat from "@/components/ButtonFloat";
+import ListNode from "@/components/ListNode";
 
 import "./index.less";
 
 interface IVpStoryMapParam {
-  title?: string;
   isLoadComplete?: boolean;
-  onTitleClick?: any;
+  objVPageInfo?: any;
+  arrStoryList?: Array<any>;
+  onStoryMapUpdate?: () => void;
 }
 
 export default function VpStoryMap(props: IVpStoryMapParam) {
   const {
-    title = "", // 标题
     isLoadComplete = true,
-    onTitleClick = () => {}, // 点击标题回调
+    objVPageInfo = {},
+    arrStoryList = [],
+    onStoryMapUpdate,
   } = props;
 
-  const memberInfo = useSelector((state) => state.memberInfo);
+  const [objDialogSpiderParentInfo, setDialogSpiderParentInfo] = useState<any>(
+    {}
+  );
 
-  const [value, setValue] = useState<number>(0);
+  const { isEasterEgg } = useSelector((state) => state.appInfo);
 
   useEffect(() => {
-    setValue(Math.random());
-  }, []);
+    setDialogSpiderParentInfo({
+      id: objVPageInfo?.contentId,
+      title: objVPageInfo?.title,
+    });
+  }, [objVPageInfo]);
+
+  const handleDetailClick = (info) => {
+    console.log("handleDetailClick", info);
+    Taro.navigateTo({
+      url:
+        `/pages/ArticleDetail/index` +
+        `?type=NOTICE` +
+        `&articleId=${info?._id}`,
+    });
+  };
+
+  const handleDeleteClick = (info) => {
+    console.log("handleDetailClick", info);
+    Taro.showModal({
+      title: "提示",
+      content: "确认删除该篇文章？",
+      cancelText: "取消",
+      confirmColor: "#ff0000",
+      confirmText: "删除",
+      success: async (res) => {
+        if (res.confirm) {
+          console.log("用户点击确定");
+          Taro.showToast({
+            title: "删除中",
+            icon: "loading",
+            mask: true,
+            duration: 20000,
+          });
+          const params = {
+            articleId: info._id,
+          };
+          const res = await Api.cloud.fetchArticleInfo.deleteNotice(params);
+          Taro.hideToast({});
+          if (res) {
+            onStoryMapUpdate && onStoryMapUpdate();
+            Taro.showToast({
+              title: "删除成功",
+              icon: "success",
+            });
+          } else {
+            Taro.showToast({
+              title: "删除失败",
+              icon: "none",
+            });
+          }
+        }
+      },
+    });
+  };
+
+  // 成功发布文章回调
+  const handleDialogSpiderSuccess = () => {
+    onStoryMapUpdate && onStoryMapUpdate();
+  };
 
   return (
     <View className="vp-story-map-wrap">
       <View className="flex-start-v vp-story-map-content">
-        <View>故事墙内容</View>
+        <ListNode
+          isLoadCompleteList={isLoadComplete}
+          isShowDelete={isEasterEgg}
+          strType={"MOMENT"}
+          arrList={arrStoryList}
+          customClass="vp-story-map-list"
+          onDetailClick={handleDetailClick}
+          onDeleteClick={handleDeleteClick}
+        />
       </View>
+      {/* 发布模块 */}
+      {(true || isEasterEgg) && (
+        <ButtonFloat
+          objDialogSpiderParentInfo={objDialogSpiderParentInfo}
+          onDialogSpiderSuccess={handleDialogSpiderSuccess}
+        />
+      )}
     </View>
   );
 }

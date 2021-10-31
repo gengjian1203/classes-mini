@@ -74,31 +74,29 @@ export default function Loading() {
     if (process.env.TARO_ENV === "weapp") {
       Taro.hideShareMenu();
     }
-    initAppState();
-
     timeShowToast.current = setTimeout(() => {
       Taro.showToast({
         title: "首次加载中，请耐心等待",
         icon: "none",
-        duration: 60000,
+        duration: 20000,
       });
     }, 1000);
 
+    initAppState();
+
+    // await delay3000();
+
     const arrQueryList = [
       Api.cloud.fetchAppInfo.queryConfig({ appId: Config.appId }),
-      // Api.cloud.fetchAppInfo.queryAppTabBar(),
       Api.cloud.fetchMemberInfo.queryMember(),
       // delay3000(),
     ];
     if (params.scene) {
       arrQueryList.push(Api.cloud.fetchQRCodeInfo.queryQRCode(params));
     }
-    const [
-      resQueryConfig,
-      // resQueryAppTabBar,
-      resQueryMember,
-      resQueryQrCode,
-    ] = await Promise.all(arrQueryList);
+    const [resQueryConfig, resQueryMember, resQueryQrCode] = await Promise.all(
+      arrQueryList
+    );
 
     clearTimeout(timeShowToast.current);
 
@@ -111,11 +109,7 @@ export default function Loading() {
       resQueryQrCode
     );
     if (resQueryConfig) {
-      const {
-        arrTabbarList = [],
-        colorPrimary = "#60b968",
-        strGroupId = "",
-      } = resQueryConfig;
+      const { arrTabbarList = [], colorPrimary = "#60b968" } = resQueryConfig;
       const arrTabbarListTmp = arrTabbarList
         .filter((item) => {
           return item.enable;
@@ -133,7 +127,6 @@ export default function Loading() {
           tabListSource: arrTabbarList,
           nTabListCurrent: 0,
           colorPrimary: colorPrimary,
-          strGroupId: strGroupId,
         });
         setMemberInfo(resQueryMember);
         jumpPage(resQueryQrCode, params);

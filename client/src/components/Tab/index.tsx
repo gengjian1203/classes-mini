@@ -2,9 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import { View } from "@tarojs/components";
-import ButtonIcon from "@/components/ButtonIcon";
-import DialogSpider from "@/components/DialogSpider";
-import LayoutPicker from "@/components/LayoutPicker";
+import ButtonFloat from "@/components/ButtonFloat";
 import ListNode from "@/components/ListNode";
 import Skeleton from "@/components/Skeleton";
 
@@ -36,10 +34,6 @@ export default function Tab(props: ITabParam) {
   } = props;
 
   const [tabCurrent, setTabCurrent] = useState<number>(0);
-  const [isShowLayoutPickerPublish, setShowLayoutPickerPublish] = useState<
-    boolean
-  >(false);
-  const [isShowDialogSpider, setDialogSpider] = useState<boolean>(false);
   const [objDialogSpiderParentInfo, setDialogSpiderParentInfo] = useState<any>(
     {}
   );
@@ -52,6 +46,7 @@ export default function Tab(props: ITabParam) {
       return;
     }
     setTabCurrent(current);
+
     onTabChange && onTabChange(showModuleValView[current]);
   };
 
@@ -60,42 +55,15 @@ export default function Tab(props: ITabParam) {
     onDetailClick && onDetailClick(item);
   };
 
-  // 点击发布按钮
-  const handleBtnPublishClick = () => {
-    console.log("handleBtnPublishClick", arrList[tabCurrent]);
-    setShowLayoutPickerPublish(true);
-  };
-
-  // 关闭发布选择弹窗
-  const handleLayoutPickerClose = () => {
-    setShowLayoutPickerPublish(false);
-  };
-
-  // 点击发布选择项
-  const handleLayoutPickerItemClick = (item) => {
-    console.log("handleLayoutPickerItemClick", item);
-    switch (item.code) {
-      case "WEIXIN": {
-        setDialogSpider(true);
-        setDialogSpiderParentInfo(showModuleValView[tabCurrent]);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    setShowLayoutPickerPublish(false);
-  };
-
-  // 成功爬取文章回调
+  // 成功发布文章回调
   const handleDialogSpiderSuccess = () => {
     onTabListUpdate && onTabListUpdate();
   };
 
-  // 关闭爬取微信文章弹窗
-  const handleDialogSpiderClose = () => {
-    setDialogSpider(false);
-  };
+  useEffect(() => {
+    console.log("Tab useEffect", tabCurrent);
+    setDialogSpiderParentInfo(showModuleValView[tabCurrent]);
+  }, [tabCurrent]);
 
   return (
     <View className={`tab-wrap ${customClass} `}>
@@ -121,33 +89,10 @@ export default function Tab(props: ITabParam) {
               </AtTabsPane>
             ))}
           </AtTabs>
-          {/* 发布按钮 */}
-          {(true || isEasterEgg) && (
-            <View className="safe-bottom flex-center-v tab-float-btn-panel">
-              <ButtonIcon
-                value="iconadd"
-                width={100}
-                height={100}
-                radius={50}
-                size={60}
-                color="var(--color-primary)"
-                onClick={handleBtnPublishClick}
-              />
-            </View>
-          )}
-          {/* 底部浮层选择 */}
-          <LayoutPicker
-            isShowLayoutPicker={isShowLayoutPickerPublish}
-            arrPickerList={[{ title: "爬取微信文章", code: "WEIXIN" }]}
-            onLayoutPickerClose={handleLayoutPickerClose}
-            onLayoutPickerItemClick={handleLayoutPickerItemClick}
-          />
-          {/* 弹窗 */}
-          {isShowDialogSpider && (
-            <DialogSpider
-              objParentInfo={objDialogSpiderParentInfo}
+          {isEasterEgg && (
+            <ButtonFloat
+              objDialogSpiderParentInfo={objDialogSpiderParentInfo}
               onDialogSpiderSuccess={handleDialogSpiderSuccess}
-              onDialogSpiderClose={handleDialogSpiderClose}
             />
           )}
         </Fragment>

@@ -30,6 +30,8 @@ import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
 
 import "./index.less";
 
+const DELAY_RENDER = 200;
+
 export default function Main() {
   const {} = useRouter();
 
@@ -60,7 +62,9 @@ export default function Main() {
   );
   const [objQueryNoticeListParams, setQueryNoticeListParams] = useState({});
   const [arrTabNoticeList, setTabNoticeList] = useState<Array<any>>([]);
-
+  // STORY_MAP
+  const [objQueryStoryListParams, setQueryStoryListParams] = useState({});
+  const [arrStoryList, setStoryList] = useState<Array<any>>([]);
   // 底部导航
   const {
     configInfo: { tabList, nTabListCurrent },
@@ -97,6 +101,8 @@ export default function Main() {
         break;
       }
       case "STORY_MAP": {
+        const params = { tabId: tabList[nTabListCurrent]?.contentId };
+        setQueryStoryListParams(params);
         break;
       }
       case "TEST": {
@@ -141,7 +147,7 @@ export default function Main() {
             setTimeout(() => {
               setLoadComplete(true);
               setShowArticleListLoadingTip(false);
-            }, 100);
+            }, DELAY_RENDER);
             break;
         }
       },
@@ -162,7 +168,7 @@ export default function Main() {
             Taro.hideLoading();
             setTimeout(() => {
               setTabListLoadComplete(true);
-            }, 100);
+            }, DELAY_RENDER);
             break;
         }
       },
@@ -187,23 +193,37 @@ export default function Main() {
             Taro.hideLoading();
             setTimeout(() => {
               setLoadComplete(true);
-            }, 100);
+            }, DELAY_RENDER);
             break;
         }
       },
       HOME: (res) => {
         setTimeout(() => {
           setLoadComplete(true);
-        }, 100);
+        }, DELAY_RENDER);
       },
       HOME_NORMAL: (res) => {
         setTimeout(() => {
           setLoadComplete(true);
-        }, 100);
+        }, DELAY_RENDER);
       },
       MINE: (res) => {},
       SATELLITE: (res) => {},
-      STORY_MAP: (res) => {},
+      STORY_MAP: (res) => {
+        const { state, list, totalCount } = res;
+        console.log("useQueryPageList STORY_MAP", state, list, totalCount);
+        switch (state) {
+          case "LOADING":
+            break;
+          case "RESULT":
+            setStoryList(list);
+            Taro.hideLoading();
+            setTimeout(() => {
+              setLoadComplete(true);
+            }, DELAY_RENDER);
+            break;
+        }
+      },
       TEST: (res) => {},
       WAVE: (res) => {},
       WEATHER_ARTICLE: (res) => {
@@ -219,7 +239,7 @@ export default function Main() {
             setTimeout(() => {
               setLoadComplete(true);
               setShowWeatherArticleListLoadingTip(false);
-            }, 100);
+            }, DELAY_RENDER);
             break;
         }
       },
@@ -232,7 +252,7 @@ export default function Main() {
       HOME_NORMAL: null,
       MINE: null,
       SATELLITE: null,
-      STORY_MAP: null,
+      STORY_MAP: Api.cloud.fetchArticleInfo.queryNoticeList,
       TEST: null,
       WAVE: null,
       WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryNoticeList,
@@ -245,7 +265,7 @@ export default function Main() {
       HOME_NORMAL: {},
       MINE: {},
       SATELLITE: {},
-      STORY_MAP: {},
+      STORY_MAP: objQueryStoryListParams,
       TEST: {},
       WAVE: {},
       WEATHER_ARTICLE: {},
@@ -376,6 +396,7 @@ export default function Main() {
         <VpGroup
           isLoadComplete={isLoadComplete}
           isTabListLoadComplete={isTabListLoadComplete}
+          contentId={tabList[nTabListCurrent]?.contentId}
           arrTabNoticeList={arrTabNoticeList}
           onTabChange={handleGroupTabChange}
           onTabListUpdate={handleQueryPageListUpdate}
@@ -403,7 +424,14 @@ export default function Main() {
         />
       ),
       // 故事墙
-      STORY_MAP: <VpStoryMap isLoadComplete={isLoadComplete} />,
+      STORY_MAP: (
+        <VpStoryMap
+          isLoadComplete={isLoadComplete}
+          objVPageInfo={tabList[nTabListCurrent]}
+          arrStoryList={arrStoryList}
+          onStoryMapUpdate={handleQueryPageListUpdate}
+        />
+      ),
       // 测试
       TEST: <VpTest />,
       // 中波

@@ -14,6 +14,7 @@ import "./index.less";
 interface IVpGroupParam {
   isLoadComplete?: boolean;
   isTabListLoadComplete?: boolean;
+  contentId?: string; // 内容Id
   arrTabNoticeList?: any; // 帖子列表
   onTabChange?: (any?: any) => void; // 切换tab
   onTabListUpdate?: (any?: any) => void;
@@ -23,14 +24,11 @@ export default function VpGroup(props: IVpGroupParam) {
   const {
     isLoadComplete = true,
     isTabListLoadComplete = true,
+    contentId = "",
     arrTabNoticeList = [],
     onTabChange,
     onTabListUpdate,
   } = props;
-
-  const {
-    configInfo: { strGroupId },
-  } = useSelector((state) => state.appInfo);
 
   const [objGroupDetail, setGroupDetail] = useState<any>({});
 
@@ -84,7 +82,7 @@ export default function VpGroup(props: IVpGroupParam) {
 
   const onLoad = async () => {
     const params = {
-      groupId: strGroupId,
+      groupId: contentId,
     };
     const res = await Api.cloud.fetchGroupInfo.queryGroupDetail(params);
     const resGroupDetail = dealGroupDetail(res);

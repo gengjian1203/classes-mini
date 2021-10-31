@@ -1,4 +1,5 @@
 import checkObjectEmpty from "./base/checkObjectEmpty";
+import checkObjectEqual from "./base/checkObjectEqual";
 import deepClone from "./base/deepClone";
 import deepCompare from "./base/deepCompare";
 import getDeviceSize from "./base/getDeviceSize";
@@ -22,6 +23,7 @@ import uploadImage from "./upload/uploadImage";
 export default {
   shareType,
   checkObjectEmpty,
+  checkObjectEqual,
   deepClone,
   deepCompare,
   getDeviceSize,

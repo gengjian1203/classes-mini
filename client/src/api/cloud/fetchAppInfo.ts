@@ -16,19 +16,6 @@ const queryConfig = async (objParams: any = {}) => {
 };
 
 /**
- * 查询APP级别底部导航
- */
-const queryAppTabBar = async (objParams: any = {}) => {
-  const params = {
-    type: "QUERY_APP_TAB_BAR",
-    data: objParams,
-  };
-  const res = await CloudFetch.callFunction(CLOUD_NAME, params, true);
-  console.log("queryAppTabBar", res);
-  return (res && res.data) || [];
-};
-
-/**
  * 更新APP级别底部导航
  */
 const updateAppTabBar = async (objParams: any = {}) => {
@@ -74,7 +61,6 @@ const queryWeatherInfo = async (objParams: any = {}) => {
 
 export default {
   queryConfig,
-  queryAppTabBar,
   updateAppTabBar,
   queryHomeInfo,
   queryWeatherInfo,
