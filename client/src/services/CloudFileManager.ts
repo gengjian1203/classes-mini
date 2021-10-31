@@ -13,7 +13,11 @@ class CloudFileManager {
 
   // 处理cloud链接
   getCloudUrl = (strUrl: string) => {
-    return `${Config.cloudPath}${strUrl}`;
+    if (strUrl.startsWith("https://") || strUrl.startsWith("http://")) {
+      return strUrl;
+    } else {
+      return `${Config.cloudPath}${strUrl}`;
+    }
   };
 }
 

@@ -106,7 +106,7 @@ export default function VpGroup(props: IVpGroupParam) {
 
   useEffect(() => {
     onLoad();
-  }, []);
+  }, [contentId]);
 
   const handleBannerClick = (e) => {
     // console.log("handleBannerClick", e);
