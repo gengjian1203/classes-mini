@@ -44,7 +44,7 @@ const checkBlackString = (item) => {
 /**
  * 信息存入数据库
  */
-const pushArticleInfoList = async (arrData, strDBTable) => {
+const pushArticleInfoList = async (arrData, strDBTable, type) => {
   const arrResult = [];
   let contentHTML = "";
 
@@ -83,7 +83,10 @@ const pushArticleInfoList = async (arrData, strDBTable) => {
         `你好！<br>` +
         `今天共为您爬取到${arrArticleTitle.length}篇文章，` +
         `分别为${arrArticleTitle.join(",")}。`;
-      sendEmail(contentHTML);
+
+      if (type === "") {
+        sendEmail(contentHTML);
+      }
     }
   } catch (e) {
     console.error("pushArticleInfoList error.", e, arrData);
@@ -149,7 +152,7 @@ exports.main = async (event, context) => {
   }
 
   try {
-    resContentHTML = await pushArticleInfoList(arrData, strDBTable);
+    resContentHTML = await pushArticleInfoList(arrData, strDBTable, type);
   } catch (e) {
     objResult = {
       code: 500,

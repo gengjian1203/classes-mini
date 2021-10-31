@@ -1,15 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { AtTabs, AtTabsPane, AtButton, AtInput } from "taro-ui";
-import Taro from "@tarojs/taro";
+import { AtTabs, AtTabsPane } from "taro-ui";
 import { View } from "@tarojs/components";
-import Api from "@/api";
 import ButtonIcon from "@/components/ButtonIcon";
-import Dialog from "@/components/Dialog";
+import DialogSpider from "@/components/DialogSpider";
 import LayoutPicker from "@/components/LayoutPicker";
 import ListNode from "@/components/ListNode";
 import Skeleton from "@/components/Skeleton";
-import useDebounce from "@/hooks/useDebounce";
 
 import "./index.less";
 
@@ -42,10 +39,10 @@ export default function Tab(props: ITabParam) {
   const [isShowLayoutPickerPublish, setShowLayoutPickerPublish] = useState<
     boolean
   >(false);
-  const [isShowDialogSpiderWeiXin, setDialogSpiderWeiXin] = useState<boolean>(
-    false
+  const [isShowDialogSpider, setDialogSpider] = useState<boolean>(false);
+  const [objDialogSpiderParentInfo, setDialogSpiderParentInfo] = useState<any>(
+    {}
   );
-  const [urlServceWeiXin, setUrlServceWeiXin] = useState<string>("");
 
   const { isEasterEgg } = useSelector((state) => state.appInfo);
 
@@ -79,7 +76,8 @@ export default function Tab(props: ITabParam) {
     console.log("handleLayoutPickerItemClick", item);
     switch (item.code) {
       case "WEIXIN": {
-        setDialogSpiderWeiXin(true);
+        setDialogSpider(true);
+        setDialogSpiderParentInfo(showModuleValView[tabCurrent]);
         break;
       }
       default: {
@@ -89,43 +87,14 @@ export default function Tab(props: ITabParam) {
     setShowLayoutPickerPublish(false);
   };
 
-  // 关闭爬取微信文章弹窗
-  const handleDialogSpiderWeiXinClose = () => {
-    setDialogSpiderWeiXin(false);
+  // 成功爬取文章回调
+  const handleDialogSpiderSuccess = () => {
+    onTabListUpdate && onTabListUpdate();
   };
 
-  // 输入微信公众号文章链接
-  const handleUrlServceWeiXinChange = useDebounce((value) => {
-    setUrlServceWeiXin(value);
-  }, 100);
-
-  // 点击爬取微信公众号文章
-  const hanldeUrlServceWeiXinClick = async () => {
-    Taro.showToast({
-      title: "文章爬取中",
-      icon: "loading",
-      mask: true,
-      duration: 20000,
-    });
-    const params = {
-      urlServce: urlServceWeiXin,
-      tabId: showModuleValView[tabCurrent]?.id,
-    };
-    const res = await Api.cloud.fetchAppInfo.spiderPostInfo(params);
-    console.log("handleUrl", res);
-    Taro.hideToast();
-    if (res && res.length > 0) {
-      Taro.showToast({
-        title: "爬取成功",
-        icon: "success",
-      });
-      onTabListUpdate && onTabListUpdate();
-    } else {
-      Taro.showToast({
-        title: "该文章已被收录，或搜索不到该文章。",
-        icon: "none",
-      });
-    }
+  // 关闭爬取微信文章弹窗
+  const handleDialogSpiderClose = () => {
+    setDialogSpider(false);
   };
 
   return (
@@ -174,35 +143,12 @@ export default function Tab(props: ITabParam) {
             onLayoutPickerItemClick={handleLayoutPickerItemClick}
           />
           {/* 弹窗 */}
-          {isShowDialogSpiderWeiXin && (
-            <Dialog
-              title="爬取微信公众号url"
-              titleIcon="iconweixin"
-              onDialogClose={handleDialogSpiderWeiXinClose}
-            >
-              <View className={`flex-center-h ` + `dialog-worker-wrap `}>
-                {/* 员工编辑面板 */}
-                <View className="dialog-worker-content">
-                  <AtInput
-                    border={false}
-                    name="weixin_urlServce"
-                    title="爬取公众号"
-                    type="text"
-                    placeholder="https://mp.weixin.qq.com/s/JsnvAFe6CNU5c8HbltbqAA"
-                    value={urlServceWeiXin}
-                    onChange={handleUrlServceWeiXinChange}
-                  />
-                  <AtButton
-                    className=""
-                    type="primary"
-                    circle
-                    onClick={hanldeUrlServceWeiXinClick}
-                  >
-                    爬取
-                  </AtButton>
-                </View>
-              </View>
-            </Dialog>
+          {isShowDialogSpider && (
+            <DialogSpider
+              objParentInfo={objDialogSpiderParentInfo}
+              onDialogSpiderSuccess={handleDialogSpiderSuccess}
+              onDialogSpiderClose={handleDialogSpiderClose}
+            />
           )}
         </Fragment>
       ) : (

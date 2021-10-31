@@ -82,42 +82,44 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
   };
 
   return (
-    <AtFloatLayout
-      isOpened={isShowLayoutLogin}
-      onClose={handleLayoutLoginClose}
-    >
-      <View className="flex-between-v layout-login-panel">
-        <View className="layout-login-header">
-          <View className="layout-login-title">
-            <Text className="iconfont iconpeople_fill layout-login-icon"></Text>
-            <Text className="layout-login-title-text">气象台历</Text>
+    <View catchMove>
+      <AtFloatLayout
+        isOpened={isShowLayoutLogin}
+        onClose={handleLayoutLoginClose}
+      >
+        <View className="flex-between-v layout-login-panel">
+          <View className="layout-login-header">
+            <View className="layout-login-title">
+              <Text className="iconfont iconpeople_fill layout-login-icon"></Text>
+              <Text className="layout-login-title-text">气象台历</Text>
+            </View>
+            <View className="layout-login-content">
+              <Text className="layout-login-content-text">
+                为了给您提供更好的服务，请先授权登录。
+              </Text>
+            </View>
           </View>
-          <View className="layout-login-content">
-            <Text className="layout-login-content-text">
-              为了给您提供更好的服务，请先授权登录。
-            </Text>
+          <View className="layout-login-footer">
+            <AtButton
+              openType="getUserInfo"
+              type="primary"
+              circle
+              className="layout-login-btn"
+              loading={isLogining}
+              // onGetUserInfo={handleGetUserInfo}
+              onClick={handleBtnLoginClick}
+            >
+              微信快捷登录
+            </AtButton>
+            <View
+              className="flex-center-v layout-login-cancel"
+              onClick={handleLayoutLoginClose}
+            >
+              <Text className="layout-login-cancel-text">暂不登录</Text>
+            </View>
           </View>
         </View>
-        <View className="layout-login-footer">
-          <AtButton
-            openType="getUserInfo"
-            type="primary"
-            circle
-            className="layout-login-btn"
-            loading={isLogining}
-            // onGetUserInfo={handleGetUserInfo}
-            onClick={handleBtnLoginClick}
-          >
-            微信快捷登录
-          </AtButton>
-          <View
-            className="flex-center-v layout-login-cancel"
-            onClick={handleLayoutLoginClose}
-          >
-            <Text className="layout-login-cancel-text">暂不登录</Text>
-          </View>
-        </View>
-      </View>
-    </AtFloatLayout>
+      </AtFloatLayout>
+    </View>
   );
 }
