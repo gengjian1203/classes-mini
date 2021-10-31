@@ -27,8 +27,6 @@ export default function Menu(props: IMenuParam) {
     onMenuItemClick && onMenuItemClick(item);
   };
 
-  console.log("showModuleValView", showModuleValView);
-
   return (
     <View className={`flex-between-h menu-wrap ${customClass} `}>
       {isLoadComplete ? (

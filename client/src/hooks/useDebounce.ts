@@ -3,35 +3,49 @@
  * 默认间隔 1000ms
  */
 
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback } from "react";
 
 interface IDebounceRef {
-	funCallback: any
-	handleTimeOut: any
+  funCallback: any;
+  handleTimeOut: any;
 }
 
 export function useDebounce(
-	funCallback = (any?: any) => any,
-	delay = 1000,
-	dep = []
+  funCallback = (any?: any) => any,
+  delay = 1000,
+  dep = []
 ) {
-	const { current } = useRef<IDebounceRef>({
-		funCallback: () => true,
-		handleTimeOut: null,
-	})
+  const { current } = useRef<IDebounceRef>({
+    funCallback: () => true,
+    handleTimeOut: null,
+  });
 
-	useEffect(() => {
-		current.funCallback = funCallback
-	}, [funCallback])
+  useEffect(() => {
+    current.funCallback = funCallback;
+  }, [funCallback]);
 
-	return useCallback((...args) => {
-		if (current.handleTimeOut !== null) {
-			clearTimeout(current.handleTimeOut)
-		}
-		current.handleTimeOut = setTimeout(() => {
-			current.funCallback.call(this, ...args)
-		}, delay)
-	}, dep)
+  return useCallback((...args) => {
+    if (current.handleTimeOut !== null) {
+      clearTimeout(current.handleTimeOut);
+      current.handleTimeOut = setTimeout(() => {
+        current.funCallback.call(this, ...args);
+        current.handleTimeOut = null;
+      }, delay);
+    } else {
+      current.funCallback.call(this, ...args);
+      current.handleTimeOut = setTimeout(() => {
+        current.handleTimeOut = null;
+      }, delay);
+    }
+  }, dep);
+  // return useCallback((...args) => {
+  //   if (current.handleTimeOut !== null) {
+  //     clearTimeout(current.handleTimeOut);
+  //   }
+  //   current.handleTimeOut = setTimeout(() => {
+  //     current.funCallback.call(this, ...args);
+  //   }, delay);
+  // }, dep);
 }
 
-export default useDebounce
+export default useDebounce;

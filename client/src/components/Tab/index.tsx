@@ -146,6 +146,7 @@ export default function Tab(props: ITabParam) {
                   strType={item?.type || "MOMENT"}
                   arrList={arrList}
                   showBottomLoadingTip={showBottomLoadingTip}
+                  customClass="tab-list-wrap"
                   onDetailClick={handleDetailClick}
                 />
               </AtTabsPane>

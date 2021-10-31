@@ -34,13 +34,63 @@ export default function VpGroup(props: IVpGroupParam) {
 
   const [objGroupDetail, setGroupDetail] = useState<any>({});
 
+  const dealGroupDetail = (res) => {
+    res?.moduleTemplate?.map((itemModule, indexModule) => {
+      let objAny: any = null;
+      switch (itemModule.type) {
+        case "BANNER": {
+          objAny = itemModule?.content?.map((item, index) => {
+            return {
+              url: CloudFileManager.getCloudUrl(item),
+            };
+          });
+          break;
+        }
+        case "INFO": {
+          objAny = {
+            dataAddress: res?.dataAddress,
+            dataDescribe: res?.dataDescribe,
+            dataLatitude: res?.dataLatitude,
+            dataLongitude: res?.dataLongitude,
+            dataLogo: res?.dataLogo,
+            dataTitle: res?.dataTitle,
+            dataCellphone: res?.dataCellphone,
+          };
+          break;
+        }
+        case "MENU": {
+          objAny = itemModule?.content?.map((item, index) => {
+            return {
+              ...item,
+              icon: CloudFileManager.getCloudUrl(item.icon),
+            };
+          });
+          break;
+        }
+        case "TAB": {
+          objAny = itemModule?.content;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      itemModule.objAny = objAny;
+      return itemModule;
+    });
+
+    return res;
+  };
+
   const onLoad = async () => {
     const params = {
       groupId: strGroupId,
     };
     const res = await Api.cloud.fetchGroupInfo.queryGroupDetail(params);
-    console.log("VpGroup", res);
-    setGroupDetail(res);
+    const resGroupDetail = dealGroupDetail(res);
+    console.log("VpGroup", resGroupDetail);
+    setGroupDetail(resGroupDetail);
+
     // 如果有TAB类型，则触发加载第一项tab
     const nIndexTab = res?.moduleTemplate?.findIndex(
       (itemModule, indexModule) => {
@@ -83,47 +133,7 @@ export default function VpGroup(props: IVpGroupParam) {
 
   const renderGroupModule = () => {
     return objGroupDetail?.moduleTemplate?.map((itemModule, indexModule) => {
-      let objAny: any = null;
-
-      switch (itemModule.type) {
-        case "BANNER": {
-          objAny = itemModule?.content?.map((item, index) => {
-            return {
-              url: CloudFileManager.getCloudUrl(item),
-            };
-          });
-          break;
-        }
-        case "INFO": {
-          objAny = {
-            dataAddress: objGroupDetail?.dataAddress,
-            dataDescribe: objGroupDetail?.dataDescribe,
-            dataLatitude: objGroupDetail?.dataLatitude,
-            dataLongitude: objGroupDetail?.dataLongitude,
-            dataLogo: objGroupDetail?.dataLogo,
-            dataTitle: objGroupDetail?.dataTitle,
-            dataCellphone: objGroupDetail?.dataCellphone,
-          };
-          break;
-        }
-        case "MENU": {
-          objAny = itemModule?.content?.map((item, index) => {
-            return {
-              ...item,
-              icon: CloudFileManager.getCloudUrl(item.icon),
-            };
-          });
-          break;
-        }
-        case "TAB": {
-          objAny = itemModule?.content;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-
+      const { objAny } = itemModule || {};
       return {
         BANNER: (
           <Banner

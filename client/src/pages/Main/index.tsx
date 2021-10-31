@@ -65,17 +65,15 @@ export default function Main() {
   const {
     configInfo: { tabList, nTabListCurrent },
   } = useSelector((state) => state.appInfo);
-  const { setAppTabBarCurrent, setShowLayoutLogin } = useActions(
-    appInfoActions
-  );
+  const { setAppTabBarCurrent } = useActions(appInfoActions);
   const { setShareInfo } = useActions(shareInfoActions);
 
   const onLoad = async () => {};
 
   // 监听底部导航数据变化
   const watchTabBarCurrent = async () => {
-    setLoadComplete(false);
     setNavigationTitle(tabList[nTabListCurrent].title);
+    Taro.pageScrollTo({ scrollTop: 0, duration: 100 });
     switch (tabList[nTabListCurrent].contentType) {
       case "ARTICLE_LIST": {
         break;
@@ -261,7 +259,7 @@ export default function Main() {
     if (nTabListCurrent === current) {
       return;
     }
-    // setLoadComplete(false);
+    setLoadComplete(false);
     setAppTabBarCurrent(current);
   };
 
