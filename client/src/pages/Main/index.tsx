@@ -30,7 +30,7 @@ import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
 
 import "./index.less";
 
-const DELAY_RENDER = 200;
+const DELAY_RENDER = 500;
 
 export default function Main() {
   const {} = useRouter();
@@ -138,10 +138,11 @@ export default function Main() {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList ARTICLE_LIST", state, list, totalCount);
         switch (state) {
-          case "LOADING":
+          case "LOADING": {
             setShowArticleListLoadingTip(true);
             break;
-          case "RESULT":
+          }
+          case "RESULT": {
             setArticleList(list);
             Taro.hideLoading();
             setTimeout(() => {
@@ -149,15 +150,17 @@ export default function Main() {
               setShowArticleListLoadingTip(false);
             }, DELAY_RENDER);
             break;
+          }
         }
       },
       GROUP: (res) => {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList GROUP", state, list, totalCount);
         switch (state) {
-          case "LOADING":
+          case "LOADING": {
             break;
-          case "RESULT":
+          }
+          case "RESULT": {
             setTabNoticeList(
               list.map((item) => {
                 return {
@@ -170,15 +173,17 @@ export default function Main() {
               setTabListLoadComplete(true);
             }, DELAY_RENDER);
             break;
+          }
         }
       },
       GROUP_LIST: (res) => {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList GROUP_LIST", state, list, totalCount);
         switch (state) {
-          case "LOADING":
+          case "LOADING": {
             break;
-          case "RESULT":
+          }
+          case "RESULT": {
             setGroupList(
               list.map((item) => {
                 return {
@@ -195,6 +200,7 @@ export default function Main() {
               setLoadComplete(true);
             }, DELAY_RENDER);
             break;
+          }
         }
       },
       HOME: (res) => {
@@ -213,15 +219,17 @@ export default function Main() {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList STORY_MAP", state, list, totalCount);
         switch (state) {
-          case "LOADING":
+          case "LOADING": {
             break;
-          case "RESULT":
+          }
+          case "RESULT": {
             setStoryList(list);
             Taro.hideLoading();
             setTimeout(() => {
               setLoadComplete(true);
             }, DELAY_RENDER);
             break;
+          }
         }
       },
       TEST: (res) => {},
@@ -230,10 +238,11 @@ export default function Main() {
         const { state, list, totalCount } = res;
         console.log("useQueryPageList WEATHER", state, list, totalCount);
         switch (state) {
-          case "LOADING":
+          case "LOADING": {
             setShowWeatherArticleListLoadingTip(true);
             break;
-          case "RESULT":
+          }
+          case "RESULT": {
             setWeatherArticleList(list);
             Taro.hideLoading();
             setTimeout(() => {
@@ -241,6 +250,7 @@ export default function Main() {
               setShowWeatherArticleListLoadingTip(false);
             }, DELAY_RENDER);
             break;
+          }
         }
       },
     }[tabList[nTabListCurrent].contentType],

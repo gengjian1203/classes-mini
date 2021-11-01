@@ -1,7 +1,6 @@
 import {
   SET_APP_CONFIG_INFO,
   SET_APP_HOME_PAGE,
-  SET_APP_TAB_BAR_INFO,
   SET_APP_TAB_BAR_CURRENT,
   SET_APP_EASTER_EGG,
   SET_SHOW_LAYOUT_LOGIN,
@@ -20,13 +19,6 @@ const appInfoActions = (dispatch) => {
     setAppHomePage: (payload) => {
       dispatch({
         type: SET_APP_HOME_PAGE,
-        payload,
-      });
-    },
-    // 设置底部导航信息
-    setAppTabBarInfo: (payload) => {
-      dispatch({
-        type: SET_APP_TAB_BAR_INFO,
         payload,
       });
     },

@@ -2,6 +2,7 @@ import checkObjectEmpty from "./base/checkObjectEmpty";
 import checkObjectEqual from "./base/checkObjectEqual";
 import deepClone from "./base/deepClone";
 import deepCompare from "./base/deepCompare";
+import delaySync from "./base/delaySync";
 import getDeviceSize from "./base/getDeviceSize";
 import getHDAvatarUrl from "./base/getHDAvatarUrl";
 import getStringDate from "./base/getStringDate";
@@ -26,6 +27,7 @@ export default {
   checkObjectEqual,
   deepClone,
   deepCompare,
+  delaySync,
   getDeviceSize,
   getHDAvatarUrl,
   getStringDate,

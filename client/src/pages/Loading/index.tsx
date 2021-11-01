@@ -15,12 +15,9 @@ import "./index.less";
 export default function Loading() {
   const { params } = useRouter();
 
-  const {
-    setAppConfigInfo,
-    setAppHomePage,
-    setAppTabBarInfo,
-    setShowLayoutLogin,
-  } = useActions(appInfoActions);
+  const { setAppConfigInfo, setAppHomePage, setShowLayoutLogin } = useActions(
+    appInfoActions
+  );
   const timeShowToast = useRef<NodeJS.Timeout>(null);
   const { setMemberInfo } = useActions(memberInfoActions);
   const { setShareInfo, setSourceInfo } = useActions(shareInfoActions);
@@ -62,14 +59,6 @@ export default function Loading() {
     setShareInfo({ isShowPanelShare: false });
   };
 
-  const delay3000 = async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 3000);
-    });
-  };
-
   const onLoad = async () => {
     if (process.env.TARO_ENV === "weapp") {
       Taro.hideShareMenu();
@@ -84,7 +73,7 @@ export default function Loading() {
 
     initAppState();
 
-    // await delay3000();
+    // await Utils.delaySync();
 
     const arrQueryList = [
       Api.cloud.fetchAppInfo.queryConfig({ appId: Config.appId }),
@@ -101,13 +90,7 @@ export default function Loading() {
     clearTimeout(timeShowToast.current);
 
     setAppHomePage("/pages/Main/index");
-    console.log(
-      "Loading",
-      resQueryConfig,
-      // resQueryAppTabBar,
-      resQueryMember,
-      resQueryQrCode
-    );
+    console.log("Loading", resQueryConfig, resQueryMember, resQueryQrCode);
     if (resQueryConfig) {
       const { arrTabbarList = [], colorPrimary = "#60b968" } = resQueryConfig;
       const arrTabbarListTmp = arrTabbarList
