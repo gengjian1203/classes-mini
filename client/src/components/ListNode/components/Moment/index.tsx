@@ -8,8 +8,8 @@ import { IInfoType } from "../../index";
 import "./index.less";
 
 interface IMomentProps {
-  isShowDelete?: boolean;
   info?: IInfoType;
+  isShowDelete?: boolean;
   onDetailClick?: (any?: any) => void;
   onDeleteClick?: (any?: any) => void;
 }

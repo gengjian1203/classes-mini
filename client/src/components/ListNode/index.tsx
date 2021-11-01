@@ -9,6 +9,7 @@ import Base from "./components/Base";
 import Group from "./components/Group";
 import Member from "./components/Member";
 import Moment from "./components/Moment";
+import Story from "./components/Story";
 import Worker from "./components/Worker";
 
 import "./index.less";
@@ -40,6 +41,7 @@ interface IListNodeProps {
     | "GROUP" // 群组类型
     | "MEMBER" // 成员类型
     | "MOMENT" // 朋友圈类型
+    | "STORY" // 故事墙类型
     | "WORKER"; // 职工类型
   arrList: Array<IInfoType>;
   showBottomLoadingTip?: boolean;
@@ -103,6 +105,19 @@ export default function ListNode(props: IListNodeProps) {
           return (
             <Moment
               key={`monent-${index}`}
+              isShowDelete={isShowDelete}
+              info={item}
+              onDetailClick={onDetailClick}
+              onDeleteClick={onDeleteClick}
+            />
+          );
+        });
+      }
+      case "STORY": {
+        return arrList.map((item, index) => {
+          return (
+            <Story
+              key={`story-${index}`}
               isShowDelete={isShowDelete}
               info={item}
               onDetailClick={onDetailClick}
@@ -180,6 +195,22 @@ export default function ListNode(props: IListNodeProps) {
               row={2}
               rowProps={{ width: "100%", height: 24 }}
               avatar
+              customClass="skeleton-item"
+            />
+          );
+        });
+      }
+      case "STORY": {
+        return arrSkeleton.map((item, index) => {
+          return (
+            <Skeleton
+              key={`list-skeleton-${index}`}
+              type="row"
+              title
+              titleWidth="100%"
+              titleHeight={Taro.pxTransform(260)}
+              row={1}
+              rowProps={{ width: "100%", height: 100 }}
               customClass="skeleton-item"
             />
           );

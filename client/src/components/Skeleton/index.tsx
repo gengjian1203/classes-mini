@@ -40,6 +40,11 @@ interface SkeletonProps {
    */
   titleWidth?: string | number;
   /**
+   * @description 标题占位图高度
+   * @type {(string | number)}
+   */
+  titleHeight?: string | number;
+  /**
    * @description 是否显示头像占位图
    * @type {boolean}
    */
@@ -144,6 +149,7 @@ export default function Skeleton(props: SkeletonProps) {
     },
     title = false,
     titleWidth = "40%",
+    titleHeight = 30,
     action = false,
     avatarShape = "round",
     animate = true,
@@ -215,7 +221,10 @@ export default function Skeleton(props: SkeletonProps) {
       return (
         <View
           className="skeleton-title"
-          style={`width: ${addUnit(titleWidth)};`}
+          style={
+            `width: ${addUnit(titleWidth)}; ` +
+            `height: ${addUnit(titleHeight)};`
+          }
         ></View>
       );
     }

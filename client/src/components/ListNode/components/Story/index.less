@@ -1,0 +1,42 @@
+.story-item {
+  margin-bottom: var(--margin-sm);
+  overflow: hidden;
+  width: 100%;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  box-shadow: 10px 10px 6px var(--color-gray-5);
+  .item-up {
+    width: 100%;
+    height: 280px;
+    .up-swiper {
+      width: 100%;
+      height: 100%;
+      .up-swiper-item {
+        width: 100%;
+        height: 100%;
+        .up-swiper-item-img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .item-down {
+    box-sizing: border-box;
+    padding: var(--padding-base);
+    width: 100%;
+    height: 100px;
+    display: -webkit-box; /* 对象作为弹性伸缩盒子模型显示 */
+    overflow: hidden;
+    -webkit-box-orient: vertical; /* 设置或检索伸缩盒对象的子元素的排列方式 */
+    -webkit-line-clamp: 2; /* 展示行数 */
+    /* 如果多行文本内有可能存在长单词英文，那么需要对长单词英文进行打断 */
+    word-wrap: break-word; /* 是否允许在单词内进行断句 */
+    word-break: break-all; /* 可以在任何位置断句 */
+    /* 让多行文字两端对齐 */
+    text-align: justify; /* 多行文本样式最好加上：文本两端对齐 */
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    background-color: var(--color-gray-8);
+  }
+}

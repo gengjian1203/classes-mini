@@ -96,7 +96,7 @@ export default function VpStoryMap(props: IVpStoryMapParam) {
         <ListNode
           isLoadCompleteList={isLoadComplete}
           isShowDelete={isEasterEgg}
-          strType={"MOMENT"}
+          strType={"STORY"}
           arrList={arrStoryList}
           customClass="vp-story-map-list"
           onDetailClick={handleDetailClick}
@@ -104,7 +104,7 @@ export default function VpStoryMap(props: IVpStoryMapParam) {
         />
       </View>
       {/* 发布模块 */}
-      {(true || isEasterEgg) && (
+      {isEasterEgg && (
         <ButtonFloat
           objDialogSpiderParentInfo={objDialogSpiderParentInfo}
           onDialogSpiderSuccess={handleDialogSpiderSuccess}
