@@ -16,6 +16,19 @@ const deleteNotice = async (objParams: any = {}) => {
 };
 
 /**
+ * 删除对应知乎文章
+ */
+const deleteZhiHu = async (objParams: any = {}) => {
+  const params = {
+    type: "DELETE_ZHIHU",
+    data: objParams,
+  };
+  const res = await CloudFetch.callFunction(CLOUD_NAME, params, false);
+  console.log("deleteZhiHu", res);
+  return res.code === 200;
+};
+
+/**
  * 查询资讯文章详细内容
  */
 const queryNoticeDetail = async (objParams: any = {}) => {
@@ -68,6 +81,7 @@ const queryZhiHuList = async (objParams: any = {}) => {
 
 export default {
   deleteNotice,
+  deleteZhiHu,
   queryNoticeDetail,
   queryNoticeList,
   queryZhiHuDetail,

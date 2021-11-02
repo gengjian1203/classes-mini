@@ -72,8 +72,10 @@ export default function ListNode(props: IListNodeProps) {
           return (
             <Base
               key={`base-${index}`}
+              isShowDelete={isShowDelete}
               info={item}
               onDetailClick={onDetailClick}
+              onDeleteClick={onDeleteClick}
             />
           );
         });

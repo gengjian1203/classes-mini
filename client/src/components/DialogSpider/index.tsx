@@ -75,6 +75,15 @@ export default function DialogSpider(props: IDialogSpiderParam) {
         <View className="dialog-worker-content">
           <AtInput
             border={false}
+            disabled
+            name="tabId"
+            title="挂载tabId"
+            type="text"
+            value={objParentInfo?.id}
+            onChange={() => {}}
+          />
+          <AtInput
+            border={false}
             name="urlServceSpider"
             title="公众号链接"
             type="text"

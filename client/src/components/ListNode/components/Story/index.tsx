@@ -24,6 +24,12 @@ export default function Story(props: IStoryParam) {
     onDetailClick && onDetailClick(info);
   };
 
+  const handleDeleteClick = (info, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onDeleteClick && onDeleteClick(info);
+  };
+
   return (
     <View
       className="flex-start-v story-item"
@@ -49,6 +55,16 @@ export default function Story(props: IStoryParam) {
       </View>
       <View className="flex-start-v item-down">
         <View className="down-title">{info.title || ""}</View>
+      </View>
+      <View className="item-float">
+        {isShowDelete && (
+          <View
+            className="flex-center-h item-float-btn"
+            onClick={(e) => handleDeleteClick(info, e)}
+          >
+            <View className="iconfont icondelete item-float-delete" />
+          </View>
+        )}
       </View>
     </View>
   );

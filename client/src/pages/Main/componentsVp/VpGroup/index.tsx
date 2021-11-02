@@ -32,6 +32,8 @@ export default function VpGroup(props: IVpGroupParam) {
 
   const [objGroupDetail, setGroupDetail] = useState<any>({});
 
+  const { isEasterEgg } = useSelector((state) => state.appInfo);
+
   const dealGroupDetail = (res) => {
     res?.moduleTemplate?.map((itemModule, indexModule) => {
       let objAny: any = null;
@@ -122,6 +124,45 @@ export default function VpGroup(props: IVpGroupParam) {
     });
   };
 
+  const handleTabItemDeleteClick = (info) => {
+    console.log("handleDetailClick", info);
+    Taro.showModal({
+      title: "提示",
+      content: "确认删除该篇文章？",
+      cancelText: "取消",
+      confirmColor: "#ff0000",
+      confirmText: "删除",
+      success: async (res) => {
+        if (res.confirm) {
+          console.log("用户点击确定");
+          Taro.showToast({
+            title: "删除中",
+            icon: "loading",
+            mask: true,
+            duration: 20000,
+          });
+          const params = {
+            articleId: info._id,
+          };
+          const res = await Api.cloud.fetchArticleInfo.deleteNotice(params);
+          Taro.hideToast({});
+          if (res) {
+            onTabListUpdate && onTabListUpdate();
+            Taro.showToast({
+              title: "删除成功",
+              icon: "success",
+            });
+          } else {
+            Taro.showToast({
+              title: "删除失败",
+              icon: "none",
+            });
+          }
+        }
+      },
+    });
+  };
+
   const handleTabChange = (objTab) => {
     // console.log("handleTabChange", objTab);
     onTabChange && onTabChange(objTab);
@@ -166,11 +207,13 @@ export default function VpGroup(props: IVpGroupParam) {
         TAB: (
           <Tab
             isLoadCompleteList={isTabListLoadComplete}
+            isShowDelete={isEasterEgg}
             customClass="group-module-wrap"
             key={`group-module-${indexModule}`}
             showModuleValView={objAny}
             arrList={arrTabNoticeList}
             onDetailClick={handleTabItemDetailClick}
+            onDeleteClick={handleTabItemDeleteClick}
             onTabChange={handleTabChange}
             onTabListUpdate={handleTabListUpdate}
           />

@@ -11,11 +11,13 @@ import "./index.less";
 interface ITabParam {
   isLoadComplete?: boolean;
   isLoadCompleteList?: boolean;
+  isShowDelete?: boolean; // 是否展示删除按钮
   showModuleValView?: Array<any>;
   arrList?: any; // 帖子列表
   showBottomLoadingTip?: boolean; // 是否展示触底加载提示
   customClass?: string;
   onDetailClick?: (any?: any) => void; // 点击帖子
+  onDeleteClick?: (any?: any) => void; // 删除帖子
   onTabChange?: (any?: any) => void; // 切换tab
   onTabListUpdate?: (any?: any) => void;
 }
@@ -24,11 +26,13 @@ export default function Tab(props: ITabParam) {
   const {
     isLoadComplete = true,
     isLoadCompleteList = true,
+    isShowDelete = false,
     showModuleValView = [],
     arrList = [],
     showBottomLoadingTip = false,
     customClass = "",
     onDetailClick,
+    onDeleteClick,
     onTabChange,
     onTabListUpdate,
   } = props;
@@ -53,6 +57,10 @@ export default function Tab(props: ITabParam) {
   // 点击帖子
   const handleDetailClick = (item) => {
     onDetailClick && onDetailClick(item);
+  };
+
+  const handleDeleteClick = (item) => {
+    onDeleteClick && onDeleteClick(item);
   };
 
   // 成功发布文章回调
@@ -80,11 +88,13 @@ export default function Tab(props: ITabParam) {
               <AtTabsPane current={tabCurrent} index={index} key={index}>
                 <ListNode
                   isLoadCompleteList={isLoadCompleteList}
+                  isShowDelete={isShowDelete}
                   strType={item?.type || "MOMENT"}
                   arrList={arrList}
                   showBottomLoadingTip={showBottomLoadingTip}
                   customClass="tab-list-wrap"
                   onDetailClick={handleDetailClick}
+                  onDeleteClick={handleDeleteClick}
                 />
               </AtTabsPane>
             ))}

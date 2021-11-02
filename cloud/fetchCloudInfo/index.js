@@ -8,6 +8,7 @@ const queryWeatherInfo = require("./fetchAppInfo/queryWeatherInfo/index.js");
 const updateAppTabBar = require("./fetchAppInfo/updateAppTabBar/index.js");
 // fetchArticleInfo
 const deleteNotice = require("./fetchArticleInfo/deleteNotice/index.js");
+const deleteZhiHu = require("./fetchArticleInfo/deleteZhiHu/index.js");
 const queryNoticeDetail = require("./fetchArticleInfo/queryNoticeDetail/index.js");
 const queryNoticeList = require("./fetchArticleInfo/queryNoticeList/index.js");
 const queryZhiHuDetail = require("./fetchArticleInfo/queryZhiHuDetail/index.js");
@@ -46,6 +47,7 @@ const objFunction = {
   UPDATE_APP_TAB_BAR: updateAppTabBar, // 更新APP级别底部导航
   // fetchArticleInfo
   DELETE_NOTICE: deleteNotice, // 删除对应资讯文章
+  DELETE_ZHIHU: deleteZhiHu, // 删除对应知乎文章
   QUERY_NOTICE_DETAIL: queryNoticeDetail, // 查询资讯文章详细内容
   QUERY_NOTICE_LIST: queryNoticeList, // 查询资讯文章列表内容
   QUERY_ZHIHU_DETAIL: queryZhiHuDetail, // 查询知乎文章详细内容

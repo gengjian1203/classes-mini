@@ -1,10 +1,12 @@
 .story-item {
+  position: relative;
   margin-bottom: var(--margin-sm);
   overflow: hidden;
   width: 100%;
   background-color: var(--color-white);
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   box-shadow: 10px 10px 6px var(--color-gray-5);
+
   .item-up {
     width: 100%;
     height: 280px;
@@ -21,6 +23,7 @@
       }
     }
   }
+
   .item-down {
     box-sizing: border-box;
     padding: var(--padding-base);
@@ -37,6 +40,22 @@
     text-align: justify; /* 多行文本样式最好加上：文本两端对齐 */
     color: var(--color-text-primary);
     font-size: var(--font-size-lg);
-    background-color: var(--color-gray-8);
+    background-color: var(--color-white);
+  }
+
+  .item-float {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .item-float-btn {
+      box-sizing: border-box;
+      padding: var(--padding-base);
+
+      .item-float-delete {
+        font-size: var(--font-size-hd);
+        color: var(--color-gray-2);
+      }
+    }
   }
 }
