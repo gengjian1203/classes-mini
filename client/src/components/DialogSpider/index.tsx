@@ -98,6 +98,7 @@ export default function DialogSpider(props: IDialogSpiderParam) {
             onClick={hanldeUrlServceSpiderClick}
           >
             爬取
+            {!objParentInfo?.id && "(无tabID)"}
           </AtButton>
         </View>
       </View>

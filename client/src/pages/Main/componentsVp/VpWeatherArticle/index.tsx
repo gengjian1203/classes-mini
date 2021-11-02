@@ -5,6 +5,7 @@ import { View, Image } from "@tarojs/components";
 
 import Api from "@/api";
 import Banner from "@/components/Banner";
+import ButtonFloat from "@/components/ButtonFloat";
 import ListNode from "@/components/ListNode";
 import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
@@ -13,7 +14,7 @@ import CloudFileManager from "@/services/CloudFileManager";
 import "./index.less";
 
 interface IVpWeatherArticleParam {
-  title?: string;
+  objVPageInfo?: any;
   arrWeatherArticleList?: Array<any>;
   isShowWeatherArticleListLoadingTip?: boolean;
   isLoadComplete?: boolean;
@@ -22,16 +23,25 @@ interface IVpWeatherArticleParam {
 
 export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
   const {
-    title = "", // 标题
+    objVPageInfo = {},
     arrWeatherArticleList = [], //
     isShowWeatherArticleListLoadingTip = false,
     isLoadComplete = true,
     onWeatherArticleListUpdate,
   } = props;
 
+  const [objDialogSpiderParentInfo, setDialogSpiderParentInfo] = useState<any>(
+    {}
+  );
+
   const { isEasterEgg } = useSelector((state) => state.appInfo);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setDialogSpiderParentInfo({
+      id: objVPageInfo?.contentId,
+      title: objVPageInfo?.title,
+    });
+  }, [objVPageInfo]);
 
   const handleBannerClick = useCheckLogin((e) => {
     e.preventDefault();
@@ -88,6 +98,11 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
     });
   };
 
+  // 成功发布文章回调
+  const handleDialogSpiderSuccess = () => {
+    onWeatherArticleListUpdate && onWeatherArticleListUpdate();
+  };
+
   return (
     <View className="vp-weather-article-wrap">
       <View className="vp-weather-article-content">
@@ -134,6 +149,13 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
           onDetailClick={handleDetailClick}
           onDeleteClick={handleDeleteClick}
         />
+        {/* 发布模块 */}
+        {isEasterEgg && (
+          <ButtonFloat
+            objDialogSpiderParentInfo={objDialogSpiderParentInfo}
+            onDialogSpiderSuccess={handleDialogSpiderSuccess}
+          />
+        )}
       </View>
     </View>
   );

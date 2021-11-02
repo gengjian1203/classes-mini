@@ -50,12 +50,6 @@ export default function Main() {
     false
   );
   const [arrArticleList, setArticleList] = useState([]);
-  //
-  const [
-    isShowWeatherArticleListLoadingTip,
-    setShowWeatherArticleListLoadingTip,
-  ] = useState(false);
-  const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
   // GROUP
   const [isTabListLoadComplete, setTabListLoadComplete] = useState<boolean>(
     false
@@ -65,6 +59,18 @@ export default function Main() {
   // STORY_MAP
   const [objQueryStoryListParams, setQueryStoryListParams] = useState({});
   const [arrStoryList, setStoryList] = useState<Array<any>>([]);
+  //
+  const [
+    objQueryWeatherArticleListParams,
+    setQueryWeatherArticleListParams,
+  ] = useState({});
+  //
+  const [
+    isShowWeatherArticleListLoadingTip,
+    setShowWeatherArticleListLoadingTip,
+  ] = useState(false);
+  const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
+
   // 底部导航
   const {
     configInfo: { tabList, nTabListCurrent },
@@ -112,6 +118,8 @@ export default function Main() {
         break;
       }
       case "WEATHER_ARTICLE": {
+        const params = { tabId: tabList[nTabListCurrent]?.contentId };
+        setQueryWeatherArticleListParams(params);
         break;
       }
       default: {
@@ -278,7 +286,7 @@ export default function Main() {
       STORY_MAP: objQueryStoryListParams,
       TEST: {},
       WAVE: {},
-      WEATHER_ARTICLE: {},
+      WEATHER_ARTICLE: objQueryWeatherArticleListParams,
     }[tabList[nTabListCurrent].contentType],
     isUpdateList
   );
@@ -458,8 +466,8 @@ export default function Main() {
           isShowWeatherArticleListLoadingTip={
             isShowWeatherArticleListLoadingTip
           }
+          objVPageInfo={tabList[nTabListCurrent]}
           arrWeatherArticleList={arrWeatherArticleList}
-          title={tabList[nTabListCurrent].title}
           onWeatherArticleListUpdate={handleQueryPageListUpdate}
         />
       ),
