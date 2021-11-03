@@ -1,7 +1,7 @@
 /**
  * 权限校验
  * 1. 自身的标签
- * 2. 传入的标签（对比纬度）
+ * 2. 传入的标签（对比维度）
  */
 
 import StorageManager from "@/services/StorageManager";

@@ -47,7 +47,7 @@ const PAGE_SIZE = 30;
 const useQueryPageList = (
   callback: any,
   funFetchApi: any = null,
-  param: any = {},
+  param: any = undefined,
   isUpdateList: boolean = false
 ) => {
   const nPageNum = useRef<number>(0);
@@ -104,6 +104,7 @@ const useQueryPageList = (
         funFetchApiTmp.current !== funFetchApi ||
         JSON.stringify(paramTmp.current) !== JSON.stringify(param);
       if (isNotUndefined && isDiff) {
+        // console.log("useQueryPageList useEffect", funFetchApi, param);
         funFetchApiTmp.current = funFetchApi;
         paramTmp.current = param;
         nPageNum.current = 0;

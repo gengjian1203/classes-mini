@@ -5,6 +5,7 @@ import { View, Image, Video } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
 import useActions from "@/hooks/useActions";
+import useCallbackState from "@/hooks/useCallbackState";
 import useQueryPageList from "@/hooks/useQueryPageList";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import ButtonIcon from "@/components/ButtonIcon";
@@ -30,8 +31,6 @@ import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
 
 import "./index.less";
 
-const DELAY_RENDER = 500;
-
 export default function Main() {
   const {} = useRouter();
 
@@ -41,35 +40,39 @@ export default function Main() {
   const [strTestImageUrl, setTestImageUrl] = useState<string>("");
 
   // 班级列表
-  const [paramQueryGroupByKeyTitle, setQueryGroupByKeyTitle] = useState({
-    keyTitle: "",
-  });
-  const [arrGroupList, setGroupList] = useState<Array<any>>([]);
+  const [paramQueryGroupByKeyTitle, setQueryGroupByKeyTitle] = useState(
+    undefined
+  );
+  const [arrGroupList, setGroupList] = useCallbackState([]);
   //
   const [isShowArticleListLoadingTip, setShowArticleListLoadingTip] = useState(
     false
   );
-  const [arrArticleList, setArticleList] = useState([]);
+  const [arrArticleList, setArticleList] = useCallbackState([]);
   // GROUP
   const [isTabListLoadComplete, setTabListLoadComplete] = useState<boolean>(
     false
   );
-  const [objQueryNoticeListParams, setQueryNoticeListParams] = useState({});
-  const [arrTabNoticeList, setTabNoticeList] = useState<Array<any>>([]);
+  const [objQueryNoticeListParams, setQueryNoticeListParams] = useState<any>(
+    undefined
+  );
+  const [arrTabNoticeList, setTabNoticeList] = useCallbackState([]);
   // STORY_MAP
-  const [objQueryStoryListParams, setQueryStoryListParams] = useState({});
-  const [arrStoryList, setStoryList] = useState<Array<any>>([]);
+  const [objQueryStoryListParams, setQueryStoryListParams] = useState<any>(
+    undefined
+  );
+  const [arrStoryList, setStoryList] = useCallbackState([]);
   //
   const [
     objQueryWeatherArticleListParams,
     setQueryWeatherArticleListParams,
-  ] = useState({});
+  ] = useState<any>(undefined);
   //
   const [
     isShowWeatherArticleListLoadingTip,
     setShowWeatherArticleListLoadingTip,
   ] = useState(false);
-  const [arrWeatherArticleList, setWeatherArticleList] = useState([]);
+  const [arrWeatherArticleList, setWeatherArticleList] = useCallbackState([]);
 
   // 底部导航
   const {
@@ -107,8 +110,10 @@ export default function Main() {
         break;
       }
       case "STORY_MAP": {
-        const params = { tabId: tabList[nTabListCurrent]?.contentId };
-        setQueryStoryListParams(params);
+        if (tabList[nTabListCurrent]?.contentId) {
+          const params = { tabId: tabList[nTabListCurrent]?.contentId };
+          setQueryStoryListParams(params);
+        }
         break;
       }
       case "TEST": {
@@ -118,8 +123,10 @@ export default function Main() {
         break;
       }
       case "WEATHER_ARTICLE": {
-        const params = { tabId: tabList[nTabListCurrent]?.contentId };
-        setQueryWeatherArticleListParams(params);
+        if (tabList[nTabListCurrent]?.contentId) {
+          const params = { tabId: tabList[nTabListCurrent]?.contentId };
+          setQueryWeatherArticleListParams(params);
+        }
         break;
       }
       default: {
@@ -151,12 +158,11 @@ export default function Main() {
             break;
           }
           case "RESULT": {
-            setArticleList(list);
-            Taro.hideLoading();
-            setTimeout(() => {
+            setArticleList(list, () => {
               setLoadComplete(true);
               setShowArticleListLoadingTip(false);
-            }, DELAY_RENDER);
+              Taro.hideLoading();
+            });
             break;
           }
         }
@@ -174,12 +180,12 @@ export default function Main() {
                 return {
                   ...item,
                 };
-              })
+              }),
+              () => {
+                setTabListLoadComplete(true);
+                Taro.hideLoading();
+              }
             );
-            Taro.hideLoading();
-            setTimeout(() => {
-              setTabListLoadComplete(true);
-            }, DELAY_RENDER);
             break;
           }
         }
@@ -201,25 +207,21 @@ export default function Main() {
                   desc: item.dataDescribe,
                   owner: "张三",
                 };
-              })
+              }),
+              () => {
+                setLoadComplete(true);
+                Taro.hideLoading();
+              }
             );
-            Taro.hideLoading();
-            setTimeout(() => {
-              setLoadComplete(true);
-            }, DELAY_RENDER);
             break;
           }
         }
       },
       HOME: (res) => {
-        setTimeout(() => {
-          setLoadComplete(true);
-        }, DELAY_RENDER);
+        setLoadComplete(true);
       },
       HOME_NORMAL: (res) => {
-        setTimeout(() => {
-          setLoadComplete(true);
-        }, DELAY_RENDER);
+        setLoadComplete(true);
       },
       MINE: (res) => {},
       SATELLITE: (res) => {},
@@ -231,11 +233,10 @@ export default function Main() {
             break;
           }
           case "RESULT": {
-            setStoryList(list);
-            Taro.hideLoading();
-            setTimeout(() => {
+            setStoryList(list, () => {
               setLoadComplete(true);
-            }, DELAY_RENDER);
+              Taro.hideLoading();
+            });
             break;
           }
         }
@@ -251,12 +252,11 @@ export default function Main() {
             break;
           }
           case "RESULT": {
-            setWeatherArticleList(list);
-            Taro.hideLoading();
-            setTimeout(() => {
+            setWeatherArticleList(list, () => {
               setLoadComplete(true);
               setShowWeatherArticleListLoadingTip(false);
-            }, DELAY_RENDER);
+              Taro.hideLoading();
+            });
             break;
           }
         }
@@ -276,16 +276,16 @@ export default function Main() {
       WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryNoticeList,
     }[tabList[nTabListCurrent].contentType],
     {
-      ARTICLE_LIST: {},
+      ARTICLE_LIST: undefined,
       GROUP: objQueryNoticeListParams,
       GROUP_LIST: paramQueryGroupByKeyTitle,
-      HOME: {},
-      HOME_NORMAL: {},
-      MINE: {},
-      SATELLITE: {},
+      HOME: undefined,
+      HOME_NORMAL: undefined,
+      MINE: undefined,
+      SATELLITE: undefined,
       STORY_MAP: objQueryStoryListParams,
-      TEST: {},
-      WAVE: {},
+      TEST: undefined,
+      WAVE: undefined,
       WEATHER_ARTICLE: objQueryWeatherArticleListParams,
     }[tabList[nTabListCurrent].contentType],
     isUpdateList
@@ -299,9 +299,11 @@ export default function Main() {
   // GROUP切换tab切
   const handleGroupTabChange = (objTab) => {
     console.log("handleTabChange", objTab);
-    const params = { tabId: objTab?.id };
-    setTabListLoadComplete(false);
-    setQueryNoticeListParams(params);
+    if (objTab?.id) {
+      const params = { tabId: objTab?.id };
+      setTabListLoadComplete(false);
+      setQueryNoticeListParams(params);
+    }
   };
 
   // 切换底部导航
@@ -328,7 +330,22 @@ export default function Main() {
     // Taro.navigateTo({
     //   url: "/pages/ArticleDetail/index",
     // });
-    const res = await Api.cloud.fetchSpiderInfo.spiderArticleZhiHu({});
+    // 获取个人信息
+    // Taro.getUserProfile({
+    //   desc: "请授权您的个人信息",
+    //   success: async (res) => {
+    //     console.log("handleBtnLoginClick", res);
+    //     console.log("handleBtnLoginClick", res.userInfo.nickName || "微信用户");
+    //     console.log(
+    //       "handleBtnLoginClick",
+    //       String(res.userInfo.nickName).trim() || "微信用户"
+    //     );
+    //     console.log("handleBtnLoginClick", res.userInfo.nickName.length);
+    //     console.log("handleBtnLoginClick", res.userInfo.nickName === "");
+    //   },
+    // });
+    // 模拟爬知乎文章
+    // const res = await Api.cloud.fetchSpiderInfo.spiderArticleZhiHu({});
     // 新增员工
     // const name = "孙尚香";
     // const params = {
