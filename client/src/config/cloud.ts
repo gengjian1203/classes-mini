@@ -43,6 +43,30 @@ const cloud = {
       cloudDownLoad: "https://6465-dev-8panu-1300943416.tcb.qcloud.la/",
     },
   },
+  // 古德猫餐饮
+  wx6137953106cfbde8: {
+    prod: {
+      cloudName: "prod-2gddi5vra56d97f5",
+      cloudPath:
+        "cloud://prod-2gddi5vra56d97f5.7072-prod-2gddi5vra56d97f5-1308118241/",
+      cloudDownLoad:
+        "https://7072-prod-2gddi5vra56d97f5-1308118241.tcb.qcloud.la/",
+    },
+    dev: {
+      cloudName: "dev-9g80kw941a178314",
+      cloudPath:
+        "cloud://dev-9g80kw941a178314.6465-dev-9g80kw941a178314-1308118241/",
+      cloudDownLoad:
+        "https://6465-dev-9g80kw941a178314-1308118241.tcb.qcloud.la/",
+    },
+    test: {
+      cloudName: "dev-9g80kw941a178314",
+      cloudPath:
+        "cloud://dev-9g80kw941a178314.6465-dev-9g80kw941a178314-1308118241/",
+      cloudDownLoad:
+        "https://6465-dev-9g80kw941a178314-1308118241.tcb.qcloud.la/",
+    },
+  },
   // 默认
   default: {
     prod: {

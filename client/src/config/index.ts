@@ -6,9 +6,9 @@ const resSystemInfo = Taro.getSystemInfoSync();
 const resAccountInfo = Taro.getAccountInfoSync();
 
 const { miniProgram } = resAccountInfo || {};
-const { appId = "default", envVersion = "", version = "" } = miniProgram || {};
+const { appId = "", envVersion = "", version = "" } = miniProgram || {};
 
-const cloudInfo = cloud[appId][env];
+const cloudInfo = cloud[appId] ? cloud[appId][env] : cloud["default"][env];
 
 const config = {
   cloudName: cloudInfo?.cloudName || "",
