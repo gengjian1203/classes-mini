@@ -92,7 +92,14 @@ export default function Loading() {
     setAppHomePage("/pages/Main/index");
     console.log("Loading", resQueryConfig, resQueryMember, resQueryQrCode);
     if (resQueryConfig) {
-      const { arrTabbarList = [], colorPrimary = "#60b968" } = resQueryConfig;
+      const {
+        arrTabbarList = [],
+        colorPrimary = "#60b968",
+        sharePosterImg = [],
+        sharePosterText = [],
+        shareTitle = "",
+        shareImg = "",
+      } = resQueryConfig;
       const arrTabbarListTmp = arrTabbarList
         .filter((item) => {
           return item.enable;
@@ -110,6 +117,10 @@ export default function Loading() {
           tabListSource: arrTabbarList,
           nTabListCurrent: 0,
           colorPrimary: colorPrimary,
+          sharePosterImg: sharePosterImg,
+          sharePosterText: sharePosterText,
+          shareTitle: shareTitle,
+          shareImg: shareImg,
         });
         setMemberInfo(resQueryMember);
         jumpPage(resQueryQrCode, params);

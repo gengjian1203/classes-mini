@@ -21,6 +21,10 @@ const INITIAL_STATE = {
     tabListSource: [],
     nTabListCurrent: 0,
     colorPrimary: "",
+    sharePosterImg: [],
+    sharePosterText: [],
+    shareTitle: "",
+    shareImg: "",
   }, // 小程序配置信息
   strMainPath: "", // 小程序首页
   isEasterEgg: false, // 是否为彩蛋模式

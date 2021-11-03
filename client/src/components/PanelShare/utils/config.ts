@@ -39,7 +39,6 @@ interface IExtendType {
   nExtendY: number;
   nExtendFontSize: number;
   strExtendColor: string;
-  strExtendText: string;
 }
 
 export interface IConfigType {
@@ -89,7 +88,6 @@ export const CanvasShareConfig: Array<IConfigType> = [
       nExtendY: 740,
       nExtendFontSize: 28,
       strExtendColor: "#0e0e0e",
-      strExtendText: "分享给你一个小程序~",
     },
   },
   {
@@ -127,7 +125,6 @@ export const CanvasShareConfig: Array<IConfigType> = [
       nExtendY: 740,
       nExtendFontSize: 28,
       strExtendColor: "#0e0e0e",
-      strExtendText: "分享给你一个小程序~",
     },
   },
   {
@@ -165,7 +162,6 @@ export const CanvasShareConfig: Array<IConfigType> = [
       nExtendY: 740,
       nExtendFontSize: 28,
       strExtendColor: "#0e0e0e",
-      strExtendText: "分享给你一个小程序~",
     },
   },
   {
@@ -203,7 +199,6 @@ export const CanvasShareConfig: Array<IConfigType> = [
       nExtendY: 740,
       nExtendFontSize: 28,
       strExtendColor: "#0e0e0e",
-      strExtendText: "分享给你一个小程序~",
     },
   },
   {
@@ -241,7 +236,6 @@ export const CanvasShareConfig: Array<IConfigType> = [
       nExtendY: 740,
       nExtendFontSize: 28,
       strExtendColor: "#0e0e0e",
-      strExtendText: "分享给你一个小程序~",
     },
   },
 ];

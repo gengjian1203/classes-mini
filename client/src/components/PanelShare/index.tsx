@@ -12,6 +12,7 @@ import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useThrottle from "@/hooks/useThrottle";
 import shareInfoActions from "@/redux/actions/shareInfo";
+import CloudFileManager from "@/services/CloudFileManager";
 import QRCodeManager from "@/services/QRCodeManager";
 import StorageManager from "@/services/StorageManager";
 import ResourceManager from "@/services/ResourceManager";
@@ -30,6 +31,10 @@ export default function PanelShare(props: IPanelShareProps) {
   const [isShowBtnRefresh, setShowBtnRefresh] = useState<boolean>(false);
   const [strSharePhotoUrl, setSharePhotoUrl] = useState<string>("");
   const [canvasShare, setCanvasShare] = useState<any>(null);
+
+  const {
+    configInfo: { sharePosterImg, sharePosterText, shareTitle, shareImg },
+  } = useSelector((state) => state.appInfo);
 
   const {
     isShowPanelShare,
@@ -51,11 +56,17 @@ export default function PanelShare(props: IPanelShareProps) {
     const [srcQRCode, strShareContentUrlTmp] = await Promise.all([
       QRCodeManager.getQRCode(objShareParam),
       await ResourceManager.getUrl(
-        `${Config.cloudPath}resource/share_thumb.jpg`
+        CloudFileManager.getCloudUrl(sharePosterImg[0])
       ),
     ]);
     console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
-    await drawCanvasShare(canvasShare, strShareContentUrlTmp, srcQRCode, 2);
+    await drawCanvasShare(
+      canvasShare,
+      strShareContentUrlTmp,
+      srcQRCode,
+      sharePosterText,
+      2
+    );
     canvasShare.draw(true, () => {
       // Taro.hideLoading();
       Taro.canvasToTempFilePath({
@@ -98,9 +109,8 @@ export default function PanelShare(props: IPanelShareProps) {
       sharePath: "/pages/Main/index",
     });
     console.log("useShareAppMessage1", objShareParam, objShareParamDefault);
-    const title = strShareTitle || "分享一个小程序，快来看看吧！";
-    const imageUrl =
-      strShareImage || `${Config.cloudPath}resource/share_thumb.jpg`;
+    const title = strShareTitle || shareTitle;
+    const imageUrl = strShareImage || CloudFileManager.getCloudUrl(shareImg);
     const path =
       objShareParam?.sharePathFull ||
       objShareParamDefault?.sharePathFull ||
@@ -209,7 +219,7 @@ export default function PanelShare(props: IPanelShareProps) {
             >
               <Image
                 className="panel-share-img"
-                src={`${Config.cloudPath}resource/share_thumb.jpg`}
+                src={CloudFileManager.getCloudUrl(sharePosterImg[0])}
                 mode="aspectFill"
               />
               <View className="flex-center-h panel-share-simple-footer">
@@ -223,7 +233,7 @@ export default function PanelShare(props: IPanelShareProps) {
                     {objMemberInfo?.userNickName || ""}
                   </View>
                   <View className="panel-share-simple-footer-left-text">
-                    分享给你一个小程序~
+                    {sharePosterText}
                   </View>
                 </View>
                 <View className="flex-center-v panel-share-simple-footer-right">

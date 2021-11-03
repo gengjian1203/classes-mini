@@ -137,7 +137,11 @@ const drawShareQRCode = async (
  * @param canvas
  * @param config
  */
-const drawShareExtend = (canvas: Taro.CanvasContext, config: IConfigType) => {
+const drawShareExtend = (
+  canvas: Taro.CanvasContext,
+  config: IConfigType,
+  sharePosterText: string
+) => {
   const objConfigExtend = config.objExtend;
 
   if (objConfigExtend) {
@@ -145,7 +149,7 @@ const drawShareExtend = (canvas: Taro.CanvasContext, config: IConfigType) => {
     canvas.strokeStyle = objConfigExtend.strExtendColor;
     canvas.setFontSize(objConfigExtend.nExtendFontSize);
     canvas.fillText(
-      objConfigExtend.strExtendText,
+      sharePosterText,
       objConfigExtend.nExtendX,
       objConfigExtend.nExtendY
     );
@@ -165,6 +169,7 @@ export const drawCanvasShare = async (
   canvas: Taro.CanvasContext,
   strContentUrl: string = "",
   strQRCodeUrl: string = "",
+  sharePosterText: string = "",
   index: number = 0
 ) => {
   // console.log("drawCanvasShare.");
@@ -180,7 +185,7 @@ export const drawCanvasShare = async (
     // 绘制二维码
     await drawShareQRCode(canvas, config, strQRCodeUrl);
     // 绘制附属内容
-    drawShareExtend(canvas, config);
+    drawShareExtend(canvas, config, sharePosterText);
     // console.log("drawCanvasShare done.");
   } else {
     console.error("drawCanvasShare canvas is null.");
