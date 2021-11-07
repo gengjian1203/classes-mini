@@ -5,7 +5,11 @@ export default {
   subpackages: [
     {
       root: "pages/ArticleDetail",
-      pages: ["index"], // 文章页
+      pages: ["index"], // 文章详情页
+    },
+    {
+      root: "pages/AvatarShow",
+      pages: ["index"], // 头像秀页
     },
     {
       root: "pages/EasterEgg",

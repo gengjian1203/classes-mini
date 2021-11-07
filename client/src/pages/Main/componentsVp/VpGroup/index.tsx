@@ -6,6 +6,7 @@ import Api from "@/api";
 import Banner from "@/components/Banner";
 import Menu from "@/components/Menu";
 import Tab from "@/components/Tab";
+import ConfigMenuRouter from "@/config/menuRouter";
 import GroupInfo from "@/pages/Main/components/GroupInfo";
 import CloudFileManager from "@/services/CloudFileManager";
 
@@ -114,6 +115,19 @@ export default function VpGroup(props: IVpGroupParam) {
     // console.log("handleBannerClick", e);
   };
 
+  // 点击菜单项
+  const handleMenuItemClick = (item) => {
+    console.log("handleMenuItemClick", item);
+    const url =
+      item.url ||
+      ConfigMenuRouter[item.type]?.url ||
+      ConfigMenuRouter["default"]?.url;
+    Taro.navigateTo({
+      url,
+    });
+  };
+
+  // 点击tab列表项目
   const handleTabItemDetailClick = (item) => {
     console.log("handleTabItemDetailClick", item);
     Taro.navigateTo({
@@ -124,6 +138,7 @@ export default function VpGroup(props: IVpGroupParam) {
     });
   };
 
+  // 删除列表项
   const handleTabItemDeleteClick = (info) => {
     console.log("handleDetailClick", info);
     Taro.showModal({
@@ -163,11 +178,13 @@ export default function VpGroup(props: IVpGroupParam) {
     });
   };
 
+  // 切换tab
   const handleTabChange = (objTab) => {
     // console.log("handleTabChange", objTab);
     onTabChange && onTabChange(objTab);
   };
 
+  // 主动触发tab列表的刷新
   const handleTabListUpdate = () => {
     onTabListUpdate && onTabListUpdate();
   };
@@ -202,6 +219,7 @@ export default function VpGroup(props: IVpGroupParam) {
             customClass="group-module-wrap"
             showModuleValView={objAny}
             key={`group-module-${indexModule}`}
+            onMenuItemClick={handleMenuItemClick}
           />
         ),
         TAB: (

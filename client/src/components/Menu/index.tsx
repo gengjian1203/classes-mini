@@ -9,7 +9,7 @@ interface IMenuParam {
   isLoadComplete?: boolean;
   showModuleValView?: Array<any>;
   customClass?: string;
-  onMenuItemClick?: (any?: any) => {};
+  onMenuItemClick?: (any?: any) => void;
 }
 
 export default function Menu(props: IMenuParam) {
