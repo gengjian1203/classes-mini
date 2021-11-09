@@ -276,7 +276,7 @@ export default function Main() {
       WEATHER_ARTICLE: Api.cloud.fetchArticleInfo.queryNoticeList,
     }[tabList[nTabListCurrent].contentType],
     {
-      ARTICLE_LIST: undefined,
+      ARTICLE_LIST: {},
       GROUP: objQueryNoticeListParams,
       GROUP_LIST: paramQueryGroupByKeyTitle,
       HOME: undefined,

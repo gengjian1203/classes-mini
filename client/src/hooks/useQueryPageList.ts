@@ -103,11 +103,14 @@ const useQueryPageList = (
       const isDiff =
         funFetchApiTmp.current !== funFetchApi ||
         JSON.stringify(paramTmp.current) !== JSON.stringify(param);
+
+      funFetchApiTmp.current = funFetchApi;
+      paramTmp.current = param;
+      nPageNum.current = 0;
+
       if (isNotUndefined && isDiff) {
         // console.log("useQueryPageList useEffect", funFetchApi, param);
-        funFetchApiTmp.current = funFetchApi;
-        paramTmp.current = param;
-        nPageNum.current = 0;
+
         callback && callback({ state: "LOADING" });
         const paramReal = {
           ...param,

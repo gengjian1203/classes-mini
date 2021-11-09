@@ -22,6 +22,14 @@ cloud.init({
 const db = cloud.database();
 // 屏蔽列表
 const arrTitleBlackList = ["瞎扯 · "];
+const arrSendEmailList = [
+  "prod-5gkxku5cdb510bb2", // 即将放飞理想的工具箱 - prod
+  // 'dev-9gred941ab89c01d', // 即将放飞理想的工具箱 - dev
+  // 'prod-1gggp1e8827b372f', // 气象台历 - prod
+  // 'dev-8panu', // 气象台历 - dev
+  // 'prod-2gddi5vra56d97f5', // 古德猫餐饮 - prod
+  // 'dev-9g80kw941a178314', // 古德猫餐饮 - dev
+];
 
 // 校验返回值
 const validResult = (objTmp) => {
@@ -87,7 +95,7 @@ const pushArticleInfoList = async (arrData, strDBTable, type) => {
         `<br>` +
         `————本条消息来自${ENV} ${SOURCE}`;
 
-      if (type === "") {
+      if (type === "" && arrSendEmailList.includes(ENV)) {
         sendEmail(contentHTML);
       }
     }
