@@ -9,12 +9,13 @@ import Utils from "@/utils";
 import "./index.less";
 
 interface IShowerVideoParam {
+  height?: number;
   strUrlVideo?: string;
   strUrlVideoThumbnail?: string;
 }
 
 export default function ShowerVideo(props: IShowerVideoParam) {
-  const { strUrlVideo = "", strUrlVideoThumbnail = "" } = props;
+  const { height = 0, strUrlVideo = "", strUrlVideoThumbnail = "" } = props;
 
   const { strPlayingMediaId } = useSelector((state) => state.mediaInfo);
 
@@ -42,6 +43,9 @@ export default function ShowerVideo(props: IShowerVideoParam) {
         <Video
           id={videoId.current}
           className="showr-video-real"
+          style={{
+            height: height ? Taro.pxTransform(height) : "auto",
+          }}
           src={strUrlVideo}
           autoplay
           showMuteBtn
@@ -52,6 +56,9 @@ export default function ShowerVideo(props: IShowerVideoParam) {
       ) : (
         <Image
           className="showr-video-thumbnail"
+          style={{
+            height: height ? Taro.pxTransform(height) : "auto",
+          }}
           src={strUrlVideoThumbnail}
           mode="widthFix"
           onClick={(e) => hanldeVideoThumbnailClick(e, videoId.current)}

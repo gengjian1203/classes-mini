@@ -26,7 +26,7 @@ export default function DetailContent(props: IDetailContentParam) {
   const handleBtntextBtnClick = (data) => {
     console.log("handleBtntextBtnClick", data);
     switch (data.type) {
-      case "miniprogram":
+      case "miniprogram": {
         Taro.navigateToMiniProgram({
           appId: data.appId,
           success: (res) => {
@@ -51,6 +51,13 @@ export default function DetailContent(props: IDetailContentParam) {
           },
         });
         break;
+      }
+      case "webview": {
+        Taro.navigateTo({
+          url: `/pages/WebPage/index` + `?urlWeb=${data.url}`,
+        });
+        break;
+      }
       default:
         break;
     }

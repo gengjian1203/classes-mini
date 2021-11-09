@@ -44,6 +44,7 @@ export default function DetailBtntext(props: IDetailBtntextParam) {
         ))}
         {strUrlVideo && (
           <ShowerVideo
+            height={324}
             strUrlVideo={strUrlVideo}
             strUrlVideoThumbnail={strUrlVideoThumbnail}
           />

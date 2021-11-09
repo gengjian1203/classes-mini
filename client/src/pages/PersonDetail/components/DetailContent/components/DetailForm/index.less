@@ -5,6 +5,7 @@
     font-size: var(--font-size-md);
     color: var(--color-text-primary);
     text-align: left;
+    align-items: flex-start;
     &:first-child {
       margin-top: 0;
     }
@@ -20,6 +21,8 @@
       background-color: var(--color-shadow);
     }
     .item-value {
+      word-wrap: break-word; /* 是否允许在单词内进行断句 */
+      word-break: break-all; /* 可以在任何位置断句 */
     }
     .item-enable {
       color: var(--color-link-normal);

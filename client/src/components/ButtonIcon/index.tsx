@@ -81,7 +81,10 @@ export default function ButtonIcon(props: IButtonIconParam) {
           <Image
             src={value}
             className={`button-real ` + `button-iconimg-content `}
-            style={customStyle}
+            style={{
+              backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
+              ...customStyle,
+            }}
             mode="aspectFill"
           />
         )}

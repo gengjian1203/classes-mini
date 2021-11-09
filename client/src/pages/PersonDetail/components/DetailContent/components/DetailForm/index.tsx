@@ -11,16 +11,22 @@ interface IDetailFormParam {
 export default function DetailForm(props: IDetailFormParam) {
   const { data } = props;
 
-  const arrEnableType = ["cellphone"];
+  const arrEnableType = ["cellphone", "webview"];
 
   const handleFormItemClick = (item) => {
     // console.log('handleFormItemClick', item)
     switch (item.type) {
-      case "cellphone":
+      case "cellphone": {
         Taro.makePhoneCall({
           phoneNumber: item.value,
         });
         break;
+      }
+      case "webview": {
+        Taro.navigateTo({
+          url: `/pages/WebPage/index` + `?urlWeb=${item.url}`,
+        });
+      }
       default:
         break;
     }
@@ -40,7 +46,7 @@ export default function DetailForm(props: IDetailFormParam) {
           )}
           <View
             className={
-              `text-nowrap ` +
+              // `text-nowrap ` +
               `item-value ` +
               `${arrEnableType.includes(item.type) ? "item-enable " : ""}`
             }
