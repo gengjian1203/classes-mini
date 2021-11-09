@@ -35,6 +35,10 @@ export default {
       root: "pages/PersonDetail",
       pages: ["index"], // 个人详情页
     },
+    {
+      root: "pages/WebPage",
+      pages: ["index"], // WebView页
+    },
   ],
   preloadRule: {},
   window: {

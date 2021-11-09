@@ -327,8 +327,11 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnTestClick = async () => {
+    // 跳转Web页面
     // Taro.navigateTo({
-    //   url: "/pages/ArticleDetail/index",
+    //   url:
+    //     `/pages/WebPage/index` +
+    //     `?urlWeb=https://dev-9gred941ab89c01d-1259256375.tcloudbaseapp.com/index.html?sign=e4352f6b6e293ccaa5d413e413950a80&t=1636468475`,
     // });
     // 获取个人信息
     // Taro.getUserProfile({
