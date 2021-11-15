@@ -1,97 +1,40 @@
-import Taro from "@tarojs/taro";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useActions from "@/hooks/useActions";
-import avatarShowInfoActions from "@/redux/actions/avatarShowInfo";
-import memberActions from "@/redux/actions/memberInfo";
-import webApi from "@/api";
+import { AtButton, AtActionSheet, AtActionSheetItem } from "taro-ui";
+import Taro from "@tarojs/taro";
+import { Button, View } from "@tarojs/components";
+import Api from "@/api";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useThrottle from "@/hooks/useThrottle";
-import { checkObjectEmpty, getHDAvatarUrl, uploadImage } from "@/utils/index";
+import ResourceManager from "@/services/ResourceManager";
+import Utils from "@/utils";
 
-import { View } from "@tarojs/components";
-import { AtButton, AtActionSheet, AtActionSheetItem } from "taro-ui";
-
-import { drawCanvasSave } from "../../utils/canvasSave";
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
   CANVAS_SAVE_WIDTH,
   CANVAS_SAVE_HEIGHT,
   arrActionSheetList,
-} from "../../utils/const";
+} from "../../config";
+import { drawCanvasSave } from "../../utils/canvasSave";
 
 import "./index.less";
 
 interface IModuleBottomProps {
-  onShowPanelShare: any;
+  avatarShowInfo?: any;
+  setAvatarImage?: (any?: any) => any;
+  setSelectJewelry?: (any?: any) => any;
 }
 
 export default function ModuleButton(props: IModuleBottomProps) {
-  const { onShowPanelShare = () => true } = props;
+  const { avatarShowInfo, setAvatarImage, setSelectJewelry } = props;
 
+  const memberInfo = useSelector((state) => state.memberInfo);
+
+  const avatarUrl = useRef("");
   const [isShowActionSheet, setShowActionSheet] = useState<boolean>(false); // 是否展示弹窗
   const [canvasSave, setCanvasSave] = useState<any>(null);
-
-  const isPhoneX = useSelector((state) => state.appInfo.isPhoneX);
-  const memberInfo = useSelector((state) => state.memberInfo);
-  const avatarShowInfo = useSelector(
-    (state) =>
-      state.avatarShowInfo.arrAvatarShowList[
-        state.avatarShowInfo.nAvatarShowListPoint
-      ]
-  );
-
-  const { initAvatarInfo, setAvatarImage, setSelectJewelry } = useActions(
-    avatarShowInfoActions
-  );
-  const { updateAvatarUrl } = useActions(memberActions);
-
-  // 选择图片
-  const chooseImage = (
-    sourceType: "album" | "camera" | "user" | "environment"
-  ) => {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: ["original", "compressed"],
-      sourceType: [sourceType],
-      success: async (resChoose) => {
-        Taro.showLoading({
-          title: "加载中...",
-        });
-        console.log("funToggleCamera", resChoose);
-        if (
-          resChoose.tempFiles[0] &&
-          resChoose.tempFiles[0].size > 1024 * 1024
-        ) {
-          Taro.showToast({
-            title: "图片不能大于1M",
-            icon: "none",
-          });
-          return;
-        }
-        const strTempPath = resChoose.tempFilePaths[0];
-        const res = await uploadImage(strTempPath, "temp/");
-        console.log("uploadImage", res);
-        Taro.hideLoading();
-        if (res === "") {
-          Taro.showToast({
-            title: "图片上传失败，请重新上传",
-            icon: "none",
-          });
-        } else if (res === "DANGER IMAGE") {
-          Taro.showToast({
-            title: "图片疑似有敏感内容，请更换其他图片",
-            icon: "none",
-          });
-        } else {
-          initAvatarInfo();
-          setAvatarImage(strTempPath);
-        }
-      },
-    });
-  };
 
   // 保存并导出头像
   const saveAndExportAvatar = () => {
@@ -122,7 +65,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
                 icon: "success",
                 complete: (res) => {
                   // 打开分享面板
-                  onShowPanelShare(true, resToCanvas.tempFilePath);
+                  // onShowPanelShare(true, resToCanvas.tempFilePath);
                 },
               });
             },
@@ -132,7 +75,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
                 icon: "none",
                 complete: (res) => {
                   // 打开分享面板
-                  onShowPanelShare(true, resToCanvas.tempFilePath);
+                  // onShowPanelShare(true, resToCanvas.tempFilePath);
                 },
               });
             },
@@ -150,23 +93,32 @@ export default function ModuleButton(props: IModuleBottomProps) {
 
   // 点击使用自身头像
   const funToggleAvatar = () => {
-    Taro.downloadFile({
-      url: getHDAvatarUrl(memberInfo.user_avatarUrl),
-      success: (res) => {
-        console.log("AvatarShow downloadFile", res);
-        setAvatarImage(res.tempFilePath);
+    Taro.getUserProfile({
+      desc: "请授权您的个人信息",
+      complete: async (resUserProfile) => {
+        console.log("handleBtnLoginClick", resUserProfile);
+        const { userInfo }: any = resUserProfile || {};
+        if (userInfo && !Utils.checkObjectEmpty(userInfo)) {
+          console.log("handleBtnLoginClick", userInfo?.avatarUrl);
+          setAvatarImage && setAvatarImage(userInfo?.avatarUrl);
+        } else {
+          Taro.showToast({
+            title: "获取头像信息失败",
+            icon: "none",
+          });
+        }
       },
     });
   };
 
   // 点击拍照
-  const funToggleCamera = () => {
-    chooseImage("camera");
+  const funToggleCamera = async () => {
+    setAvatarImage && setAvatarImage(await Utils.chooseImage("camera", 1));
   };
 
   // 从手机相册选择
-  const funToggleAlbum = () => {
-    chooseImage("album");
+  const funToggleAlbum = async () => {
+    setAvatarImage && setAvatarImage(await Utils.chooseImage("album", 1));
   };
 
   const onLoad = () => {
@@ -178,28 +130,23 @@ export default function ModuleButton(props: IModuleBottomProps) {
     onLoad();
   }, []);
 
-  // 授权回调，无论是否同意都弹出弹窗。同意则拉取最新头像url，如果有变化同步更新Redux、异步更新数据库数据
-  const handleGetUserInfo = async (e) => {
-    const objUserInfo = e.detail.userInfo;
-    if (objUserInfo && !checkObjectEmpty(objUserInfo)) {
-      console.log("handleGetUserInfo", objUserInfo);
-      if (objUserInfo.avatarUrl !== memberInfo.user_avatarUrl) {
-        updateAvatarUrl(objUserInfo.avatarUrl);
-        const param = {
-          user_avatarUrl: objUserInfo.avatarUrl,
-        };
-        webApi.memberInfo.updateAvatarUrl(param);
-      }
-    }
-    setShowActionSheet(true);
-  };
+  // 授权回调，无论是否同意都弹出弹窗
+  const handleGetUserInfo = useThrottle(
+    useCheckLogin(() => {
+      setShowActionSheet(true);
+    })
+  );
 
   // 点击保存图片
-  const handleButtonSaveClick = () => {
-    console.log("handleButtonSaveClick");
-    setSelectJewelry({});
-    saveAndExportAvatar();
-  };
+  const handleButtonSaveClick = useThrottle(
+    useCheckLogin(
+      useCheckAuthorize("scope.writePhotosAlbum", () => {
+        console.log("handleButtonSaveClick");
+        // setSelectJewelry({});
+        saveAndExportAvatar();
+      })
+    )
+  );
 
   // 底部弹窗的关闭事件
   const handleActionSheetClose = () => {
@@ -228,27 +175,21 @@ export default function ModuleButton(props: IModuleBottomProps) {
 
   return (
     <Fragment>
-      <View
-        className={`avatar-show-button ` + `${isPhoneX ? "safe-bottom " : ""}`}
-      >
+      <View className={`avatar-show-button safe-bottom`}>
         <AtButton
           className="bottom-button"
           type="secondary"
           openType="getUserInfo"
           circle
-          onGetUserInfo={handleGetUserInfo}
+          onClick={handleGetUserInfo}
         >
-          更换头像
+          更换图片
         </AtButton>
         <AtButton
           className="bottom-button"
           type="primary"
           circle
-          onClick={useThrottle(
-            useCheckLogin(
-              useCheckAuthorize("scope.writePhotosAlbum", handleButtonSaveClick)
-            )
-          )}
+          onClick={handleButtonSaveClick}
         >
           保存分享
         </AtButton>

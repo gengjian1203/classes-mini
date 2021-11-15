@@ -4,6 +4,7 @@ import Taro from "@tarojs/taro";
 import { AtButton, AtFloatLayout } from "taro-ui";
 import { View, Text } from "@tarojs/components";
 import Api from "@/api";
+import Config from "@/config";
 import useActions from "@/hooks/useActions";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
@@ -91,7 +92,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
           <View className="layout-login-header">
             <View className="layout-login-title">
               <Text className="iconfont iconpeople_fill layout-login-icon"></Text>
-              <Text className="layout-login-title-text">气象台历</Text>
+              <Text className="layout-login-title-text">{Config.appName}</Text>
             </View>
             <View className="layout-login-content">
               <Text className="layout-login-content-text">
@@ -101,7 +102,7 @@ export default function LayoutLogin(props: ILayoutLoginParam) {
           </View>
           <View className="layout-login-footer">
             <AtButton
-              openType="getUserInfo"
+              // openType="getUserInfo"
               type="primary"
               circle
               className="layout-login-btn"

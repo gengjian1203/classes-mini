@@ -19,6 +19,7 @@ import routerAppendParams from "./format/routerAppendParams";
 import simpleDate from "./format/simpleDate";
 import { shareType, getShareTypeName } from "./share/getShareTypeName";
 import processSharePath from "./share/processSharePath";
+import chooseImage from "./upload/chooseImage";
 import uploadImage from "./upload/uploadImage";
 
 export default {
@@ -44,5 +45,6 @@ export default {
   simpleDate,
   getShareTypeName,
   processSharePath,
+  chooseImage,
   uploadImage,
 };

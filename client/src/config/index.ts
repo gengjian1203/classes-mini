@@ -8,16 +8,18 @@ const resAccountInfo = Taro.getAccountInfoSync();
 const { miniProgram } = resAccountInfo || {};
 const { appId = "", envVersion = "", version = "" } = miniProgram || {};
 
-const cloudInfo = cloud[appId] ? cloud[appId][env] : cloud["default"][env];
+const cloudInfo = cloud[appId] ? cloud[appId] : cloud["default"];
+const cloudEnv = cloudInfo[env];
 
 const config = {
-  cloudName: cloudInfo?.cloudName || "",
-  cloudPath: cloudInfo?.cloudPath || "",
-  cloudDownLoad: cloudInfo?.cloudDownLoad || "",
+  cloudName: cloudEnv?.cloudName || "",
+  cloudPath: cloudEnv?.cloudPath || "",
+  cloudDownLoad: cloudEnv?.cloudDownLoad || "",
   SYSTEM_INFO: resSystemInfo || {},
   ACCOUNT_INFO: resAccountInfo || {},
   env,
   appId,
+  appName: cloudInfo?.appName || "",
   envVersion,
   version,
 };

@@ -81,7 +81,8 @@ async function addMemberInfo(data, db, strMemberId) {
   if (objMemberInfo) {
     objResult = {
       code: 500002,
-      ...objMemberInfo,
+      // ...objMemberInfo,
+      data: objMemberInfo,
       errMsg: "重复注册用户",
     };
   } else {
@@ -103,7 +104,8 @@ async function addMemberInfo(data, db, strMemberId) {
     ) {
       objResult = {
         code: 500003,
-        ...objSameMemberInfo,
+        // ...objSameMemberInfo,
+        data: objSameMemberInfo,
         errMsg: "注册昵称重复",
       };
     } else {

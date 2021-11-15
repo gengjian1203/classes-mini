@@ -1,27 +1,32 @@
-import Taro from "@tarojs/taro";
 import React, { Fragment, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import useActions from "@/hooks/useActions";
-import avatarShowInfoActions from "@/redux/actions/avatarShowInfo";
-import Config from "@/config/index";
-import { checkObjectEmpty, UUID } from "@/utils/index";
-import * as imagesLocal from "@/services/ResourceImage";
-import ResourceManager from "@/services/ResourceManager";
-
+import Taro from "@tarojs/taro";
 import { View, Canvas } from "@tarojs/components";
+import Utils from "@/utils";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../utils/const";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../config";
 import { drawMainCanvas } from "../../utils/canvas";
 import { getSelectType } from "../../utils/index";
 
 import "./index.less";
 
 interface IModuleCanvasProps {
-  isShowPanelShare: boolean;
+  avatarShowInfo: any;
+  setSelectType: (any?: any) => any;
+  setSelectJewelry: (any?: any) => any;
+  addAvatarJewelry: (any?: any) => any;
+  removeAvatarJewelry: (any?: any) => any;
+  updateAvatarJewelry: (any?: any) => any;
 }
 
 export default function ModuleCanvas(props: IModuleCanvasProps) {
-  const { isShowPanelShare = false } = props;
+  const {
+    avatarShowInfo,
+    setSelectType,
+    setSelectJewelry,
+    addAvatarJewelry,
+    removeAvatarJewelry,
+    updateAvatarJewelry,
+  } = props;
 
   const [canvas, setCanvas] = useState<any>(null);
   const [objTouchPoint, setTouchPoint] = useState<any>({
@@ -31,27 +36,10 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     nTouchStartY_offset: 0, // 触摸点Y偏移
   });
 
-  const avatarShowInfo = useSelector(
-    (state) =>
-      state.avatarShowInfo.arrAvatarShowList[
-        state.avatarShowInfo.nAvatarShowListPoint
-      ]
-  );
-
-  const {
-    initAvatarInfo,
-    setAvatarImage,
-    setSelectType,
-    setSelectJewelry,
-    addAvatarJewelry,
-    removeAvatarJewelry,
-    updateAvatarJewelry,
-  } = useActions(avatarShowInfoActions);
-
   const addSameAvatarJewelry = async (objJewelry) => {
     const objJewelryTmp = {
       ...objJewelry,
-      id: UUID(),
+      id: Utils.UUID(),
       rect: {
         ...objJewelry.rect,
         x: objJewelry.rect.x + 10,
@@ -63,13 +51,8 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
   };
 
   const onLoad = async () => {
-    initAvatarInfo();
     // 设置 canvas 对象
     setCanvas(Taro.createCanvasContext("canvas"));
-    // 加载头像
-    setAvatarImage(
-      await ResourceManager.getUrl(imagesLocal.strUrlImageAvatarDefault)
-    );
   };
 
   useEffect(() => {
@@ -83,19 +66,27 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
   // 饰品元素选中框，按钮事件响应
   const handleJewelryBorderButtonClick = (type) => {
     switch (type) {
-      case "BTN_FLIP":
+      case "BTN_FLIP": {
         break;
-      case "BTN_DELETE":
+      }
+      case "BTN_DELETE": {
         removeAvatarJewelry(avatarShowInfo.objSelectJewelry);
         break;
-      case "BTN_ADD":
+      }
+      case "BTN_ADD": {
         addSameAvatarJewelry(avatarShowInfo.objSelectJewelry);
         break;
-      case "BTN_RESIZE":
-      // ... 交互在拖拽出实现
-      case "MOVE":
-      default:
+      }
+      case "BTN_RESIZE": {
+        // ... 交互在拖拽出实现
         break;
+      }
+      case "MOVE": {
+        break;
+      }
+      default: {
+        break;
+      }
     }
   };
 
@@ -107,7 +98,7 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     // 获取操作类型
     const objSelectType = getSelectType(point, avatarShowInfo);
     // console.log('getSelectType', objSelectType)
-    if (!checkObjectEmpty(objSelectType)) {
+    if (!Utils.checkObjectEmpty(objSelectType)) {
       setSelectType(objSelectType.type);
       const nIndex = avatarShowInfo.arrAvatarJewelry.findIndex((item) => {
         return item.id === objSelectType.id;
@@ -207,9 +198,9 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
           canvasId="canvas"
           disableScroll
           style={
-            `${isShowPanelShare ? "position: fixed; " : ""}` +
-            `${isShowPanelShare ? "top: -9999px; " : ""}` +
-            `${isShowPanelShare ? "left: -9999px; " : ""}` +
+            `${false ? "position: fixed; " : ""}` +
+            `${false ? "top: -9999px; " : ""}` +
+            `${false ? "left: -9999px; " : ""}` +
             `width: ${CANVAS_WIDTH}px; ` +
             `height: ${CANVAS_HEIGHT}px; `
           }

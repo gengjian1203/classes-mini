@@ -16,9 +16,11 @@ export const router2Params = (strRouter) => {
     // console.log('router2Params', strResultPath, strParam, arrParam)
 
     arrParam.forEach((strItem) => {
-      const arrKeyAndValue = strItem.split("=");
-      if (arrKeyAndValue.length === 2) {
-        objResultParam[arrKeyAndValue[0]] = arrKeyAndValue[1];
+      const nIndexParam = strItem.indexOf("=");
+      if (nIndexParam >= 0) {
+        const strParamKey = strItem.substring(0, nIndexParam);
+        const strParamValue = strItem.slice(nIndexParam + 1);
+        objResultParam[strParamKey] = strParamValue;
       }
     });
   }

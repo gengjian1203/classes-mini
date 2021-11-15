@@ -13,6 +13,9 @@ const queryNoticeDetail = require("./fetchArticleInfo/queryNoticeDetail/index.js
 const queryNoticeList = require("./fetchArticleInfo/queryNoticeList/index.js");
 const queryZhiHuDetail = require("./fetchArticleInfo/queryZhiHuDetail/index.js");
 const queryZhiHuList = require("./fetchArticleInfo/queryZhiHuList/index.js");
+// fetchCheckInfo
+const checkImage = require("./fetchCheckInfo/checkImage/index.js");
+const checkText = require("./fetchCheckInfo/checkText/index.js");
 // fetchGroupInfo
 const addGroup = require("./fetchGroupInfo/addGroup/index.js");
 const queryGroupByKeyTitle = require("./fetchGroupInfo/queryGroupByKeyTitle/index.js");
@@ -41,6 +44,7 @@ cloud.init({
 });
 
 const objFunction = {
+  // fetchAppInfo
   QUERY_APP_CONFIG: queryAppConfig, // 查询APP级别相关配置
   QUERY_HOME_INFO: queryHomeInfo, // 查询首页的相关信息
   QUERY_WEATHER_INFO: queryWeatherInfo, // 查询天气相关信息
@@ -52,6 +56,9 @@ const objFunction = {
   QUERY_NOTICE_LIST: queryNoticeList, // 查询资讯文章列表内容
   QUERY_ZHIHU_DETAIL: queryZhiHuDetail, // 查询知乎文章详细内容
   QUERY_ZHIHU_LIST: queryZhiHuList, // 查询知乎列表内容
+  // fetchCheckInfo
+  CHECK_IMAGE: checkImage, // 校验图片的敏感信息
+  CHECK_TEXT: checkText, // 校验文字的敏感信息
   // fetchGroupInfo
   ADD_GROUP: addGroup, // 新建班级
   QUERY_GROUP_BY_KEY_TITLE: queryGroupByKeyTitle, // 通过关键字查询班级列表

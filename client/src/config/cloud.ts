@@ -1,6 +1,6 @@
 const cloud = {
-  // 即将放飞理想的工具箱
   wx821aadcd431646f9: {
+    appName: "即将放飞理想的工具箱",
     prod: {
       cloudName: "prod-5gkxku5cdb510bb2",
       cloudPath:
@@ -23,8 +23,8 @@ const cloud = {
         "https://6465-dev-9gred941ab89c01d-1259256375.tcb.qcloud.la/",
     },
   },
-  // 气象台历
   wx1cac8cd76fcd3044: {
+    appName: "气象台历",
     prod: {
       cloudName: "prod-1gggp1e8827b372f",
       cloudPath:
@@ -43,8 +43,8 @@ const cloud = {
       cloudDownLoad: "https://6465-dev-8panu-1300943416.tcb.qcloud.la/",
     },
   },
-  // 古德猫餐饮
   wx6137953106cfbde8: {
+    appName: "古德猫餐饮",
     prod: {
       cloudName: "prod-2gddi5vra56d97f5",
       cloudPath:
@@ -67,8 +67,8 @@ const cloud = {
         "https://6465-dev-9g80kw941a178314-1308118241.tcb.qcloud.la/",
     },
   },
-  // 默认
   default: {
+    appName: "默认",
     prod: {
       cloudName: "",
       cloudPath: "",

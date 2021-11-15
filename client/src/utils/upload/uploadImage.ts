@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
 import Utils from "@/utils";
-import webApi from "@/api";
+import Api from "@/api";
 
 // 将图片上传到云存储中
 const upload = (strImageUrl, strCloudPath) => {
@@ -28,8 +28,8 @@ const checkImage = (strImageId) => {
     const objParam = {
       value: strImageId,
     };
-    const resCheck = await webApi.checkContent.checkImage(objParam);
-    // console.log('checkSecurityImage checkImage', resCheck)
+    const resCheck = await Api.cloud.fetchCheckInfo.checkImage(objParam);
+    console.log("checkSecurityImage checkImage", resCheck);
     if (resCheck && resCheck.errCode === 0) {
       resolve(strImageId);
     } else {
@@ -45,7 +45,7 @@ const checkImage = (strImageId) => {
  * @return 返回ID即为上传成功，返回空即为上传失败，返回'DANGER IMAGE'即为敏感图片
  */
 export const uploadImage = async (strImageUrl, strCloudPath) => {
-  let strResult = "";
+  let strResult: any = "";
   // 上传图片
   strResult = await upload(strImageUrl, strCloudPath);
   if (strResult) {

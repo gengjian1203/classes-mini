@@ -20,8 +20,10 @@ cloud.init({
 
 // 可在入口函数外缓存 db 对象
 const db = cloud.database();
-// 屏蔽列表
+
+// 敏感词名单
 const arrTitleBlackList = ["瞎扯 · "];
+// 邮件白名单
 const arrSendEmailList = [
   "prod-5gkxku5cdb510bb2", // 即将放飞理想的工具箱 - prod
   // 'dev-9gred941ab89c01d', // 即将放飞理想的工具箱 - dev
