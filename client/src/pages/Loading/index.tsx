@@ -9,6 +9,7 @@ import useDecodeRouter from "@/hooks/useDecodeRouter";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
+import RealtimeLogManager from "@/services/RealtimeLogManager";
 import Utils from "@/utils";
 
 import "./index.less";
@@ -132,6 +133,14 @@ export default function Loading() {
         });
       }
     }
+
+    const nickName = resQueryMember?.userNickName
+      ? resQueryMember?.userNickName
+      : "微信用户";
+    RealtimeLogManager.info(`一枚“${nickName}”登录了小程序`);
+    // RealtimeLogManager.info("测试 info");
+    // RealtimeLogManager.warn("测试 warn");
+    // RealtimeLogManager.error("测试 error");
   };
 
   useEffect(() => {
