@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
 import { View, MovableArea, MovableView } from "@tarojs/components";
@@ -7,6 +7,7 @@ import PanelShare from "@/components/PanelShare"; // 位置warning
 import LayoutLogin from "@/components/LayoutLogin";
 import NavigationHeader from "@/components/NavigationHeader";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
+import GlobalManager from "@/services/GlobalManager";
 
 import "./animation.less";
 import "./base.less";
@@ -52,6 +53,15 @@ export default function PageContent(props: IPageContentParam) {
     `--color-primary: ${colorPrimary ? colorPrimary : "#60b968"}; ` +
     `--color-primary-light: ${colorPrimaryL ? colorPrimaryL : "#80d988"};` +
     `--color-primary-dark: ${colorPrimaryD ? colorPrimaryD : "#409948"};`;
+
+  // 检测更新小程序 如果需要更新，则触发更新
+  const updateMiniProgram = () => {
+    GlobalManager.updateMiniProgram && GlobalManager.updateMiniProgram();
+  };
+
+  useEffect(() => {
+    updateMiniProgram();
+  }, []);
 
   const handleBtnTestClick = (e) => {
     e.stopPropagation();
