@@ -12,7 +12,7 @@ import Utils from "@/utils";
 import ModuleCanvas from "./components/ModuleCanvas";
 // import ModuleJewelry from "./components/ModuleJewelry";
 import ModuleButton from "./components/ModuleButton";
-// import ModuleCanvasSave from "./components/ModuleCanvasSave";
+import ModuleCanvasSave from "./components/ModuleCanvasSave";
 
 import "./index.less";
 
@@ -117,18 +117,19 @@ export default function AvatarShow() {
         removeAvatarJewelry={handleRemoveAvatarJewelry}
         updateAvatarJewelry={handleUpdateAvatarJewelry}
       />
-      {/* 底部操作区 */}
-      {/* <View className="avatar-show-bottom"> */}
       {/* 饰品栏 */}
       {/* <ModuleJewelry /> */}
       {/* 按钮区 */}
       <PanelBottom fixed isSafeBottom>
-        <ModuleButton setAvatarImage={handleSetAvatarImage} />
+        <ModuleButton
+          avatarShowInfo={arrAvatarShowList[nAvatarShowListPoint]}
+          setAvatarImage={handleSetAvatarImage}
+        />
       </PanelBottom>
       {/* </View> */}
 
       {/* 屏外绘制保存的图片 */}
-      {/* <ModuleCanvasSave /> */}
+      <ModuleCanvasSave />
     </PageContent>
   );
 }

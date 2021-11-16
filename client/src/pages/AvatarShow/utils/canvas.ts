@@ -278,7 +278,11 @@ const drawSelectBorder = (
  * @param avatarShowInfo
  * @param objTouchPoint
  */
-export const drawMainCanvas = (canvas, avatarShowInfo, objTouchPoint) => {
+export const drawMainCanvas = (
+  canvas: any,
+  avatarShowInfo: any,
+  objTouchPoint?: any
+) => {
   console.log("drawMainCanvas.", canvas, avatarShowInfo, objTouchPoint);
   const {
     strAvatarImage = "",
@@ -299,14 +303,16 @@ export const drawMainCanvas = (canvas, avatarShowInfo, objTouchPoint) => {
       objTouchPoint
     );
     // 绘制选中栏
-    if (!Utils.checkObjectEmpty(objSelectJewelry)) {
+    if (objTouchPoint && !Utils.checkObjectEmpty(objSelectJewelry)) {
       drawSelectBorder(canvas, strSelectType, objSelectJewelry, objTouchPoint);
     }
 
     // 绘制
-    canvas.draw();
+    if (objTouchPoint) {
+      canvas.draw();
+    }
   } else {
-    // console.error('drawMainCanvas canvas is null.')
+    console.error("drawMainCanvas canvas is null.");
   }
 };
 

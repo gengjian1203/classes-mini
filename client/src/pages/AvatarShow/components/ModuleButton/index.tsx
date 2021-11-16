@@ -4,9 +4,11 @@ import { AtButton, AtActionSheet, AtActionSheetItem } from "taro-ui";
 import Taro from "@tarojs/taro";
 import { Button, View } from "@tarojs/components";
 import Api from "@/api";
+import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useThrottle from "@/hooks/useThrottle";
+import shareInfoActions from "@/redux/actions/shareInfo";
 import ResourceManager from "@/services/ResourceManager";
 import Utils from "@/utils";
 
@@ -17,7 +19,7 @@ import {
   CANVAS_SAVE_HEIGHT,
   arrActionSheetList,
 } from "../../config";
-import { drawCanvasSave } from "../../utils/canvasSave";
+import { drawMainCanvas } from "../../utils/canvas";
 
 import "./index.less";
 
@@ -30,19 +32,22 @@ interface IModuleBottomProps {
 export default function ModuleButton(props: IModuleBottomProps) {
   const { avatarShowInfo, setAvatarImage, setSelectJewelry } = props;
 
-  const memberInfo = useSelector((state) => state.memberInfo);
-
-  const avatarUrl = useRef("");
   const [isShowActionSheet, setShowActionSheet] = useState<boolean>(false); // 是否展示弹窗
   const [canvasSave, setCanvasSave] = useState<any>(null);
 
+  const { setShareInfo } = useActions(shareInfoActions);
+
   // 保存并导出头像
   const saveAndExportAvatar = () => {
-    console.log("exportAndSaveAvatar");
+    console.log("exportAndSaveAvatar", canvasSave, avatarShowInfo);
+    const objShareParam = Utils.processSharePath({
+      shareType: Utils.getShareTypeName("POPULARIZE"),
+      sharePath: "/pages/Main/index",
+    });
     Taro.showLoading({
       title: "保存中...",
     });
-    drawCanvasSave(canvasSave, avatarShowInfo);
+    drawMainCanvas(canvasSave, avatarShowInfo);
     canvasSave.draw(true, () => {
       Taro.canvasToTempFilePath({
         x: 0,
@@ -64,8 +69,14 @@ export default function ModuleButton(props: IModuleBottomProps) {
                 title: "保存成功",
                 icon: "success",
                 complete: (res) => {
+                  // console.log("tempFilePath", resToCanvas.tempFilePath);
                   // 打开分享面板
-                  // onShowPanelShare(true, resToCanvas.tempFilePath);
+                  setShareInfo({
+                    isShowPanelShare: true,
+                    strShareTitle: "分享一个头像秀，你也快来看看吧",
+                    strShareImage: resToCanvas.tempFilePath,
+                    objShareParam: objShareParam,
+                  });
                 },
               });
             },
@@ -75,7 +86,12 @@ export default function ModuleButton(props: IModuleBottomProps) {
                 icon: "none",
                 complete: (res) => {
                   // 打开分享面板
-                  // onShowPanelShare(true, resToCanvas.tempFilePath);
+                  setShareInfo({
+                    isShowPanelShare: true,
+                    strShareTitle: "分享一个头像秀，你也快来看看吧",
+                    strShareImage: resToCanvas.tempFilePath,
+                    objShareParam: objShareParam,
+                  });
                 },
               });
             },

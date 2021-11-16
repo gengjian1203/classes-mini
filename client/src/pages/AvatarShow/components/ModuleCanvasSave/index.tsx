@@ -2,7 +2,7 @@ import Taro from "@tarojs/taro";
 import React from "react";
 import { Canvas } from "@tarojs/components";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../utils/const";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../config";
 
 import "./index.less";
 
