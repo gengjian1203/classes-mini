@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { WebView } from "@tarojs/components";
 import PageContent from "@/components/PageContent";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import "./index.less";
 
 export default function WebPage() {
-  const { params } = useRouter();
+  const { params } = useDecodeRouter();
   const { urlWeb = "" } = params || {};
 
   const handleWebViewMessage = (e) => {

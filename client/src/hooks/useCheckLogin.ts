@@ -16,27 +16,23 @@ export function useCheckLogin(funCallback = (any?: any) => any) {
   const { current } = useRef<IThrottleRef>({
     funCallback: () => true,
   });
-  const isLogin = useIsLogin();
+
   const { setShowLayoutLogin } = useActions(appInfoActions);
 
   useEffect(() => {
     current.funCallback = funCallback;
   }, [funCallback]);
 
-  // TODO: isLogin不能第一时间刷新
-  return useCallback(
-    (...args) => {
-      // console.log('useCheckLogin', memberInfo.user_openid)
-      console.log("useCheckLogin", isLogin);
+  return (...args) => {
+    const isLogin = useIsLogin();
+    console.log("useCheckLogin", isLogin);
 
-      if (isLogin) {
-        current.funCallback.call(this, ...args);
-      } else {
-        setShowLayoutLogin(true);
-      }
-    },
-    [isLogin]
-  );
+    if (isLogin) {
+      current.funCallback.call(this, ...args);
+    } else {
+      setShowLayoutLogin(true);
+    }
+  };
 }
 
 export default useCheckLogin;

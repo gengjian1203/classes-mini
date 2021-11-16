@@ -1,17 +1,17 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { AtButton, AtNoticebar } from "taro-ui";
-import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import Api from "@/api";
 import PageContent from "@/components/PageContent";
 import * as echarts from "@/componentsWx/ec-canvas/echarts";
 // import EChartsNode from "@/pages/ECharts/components/EChartsNode";
 // import EChartsTable from "@/pages/ECharts/components/EChartsTable";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import "./index.less";
 
 export default function ECharts() {
-  const { params } = useRouter();
+  const { params } = useDecodeRouter();
 
   const chart = useRef<any>(null);
   const timerRefresh = useRef<NodeJS.Timeout>(null);

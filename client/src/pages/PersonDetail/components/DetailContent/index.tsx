@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
+import Utils from "@/utils";
 
 import DetailBtntext from "./components/DetailBtntext";
 import DetailIcontext from "./components/DetailIcontext";
@@ -53,8 +54,11 @@ export default function DetailContent(props: IDetailContentParam) {
         break;
       }
       case "webview": {
+        const url = Utils.routerAppendParams("/pages/WebPage/index", {
+          urlWeb: data.url,
+        });
         Taro.navigateTo({
-          url: `/pages/WebPage/index` + `?urlWeb=${data.url}`,
+          url: url,
         });
         break;
       }

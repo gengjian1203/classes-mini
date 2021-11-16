@@ -10,6 +10,7 @@ import ListNode from "@/components/ListNode";
 import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import CloudFileManager from "@/services/CloudFileManager";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -51,11 +52,12 @@ export default function VpWeatherArticle(props: IVpWeatherArticleParam) {
 
   const handleDetailClick = (info) => {
     console.log("handleDetailClick", info);
+    const url = Utils.routerAppendParams("/pages/ArticleDetail/index", {
+      type: "NOTICE",
+      articleId: info?._id,
+    });
     Taro.navigateTo({
-      url:
-        `/pages/ArticleDetail/index` +
-        `?type=NOTICE` +
-        `&articleId=${info?._id}`,
+      url: url,
     });
   };
 

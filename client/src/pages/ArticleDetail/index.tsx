@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { AtButton } from "taro-ui";
-import Taro, { useRouter } from "@tarojs/taro";
+import React, { useEffect, useState } from "react";
+import Taro from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
 import Api from "@/api";
 import PageContent from "@/components/PageContent";
 import useThrottle from "@/hooks/useThrottle";
 import useCheckLogin from "@/hooks/useCheckLogin";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import "./index.less";
 
@@ -24,7 +24,7 @@ export default function ArticleDetail() {
   const {
     path,
     params: { type = "", articleId = "" },
-  } = useRouter();
+  } = useDecodeRouter();
 
   const [objArticleInfo, setArticleInfo] = useState<IArticleType>({});
 

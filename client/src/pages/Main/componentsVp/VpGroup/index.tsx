@@ -9,6 +9,7 @@ import Tab from "@/components/Tab";
 import ConfigMenuRouter from "@/config/menuRouter";
 import GroupInfo from "@/pages/Main/components/GroupInfo";
 import CloudFileManager from "@/services/CloudFileManager";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -118,23 +119,28 @@ export default function VpGroup(props: IVpGroupParam) {
   // 点击菜单项
   const handleMenuItemClick = (item) => {
     console.log("handleMenuItemClick", item);
-    const url =
+    const urlPath =
       item.url ||
       ConfigMenuRouter[item.type]?.url ||
       ConfigMenuRouter["default"]?.url;
+
+    const url = Utils.routerAppendParams(urlPath, {
+      title: item.title,
+    });
     Taro.navigateTo({
-      url,
+      url: url,
     });
   };
 
   // 点击tab列表项目
   const handleTabItemDetailClick = (item) => {
     console.log("handleTabItemDetailClick", item);
+    const url = Utils.routerAppendParams("/pages/ArticleDetail/index", {
+      type: "NOTICE",
+      articleId: item?._id,
+    });
     Taro.navigateTo({
-      url:
-        `/pages/ArticleDetail/index` +
-        `?type=NOTICE` +
-        `&articleId=${item?._id}`,
+      url: url,
     });
   };
 

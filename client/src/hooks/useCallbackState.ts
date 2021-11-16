@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 
+/**
+ * 拥有赋值成功之后回调的useState
+ * @param od
+ * @returns
+ */
 export default function useCallbackState(od) {
   const cbRef = useRef();
   const [data, setData] = useState(od);

@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { View, MovableArea, MovableView } from "@tarojs/components";
 import Config from "@/config";
 import PanelShare from "@/components/PanelShare"; // 位置warning
 import LayoutLogin from "@/components/LayoutLogin";
 import NavigationHeader from "@/components/NavigationHeader";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import "./animation.less";
 import "./base.less";
@@ -36,7 +37,7 @@ export default function PageContent(props: IPageContentParam) {
     children,
   } = props;
 
-  const { path } = useRouter();
+  const { path } = useDecodeRouter();
 
   const { isEasterEgg, configInfo } = useSelector((state) => state.appInfo);
 

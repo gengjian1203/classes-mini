@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { View, Image, Video } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
@@ -11,6 +11,7 @@ import useCheckLogin from "@/hooks/useCheckLogin";
 import ButtonIcon from "@/components/ButtonIcon";
 import PageContent from "@/components/PageContent";
 import TabbarBottom from "@/components/TabBarBottom";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 import QRCodeManager from "@/services/QRCodeManager";
 import appInfoActions from "@/redux/actions/appInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
@@ -32,7 +33,7 @@ import VpWeatherArticle from "./componentsVp/VpWeatherArticle/index";
 import "./index.less";
 
 export default function Main() {
-  const {} = useRouter();
+  const {} = useDecodeRouter();
 
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 加载完毕
   const [isUpdateList, setUpdateList] = useState<boolean>(false); // 触发主动列表刷新标识

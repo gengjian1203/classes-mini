@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { AtSearchBar } from "taro-ui";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { View, Picker, Text } from "@tarojs/components";
 import Api from "@/api";
 import ConfigTag from "@/config/tag";
@@ -9,6 +9,7 @@ import PageContent from "@/components/PageContent";
 import ListNode from "@/components/ListNode";
 import usePermission from "@/hooks/usePermission";
 import useQueryPageList from "@/hooks/useQueryPageList";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 import PinYin from "@/services/PinYin";
 import Utils from "@/utils";
 
@@ -17,7 +18,7 @@ import DialogWorker from "./components/DialogWorker";
 import "./index.less";
 
 export default function EditWorker() {
-  const { params } = useRouter();
+  const { params } = useDecodeRouter();
 
   const arrTagInfoList = useRef<any>([]);
   const strSelectTagCode = useRef<any>("");

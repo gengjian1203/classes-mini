@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AtList, AtListItem, AtInput, AtButton } from "taro-ui";
-import Taro, { usePageScroll, useReachBottom, useRouter } from "@tarojs/taro";
+import Taro, { usePageScroll, useReachBottom } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import ButtonIcon from "@/components/ButtonIcon";
 import ModuleCard from "@/components/ModuleCard";

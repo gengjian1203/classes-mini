@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Taro, { useRouter } from "@tarojs/taro";
-
-import { View } from "@tarojs/components";
 import PageContent from "@/components/PageContent";
 import PanelBottom from "@/components/PanelBottom";
 import useActions from "@/hooks/useActions";
 import useCheckLogin from "@/hooks/useCheckLogin";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import ResourceManager from "@/services/ResourceManager";
 import Utils from "@/utils";
@@ -19,7 +17,8 @@ import ModuleButton from "./components/ModuleButton";
 import "./index.less";
 
 export default function AvatarShow() {
-  const { path } = useRouter();
+  const { path, params } = useDecodeRouter();
+  const { title = "" } = params || {};
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
@@ -107,7 +106,7 @@ export default function AvatarShow() {
     <PageContent
       customClass="avatar-show-wrap"
       isShowLeftIcon
-      strNavigationTitle="我的头像秀"
+      strNavigationTitle={title || "头像秀"}
     >
       {/* 头像主页面 */}
       <ModuleCanvas

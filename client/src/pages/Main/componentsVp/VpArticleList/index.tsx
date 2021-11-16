@@ -8,6 +8,7 @@ import Banner from "@/components/Banner";
 import ListNode from "@/components/ListNode";
 import Config from "@/config";
 import useCheckLogin from "@/hooks/useCheckLogin";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -32,11 +33,12 @@ export default function VpArticleList(props: IVpArticleListParam) {
 
   const handleDetailClick = (info) => {
     console.log("handleDetailClick", info);
+    const url = Utils.routerAppendParams("/pages/ArticleDetail/index", {
+      type: "ZHIHU",
+      articleId: info?._id,
+    });
     Taro.navigateTo({
-      url:
-        `/pages/ArticleDetail/index` +
-        `?type=ZHIHU` +
-        `&articleId=${info?._id}`,
+      url: url,
     });
   };
 

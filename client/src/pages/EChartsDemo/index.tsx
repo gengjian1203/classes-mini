@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { AtButton, AtNoticebar } from "taro-ui";
-import Taro, { useRouter } from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import ModuleECharts from "@/components/ModuleECharts";
 import PageContent from "@/components/PageContent";
 import * as echarts from "@/componentsWx/ec-canvas/echarts";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import "./index.less";
 
@@ -12,7 +12,7 @@ export default function EChartsDemo() {
   const {
     path,
     params: { id = "" },
-  } = useRouter();
+  } = useDecodeRouter();
 
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 是否加载完毕
   const [ec1, setEC1] = useState({});

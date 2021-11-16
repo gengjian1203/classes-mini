@@ -2,12 +2,20 @@ import router2Params from "./router2Params";
 
 /**
  * 构造路由字符串，可尾部追加传参
- * @param {*} strPath 原路由字符串
- * @param {*} objParams 参数对象
- * @param {string} order 参数覆盖优先级 'append' - 以追加参数优先级高 | 'source' - 以原路由携带参数优先级高
+ * @param {string} strPath 原路由字符串
+ * @param {any} objParams 参数对象
+ * @param {
+ *    {string} order 参数覆盖优先级 'append' - 以追加参数优先级高 | 'source' - 以原路由携带参数优先级高
+ *    {boolean} encode 参数是否编码 true - 将参数编码 | false - 将参数不编码
+ * } objExtend 拓展功能对象
  * @returns 追加参数后的路由字符串
  */
-export const routerAppendParams = (strPath, objParams, order = "append") => {
+export const routerAppendParams = (
+  strPath: string,
+  objParams?: any,
+  objExtend?: any
+) => {
+  const { order = "append", encode = true } = objExtend || {};
   const { path: sourcePath, params: sourceParams } = router2Params(strPath);
   // console.log("routerAppendParams", sourcePath, sourceParams);
   let strResult = sourcePath;
@@ -26,10 +34,14 @@ export const routerAppendParams = (strPath, objParams, order = "append") => {
     let isFirstParam = !sourcePath.includes("?");
     Object.keys(mergeParams).forEach((key) => {
       if (isFirstParam) {
-        strResult += `?${key}=${mergeParams[key]}`;
+        strResult += `?${key}=${
+          encode ? encodeURIComponent(mergeParams[key]) : mergeParams[key]
+        }`;
         isFirstParam = false;
       } else {
-        strResult += `&${key}=${mergeParams[key]}`;
+        strResult += `&${key}=${
+          encode ? encodeURIComponent(mergeParams[key]) : mergeParams[key]
+        }`;
       }
     });
   }

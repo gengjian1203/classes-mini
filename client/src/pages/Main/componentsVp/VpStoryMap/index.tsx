@@ -5,6 +5,7 @@ import { View, Image } from "@tarojs/components";
 import Api from "@/api";
 import ButtonFloat from "@/components/ButtonFloat";
 import ListNode from "@/components/ListNode";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -38,11 +39,12 @@ export default function VpStoryMap(props: IVpStoryMapParam) {
 
   const handleDetailClick = (info) => {
     console.log("handleDetailClick", info);
+    const url = Utils.routerAppendParams("/pages/ArticleDetail/index", {
+      type: "NOTICE",
+      articleId: info?._id,
+    });
     Taro.navigateTo({
-      url:
-        `/pages/ArticleDetail/index` +
-        `?type=NOTICE` +
-        `&articleId=${info?._id}`,
+      url: url,
     });
   };
 

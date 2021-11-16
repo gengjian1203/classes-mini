@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import Taro, { useRouter } from "@tarojs/taro";
 import PageContent from "@/components/PageContent";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 import ModuleEasterEgg from "@/pages/EasterEgg/components/ModuleEasterEgg";
 
 import "./index.less";
 
 export default function EasterEgg() {
-  const { params } = useRouter();
+  const { params } = useDecodeRouter();
 
   return (
     <PageContent

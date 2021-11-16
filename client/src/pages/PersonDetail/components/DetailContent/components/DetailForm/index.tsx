@@ -1,6 +1,7 @@
 import React from "react";
 import Taro from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
+import Utils from "@/utils";
 
 import "./index.less";
 
@@ -23,8 +24,11 @@ export default function DetailForm(props: IDetailFormParam) {
         break;
       }
       case "webview": {
+        const url = Utils.routerAppendParams("/pages/WebPage/index", {
+          urlWeb: item.url,
+        });
         Taro.navigateTo({
-          url: `/pages/WebPage/index` + `?urlWeb=${item.url}`,
+          url: url,
         });
       }
       default:

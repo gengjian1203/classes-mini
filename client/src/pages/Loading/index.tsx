@@ -1,19 +1,20 @@
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { Image } from "@tarojs/components";
-import useActions from "@/hooks/useActions";
 import Api from "@/api";
+import PageContent from "@/components/PageContent";
 import Config from "@/config";
+import useActions from "@/hooks/useActions";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
 import appInfoActions from "@/redux/actions/appInfo";
 import memberInfoActions from "@/redux/actions/memberInfo";
 import shareInfoActions from "@/redux/actions/shareInfo";
-import PageContent from "@/components/PageContent";
 import Utils from "@/utils";
 
 import "./index.less";
 
 export default function Loading() {
-  const { params } = useRouter();
+  const { params } = useDecodeRouter();
 
   const { setAppConfigInfo, setAppHomePage, setShowLayoutLogin } = useActions(
     appInfoActions

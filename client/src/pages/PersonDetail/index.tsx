@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Taro, { useRouter } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { ScrollView, View, Swiper, SwiperItem } from "@tarojs/components";
 import Api from "@/api";
 import Config from "@/config";
 import PageContent from "@/components/PageContent";
-import useThrottle from "@/hooks/useThrottle";
 import useCheckLogin from "@/hooks/useCheckLogin";
+import useDecodeRouter from "@/hooks/useDecodeRouter";
+import useThrottle from "@/hooks/useThrottle";
 
 import BottomWidget from "./components/BottomWidget";
 import DetailContent from "./components/DetailContent";
@@ -17,7 +18,7 @@ export default function PersonDetail() {
   const {
     path,
     params: { persionId },
-  } = useRouter();
+  } = useDecodeRouter();
 
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 是否加载完毕
   const [strNavigationTitle, setNavigationTitle] = useState<string>("");
