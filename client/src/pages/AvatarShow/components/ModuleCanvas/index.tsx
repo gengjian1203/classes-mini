@@ -10,6 +10,7 @@ import { getSelectType } from "../../utils/index";
 import "./index.less";
 
 interface IModuleCanvasProps {
+  canvas: any;
   avatarShowInfo: any;
   setSelectType: (any?: any) => any;
   setSelectJewelry: (any?: any) => any;
@@ -20,6 +21,7 @@ interface IModuleCanvasProps {
 
 export default function ModuleCanvas(props: IModuleCanvasProps) {
   const {
+    canvas,
     avatarShowInfo,
     setSelectType,
     setSelectJewelry,
@@ -28,7 +30,6 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     updateAvatarJewelry,
   } = props;
 
-  const [canvas, setCanvas] = useState<any>(null);
   const [objTouchPoint, setTouchPoint] = useState<any>({
     nTouchStartX: 0, // 触摸点X起始坐标
     nTouchStartX_offset: 0, // 触摸点X偏移
@@ -49,15 +50,6 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     addAvatarJewelry(objJewelryTmp);
     setSelectJewelry(objJewelryTmp);
   };
-
-  const onLoad = async () => {
-    // 设置 canvas 对象
-    setCanvas(Taro.createCanvasContext("canvas"));
-  };
-
-  useEffect(() => {
-    onLoad();
-  }, []);
 
   useEffect(() => {
     drawMainCanvas(canvas, avatarShowInfo, objTouchPoint);

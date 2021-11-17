@@ -97,10 +97,10 @@ export default function Loading() {
       const {
         arrTabbarList = [],
         colorPrimary = "#60b968",
-        sharePosterImg = [],
+        shareCardImage = "",
+        shareCardTitle = "",
+        sharePosterImage = [],
         sharePosterText = [],
-        shareTitle = "",
-        shareImg = "",
       } = resQueryConfig;
       const arrTabbarListTmp = arrTabbarList
         .filter((item) => {
@@ -119,10 +119,10 @@ export default function Loading() {
           tabListSource: arrTabbarList,
           nTabListCurrent: 0,
           colorPrimary: colorPrimary,
-          sharePosterImg: sharePosterImg,
+          shareCardImage: shareCardImage,
+          shareCardTitle: shareCardTitle,
+          sharePosterImage: sharePosterImage,
           sharePosterText: sharePosterText,
-          shareTitle: shareTitle,
-          shareImg: shareImg,
         });
         setMemberInfo(resQueryMember);
         jumpPage(resQueryQrCode, params);

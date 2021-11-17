@@ -71,8 +71,8 @@ export default function VpMine(props: IVpMineParam) {
     });
     setShareInfo({
       isShowPanelShare: true,
-      strShareTitle: "",
-      strShareImage: "",
+      // strShareCardTitle: "",
+      // strShareCardImage: "",
       objShareParam: objShareParam,
     });
   });

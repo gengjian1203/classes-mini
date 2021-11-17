@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Taro from "@tarojs/taro";
 import PageContent from "@/components/PageContent";
 import PanelBottom from "@/components/PanelBottom";
 import useActions from "@/hooks/useActions";
@@ -22,6 +23,8 @@ export default function AvatarShow() {
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
+  const [canvas, setCanvas] = useState<any>(null);
+  const [canvasSave, setCanvasSave] = useState<any>(null);
   const [nAvatarShowListPoint, setAvatarShowListPoint] = useState(0);
   const [arrAvatarShowList, setAvatarShowList] = useState<any>([]);
 
@@ -51,8 +54,8 @@ export default function AvatarShow() {
     });
     setShareInfo({
       isShowPanelShare: true,
-      strShareTitle: "",
-      strShareImage: "",
+      strShareCardTitle: "",
+      strShareCardImage: "",
       objShareParam: objShareParam,
     });
   });
@@ -96,6 +99,9 @@ export default function AvatarShow() {
 
   const onLoad = async () => {
     initAvatarInfo(memberInfo.userAvatarUrl);
+    // 设置 canvas 对象
+    setCanvas(Taro.createCanvasContext("canvas"));
+    setCanvasSave(Taro.createCanvasContext("canvas-save"));
   };
 
   useEffect(() => {
@@ -110,6 +116,7 @@ export default function AvatarShow() {
     >
       {/* 头像主页面 */}
       <ModuleCanvas
+        canvas={canvas}
         avatarShowInfo={arrAvatarShowList[nAvatarShowListPoint]}
         setSelectType={handleSetSelectType}
         setSelectJewelry={handleSetSelectJewelry}
@@ -122,11 +129,11 @@ export default function AvatarShow() {
       {/* 按钮区 */}
       <PanelBottom fixed isSafeBottom>
         <ModuleButton
+          canvasSave={canvasSave}
           avatarShowInfo={arrAvatarShowList[nAvatarShowListPoint]}
           setAvatarImage={handleSetAvatarImage}
         />
       </PanelBottom>
-      {/* </View> */}
 
       {/* 屏外绘制保存的图片 */}
       <ModuleCanvasSave />

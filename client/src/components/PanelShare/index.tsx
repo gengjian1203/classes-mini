@@ -25,6 +25,14 @@ import "./index.less";
 
 interface IPanelShareProps {}
 
+/**
+ * 分享面板组件
+ * 数据库配置兜底的：卡片分享图片(shareCardImage)、卡片分享文案(shareCardTitle)、海报分享图片(sharePosterImage)、海报分享文案(sharePosterText)
+ * Redux配置业务的：卡片分享图片(strShareCardImage)、卡片分享文案(strShareCardTitle)、海报分享图片(strSharePosterImage)、海报分享文案(strSharePosterText)、
+ * 实际取值逻辑为优先取业务级，没有则取兜底级
+ * @param props
+ * @returns
+ */
 export default function PanelShare(props: IPanelShareProps) {
   const {} = props;
 
@@ -33,13 +41,20 @@ export default function PanelShare(props: IPanelShareProps) {
   const [canvasShare, setCanvasShare] = useState<any>(null);
 
   const {
-    configInfo: { sharePosterImg, sharePosterText, shareTitle, shareImg },
+    configInfo: {
+      shareCardImage,
+      shareCardTitle,
+      sharePosterImage,
+      sharePosterText,
+    },
   } = useSelector((state) => state.appInfo);
 
   const {
     isShowPanelShare,
-    strShareTitle,
-    strShareImage,
+    strShareCardImage,
+    strShareCardTitle,
+    strSharePosterImage,
+    strSharePosterText,
     objShareParam,
   } = useSelector((state) => state.shareInfo);
   const { setShareInfo } = useActions(shareInfoActions);
@@ -56,7 +71,7 @@ export default function PanelShare(props: IPanelShareProps) {
     const [srcQRCode, strShareContentUrlTmp] = await Promise.all([
       QRCodeManager.getQRCode(objShareParam),
       await ResourceManager.getUrl(
-        CloudFileManager.getCloudUrl(sharePosterImg[0])
+        CloudFileManager.getCloudUrl(strSharePosterImage || sharePosterImage[0])
       ),
     ]);
     console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
@@ -64,7 +79,7 @@ export default function PanelShare(props: IPanelShareProps) {
       canvasShare,
       strShareContentUrlTmp,
       srcQRCode,
-      sharePosterText,
+      strSharePosterText || sharePosterText,
       2
     );
     canvasShare.draw(true, () => {
@@ -109,14 +124,15 @@ export default function PanelShare(props: IPanelShareProps) {
       sharePath: "/pages/Main/index",
     });
     console.log("useShareAppMessage1", objShareParam, objShareParamDefault);
-    const title = strShareTitle || shareTitle;
-    const imageUrl = strShareImage || CloudFileManager.getCloudUrl(shareImg);
+    const title = strShareCardTitle || shareCardTitle;
+    const imageUrl =
+      strShareCardImage || CloudFileManager.getCloudUrl(shareCardImage);
     const path =
       objShareParam?.sharePathFull ||
       objShareParamDefault?.sharePathFull ||
       "/pages/Loading/index";
 
-    console.log("useShareAppMessage2", path);
+    console.log("useShareAppMessage2", title, imageUrl, path);
 
     return {
       title,
@@ -219,7 +235,9 @@ export default function PanelShare(props: IPanelShareProps) {
             >
               <Image
                 className="panel-share-img"
-                src={CloudFileManager.getCloudUrl(sharePosterImg[0])}
+                src={CloudFileManager.getCloudUrl(
+                  strSharePosterImage || sharePosterImage[0]
+                )}
                 mode="aspectFill"
               />
               <View className="flex-center-h panel-share-simple-footer">
@@ -233,7 +251,7 @@ export default function PanelShare(props: IPanelShareProps) {
                     {objMemberInfo?.userNickName || ""}
                   </View>
                   <View className="panel-share-simple-footer-left-text">
-                    {sharePosterText}
+                    {strSharePosterText || sharePosterText}
                   </View>
                 </View>
                 <View className="flex-center-v panel-share-simple-footer-right">

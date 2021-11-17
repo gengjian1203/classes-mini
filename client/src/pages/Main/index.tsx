@@ -395,8 +395,8 @@ export default function Main() {
     });
     setShareInfo({
       isShowPanelShare: true,
-      strShareTitle: "",
-      strShareImage: "",
+      strShareCardTitle: "",
+      strShareCardImage: "",
       objShareParam: objShareParam,
     });
   };

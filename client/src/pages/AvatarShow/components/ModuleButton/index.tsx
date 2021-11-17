@@ -24,16 +24,21 @@ import { drawMainCanvas } from "../../utils/canvas";
 import "./index.less";
 
 interface IModuleBottomProps {
+  canvasSave?: any;
   avatarShowInfo?: any;
   setAvatarImage?: (any?: any) => any;
   setSelectJewelry?: (any?: any) => any;
 }
 
 export default function ModuleButton(props: IModuleBottomProps) {
-  const { avatarShowInfo, setAvatarImage, setSelectJewelry } = props;
+  const {
+    canvasSave,
+    avatarShowInfo,
+    setAvatarImage,
+    setSelectJewelry,
+  } = props;
 
   const [isShowActionSheet, setShowActionSheet] = useState<boolean>(false); // 是否展示弹窗
-  const [canvasSave, setCanvasSave] = useState<any>(null);
 
   const { setShareInfo } = useActions(shareInfoActions);
 
@@ -68,38 +73,31 @@ export default function ModuleButton(props: IModuleBottomProps) {
               Taro.showToast({
                 title: "保存成功",
                 icon: "success",
-                complete: (res) => {
-                  // console.log("tempFilePath", resToCanvas.tempFilePath);
-                  // 打开分享面板
-                  setShareInfo({
-                    isShowPanelShare: true,
-                    strShareTitle: "分享一个头像秀，你也快来看看吧",
-                    strShareImage: resToCanvas.tempFilePath,
-                    objShareParam: objShareParam,
-                  });
-                },
               });
             },
-            fail: (err) => {
+            fail: (errSaveImage) => {
               Taro.showToast({
                 title: "保存失败",
                 icon: "none",
-                complete: (res) => {
-                  // 打开分享面板
-                  setShareInfo({
-                    isShowPanelShare: true,
-                    strShareTitle: "分享一个头像秀，你也快来看看吧",
-                    strShareImage: resToCanvas.tempFilePath,
-                    objShareParam: objShareParam,
-                  });
-                },
+              });
+            },
+            complete: (resSaveImage) => {
+              // 打开分享面板
+              setShareInfo({
+                isShowPanelShare: true,
+                strShareCardTitle: "分享一个头像秀，你也快来看看吧",
+                strShareCardImage: resToCanvas.tempFilePath,
+                strSharePosterText: "分享一个头像秀，你也快来看看吧",
+                strSharePosterImage: resToCanvas.tempFilePath,
+                objShareParam: objShareParam,
               });
             },
           });
         },
-        fail: (err) => {
+        fail: (errToCanvas) => {
+          console.log("errToCanvas", errToCanvas);
           Taro.showToast({
-            title: "保存失败",
+            title: "转换失败",
             icon: "none",
           });
         },
@@ -137,14 +135,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
     setAvatarImage && setAvatarImage(await Utils.chooseImage("album", 1));
   };
 
-  const onLoad = () => {
-    // 设置 canvas 对象
-    setCanvasSave(Taro.createCanvasContext("canvas-save"));
-  };
-
-  useEffect(() => {
-    onLoad();
-  }, []);
+  useEffect(() => {}, []);
 
   // 授权回调，无论是否同意都弹出弹窗
   const handleGetUserInfo = useThrottle(

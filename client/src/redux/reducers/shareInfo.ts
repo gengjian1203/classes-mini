@@ -3,8 +3,10 @@ import { SET_SHARE_INFO, SET_SOURCE_INFO } from "@/redux/constants/shareInfo";
 
 const INITIAL_STATE = {
   isShowPanelShare: false,
-  strShareTitle: "", // 链接分享标题
-  strShareImage: "", // 链接分享图
+  strShareCardTitle: "", // 卡片分享标题
+  strShareCardImage: "", // 卡片分享图
+  strSharePosterText: "", // 海报分享标题
+  strSharePosterImage: "", // 海报分享大图
   objShareParam: {}, // 分享参数
   objSourceInfo: {
     sourceID: "",
@@ -20,9 +22,19 @@ export default function shareInfoReducer(state = INITIAL_STATE, action) {
     switch (type) {
       // 设置分享弹窗状态
       case SET_SHARE_INFO:
+        const objShareParamTmp = payload.isShowPanelShare
+          ? payload.objShareParam
+            ? payload.objShareParam
+            : {}
+          : {};
         draft = {
           ...draft,
-          objShareParam: payload.isShowPanelShare ? payload.objShareParam : {},
+          isShowPanelShare: false,
+          strShareCardTitle: "",
+          strShareCardImage: "",
+          strSharePosterText: "",
+          strSharePosterImage: "",
+          objShareParam: objShareParamTmp,
           ...payload,
         };
         return draft;
