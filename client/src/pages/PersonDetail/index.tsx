@@ -6,7 +6,6 @@ import Config from "@/config";
 import PageContent from "@/components/PageContent";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
-import useThrottle from "@/hooks/useThrottle";
 
 import BottomWidget from "./components/BottomWidget";
 import DetailContent from "./components/DetailContent";

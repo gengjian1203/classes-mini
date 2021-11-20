@@ -1,24 +1,31 @@
-import Taro from "@tarojs/taro";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import useActions from "@/hooks/useActions";
-import avatarShowInfoActions from "@/redux/actions/avatarShowInfo";
-import { UUID } from "@/utils/index";
-import ResourceManager from "@/services/ResourceManager";
-
+import { AtTabs, AtTabsPane } from "taro-ui";
+import Taro from "@tarojs/taro";
 import { View, Image, ScrollView } from "@tarojs/components";
-import { AtButton, AtTabs, AtTabsPane } from "taro-ui";
+import ButtonIcon from "@/components/ButtonIcon";
+import ResourceManager from "@/services/ResourceManager";
+import Utils from "@/utils";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT, arrJewelryList } from "../../utils/const";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, arrJewelryList } from "../../config";
 
-import "./index.scss";
+import "./index.less";
 
 interface IModuleJewelryProps {
-  content?: string;
+  nAvatarShowListPoint: any;
+  arrAvatarShowList: Array<any>;
+  initAvatarInfo: (any?: any) => any;
+  setAvatarShowListPoint: (any?: any) => any;
+  addAvatarJewelry: (any?: any) => any;
 }
 
 export default function ModuleJewelry(props: IModuleJewelryProps) {
-  const {} = props;
+  const {
+    nAvatarShowListPoint,
+    arrAvatarShowList,
+    initAvatarInfo,
+    setAvatarShowListPoint,
+    addAvatarJewelry,
+  } = props;
 
   const [isDisableBtnBack, setDisableBtnBack] = useState<boolean>(false);
   const [isDisableBtnReturn, setDisableBtnReturn] = useState<boolean>(false);
@@ -26,29 +33,14 @@ export default function ModuleJewelry(props: IModuleJewelryProps) {
   const [isShowJewelryState, setShowJewelryState] = useState<boolean>(true);
   const [nTabCurrent, setTabCurrent] = useState<number>(0);
 
-  const nAvatarShowListPoint = useSelector(
-    (state) => state.avatarShowInfo.nAvatarShowListPoint
-  );
-  const arrAvatarShowList = useSelector(
-    (state) => state.avatarShowInfo.arrAvatarShowList
-  );
-
-  const {
-    initAvatarInfo,
-    setAvatarImage,
-    setAvatarShowListPoint,
-    addAvatarJewelry,
-    setSelectJewelry,
-  } = useActions(avatarShowInfoActions);
-
   useEffect(() => {
     const isDisableBtnBackTmp = !(nAvatarShowListPoint > 0);
     const isDisableBtnReturnTmp = !(
       nAvatarShowListPoint <
-      arrAvatarShowList.length - 1
+      arrAvatarShowList?.length - 1
     );
     const isDisableBtnCleanTmp = !(
-      arrAvatarShowList[nAvatarShowListPoint].arrAvatarJewelry.length > 0
+      arrAvatarShowList[nAvatarShowListPoint]?.arrAvatarJewelry?.length > 0
     );
     setDisableBtnBack(isDisableBtnBackTmp);
     setDisableBtnReturn(isDisableBtnReturnTmp);
@@ -80,10 +72,7 @@ export default function ModuleJewelry(props: IModuleJewelryProps) {
       content: "是否要清除所有装饰？",
       success: (res) => {
         if (res.confirm) {
-          const strAvatarImage =
-            arrAvatarShowList[nAvatarShowListPoint].strAvatarImage;
           initAvatarInfo();
-          setAvatarImage(strAvatarImage);
         }
       },
     });
@@ -98,12 +87,12 @@ export default function ModuleJewelry(props: IModuleJewelryProps) {
 
   // 点击饰品
   const handleJewelryCellClick = async (item) => {
-    // console.log('handleJewelryCellClick', item)
+    console.log("handleJewelryCellClick item", item);
     const nRandomX = Math.random() * (CANVAS_WIDTH - item.rect.width);
     const nRandomY = Math.random() * (CANVAS_HEIGHT - item.rect.height);
     const objJewelry = {
       ...item,
-      id: UUID(),
+      id: Utils.UUID(),
       rect: {
         ...item.rect,
         x: item.rect.x !== undefined ? item.rect.x : nRandomX,
@@ -111,8 +100,8 @@ export default function ModuleJewelry(props: IModuleJewelryProps) {
       },
       value: await ResourceManager.getUrl(item.value),
     };
+    console.log("handleJewelryCellClick objJewelry", objJewelry);
     addAvatarJewelry(objJewelry);
-    setSelectJewelry(objJewelry);
   };
 
   // 切换tab
@@ -153,44 +142,58 @@ export default function ModuleJewelry(props: IModuleJewelryProps) {
       {/* 操作区 */}
       <View className="jewelry-header">
         <View className="header-module">
-          <AtButton
-            type="secondary"
-            circle
-            size="small"
-            disabled={isDisableBtnBack}
-            className="header-item flex-center-v iconfont iconshangyibu"
-            onClick={handleJewelryBackClick}
-          />
-          <AtButton
-            type="secondary"
-            circle
-            size="small"
-            disabled={isDisableBtnReturn}
-            className="header-item flex-center-v iconfont iconxiayibu"
-            onClick={handleJewelryReturnClick}
-          />
-          <AtButton
-            type="secondary"
-            circle
-            size="small"
-            disabled={isDisableBtnClean}
-            className="header-item flex-center-v iconfont iconshanchu1"
-            onClick={handleJewelryCleanClick}
-          />
+          {/* 撤销 */}
+          <View className="header-item">
+            <ButtonIcon
+              value="iconreturn"
+              width={100}
+              height={60}
+              radius={60}
+              size={40}
+              color="var(--color-primary)"
+              disabled={isDisableBtnBack}
+              onClick={handleJewelryBackClick}
+            />
+          </View>
+          {/* 重复 */}
+          <View className="header-item">
+            <ButtonIcon
+              value="iconenter"
+              width={100}
+              height={60}
+              radius={60}
+              size={40}
+              color="var(--color-primary)"
+              disabled={isDisableBtnReturn}
+              onClick={handleJewelryReturnClick}
+            />
+          </View>
+          {/* 清空 */}
+          <View className="header-item">
+            <ButtonIcon
+              value="icontrash"
+              width={100}
+              height={60}
+              radius={60}
+              size={40}
+              color="var(--color-primary)"
+              disabled={isDisableBtnClean}
+              onClick={handleJewelryCleanClick}
+            />
+          </View>
         </View>
         <View className="header-module">
-          <AtButton
-            type="secondary"
-            circle
-            size="small"
-            className={
-              `header-item ` +
-              `flex-center-v ` +
-              `iconfont ` +
-              `${isShowJewelryState ? "iconicon-test2 " : "iconicon-test "}`
-            }
-            onClick={handleJewelryStateSwitch}
-          />
+          <View className="header-item">
+            {/* <ButtonIcon
+              value={`${isShowJewelryState ? "iconunfold" : "iconpackup"}`}
+              width={100}
+              height={60}
+              radius={60}
+              size={40}
+              color="var(--color-primary)"
+              onClick={handleJewelryStateSwitch}
+            /> */}
+          </View>
         </View>
       </View>
       {/* 饰品区 */}

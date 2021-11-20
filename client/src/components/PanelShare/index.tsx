@@ -10,7 +10,7 @@ import Mask from "@/components/Mask";
 import Config from "@/config";
 import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
-import useThrottle from "@/hooks/useThrottle";
+import useThrottleSimple from "@/hooks/useThrottleSimple";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import CloudFileManager from "@/services/CloudFileManager";
 import QRCodeManager from "@/services/QRCodeManager";
@@ -179,7 +179,7 @@ export default function PanelShare(props: IPanelShareProps) {
   };
 
   // 保存海报
-  const handleSaveClick = useThrottle(
+  const handleSaveClick = useThrottleSimple(
     useCheckAuthorize("scope.writePhotosAlbum", () => {
       if (strSharePhotoUrl) {
         saveImage();

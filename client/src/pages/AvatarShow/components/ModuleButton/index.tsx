@@ -7,7 +7,7 @@ import Api from "@/api";
 import useActions from "@/hooks/useActions";
 import useCheckAuthorize from "@/hooks/useCheckAuthorize";
 import useCheckLogin from "@/hooks/useCheckLogin";
-import useThrottle from "@/hooks/useThrottle";
+import useThrottleSimple from "@/hooks/useThrottleSimple";
 import shareInfoActions from "@/redux/actions/shareInfo";
 import ResourceManager from "@/services/ResourceManager";
 import Utils from "@/utils";
@@ -52,7 +52,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
     Taro.showLoading({
       title: "保存中...",
     });
-    drawMainCanvas(canvasSave, avatarShowInfo);
+    drawMainCanvas(canvasSave, "", avatarShowInfo);
     canvasSave.draw(true, () => {
       Taro.canvasToTempFilePath({
         x: 0,
@@ -138,18 +138,17 @@ export default function ModuleButton(props: IModuleBottomProps) {
   useEffect(() => {}, []);
 
   // 授权回调，无论是否同意都弹出弹窗
-  const handleGetUserInfo = useThrottle(
+  const handleGetUserInfo = useThrottleSimple(
     useCheckLogin(() => {
       setShowActionSheet(true);
     })
   );
 
   // 点击保存图片
-  const handleButtonSaveClick = useThrottle(
+  const handleButtonSaveClick = useThrottleSimple(
     useCheckLogin(
       useCheckAuthorize("scope.writePhotosAlbum", () => {
         console.log("handleButtonSaveClick");
-        // setSelectJewelry({});
         saveAndExportAvatar();
       })
     )
@@ -163,6 +162,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
 
   // 底部弹窗项的点击事件
   const handleActionSheetItemClick = (item) => {
+    setSelectJewelry && setSelectJewelry({});
     console.log("handleActionSheetItemClick", item);
     switch (item.code) {
       case "toggle-avatar":

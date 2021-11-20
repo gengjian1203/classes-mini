@@ -3,7 +3,6 @@ import Taro from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
 import Api from "@/api";
 import PageContent from "@/components/PageContent";
-import useThrottle from "@/hooks/useThrottle";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
 

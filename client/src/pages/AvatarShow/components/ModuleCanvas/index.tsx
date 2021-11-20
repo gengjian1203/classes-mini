@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Taro from "@tarojs/taro";
+import { useSelector } from "react-redux";
 import { View, Canvas } from "@tarojs/components";
+import useThrottle from "@/hooks/useThrottle";
 import Utils from "@/utils";
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../config";
@@ -11,6 +12,7 @@ import "./index.less";
 
 interface IModuleCanvasProps {
   canvas: any;
+  strSelectType: string;
   avatarShowInfo: any;
   setSelectType: (any?: any) => any;
   setSelectJewelry: (any?: any) => any;
@@ -22,6 +24,7 @@ interface IModuleCanvasProps {
 export default function ModuleCanvas(props: IModuleCanvasProps) {
   const {
     canvas,
+    strSelectType,
     avatarShowInfo,
     setSelectType,
     setSelectJewelry,
@@ -29,6 +32,8 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     removeAvatarJewelry,
     updateAvatarJewelry,
   } = props;
+
+  const { isShowPanelShare } = useSelector((state) => state.shareInfo);
 
   const [objTouchPoint, setTouchPoint] = useState<any>({
     nTouchStartX: 0, // 触摸点X起始坐标
@@ -48,12 +53,11 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
       },
     };
     addAvatarJewelry(objJewelryTmp);
-    setSelectJewelry(objJewelryTmp);
   };
 
   useEffect(() => {
-    drawMainCanvas(canvas, avatarShowInfo, objTouchPoint);
-  }, [canvas, avatarShowInfo, objTouchPoint]);
+    drawMainCanvas(canvas, strSelectType, avatarShowInfo, objTouchPoint);
+  }, [canvas, strSelectType, avatarShowInfo, objTouchPoint]);
 
   // 饰品元素选中框，按钮事件响应
   const handleJewelryBorderButtonClick = (type) => {
@@ -70,7 +74,7 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
         break;
       }
       case "BTN_RESIZE": {
-        // ... 交互在拖拽出实现
+        // ... 交互在拖拽处实现
         break;
       }
       case "MOVE": {
@@ -115,26 +119,28 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
   };
 
   // Canvas触碰移动
-  const handleCanvasTouchMove = (e) => {
+  const handleCanvasTouchMove = useThrottle((e) => {
+    // console.log("handleCanvasTouchMove", strSelectType);
     if (
-      avatarShowInfo.strSelectType === "BTN_RESIZE" || // 改变饰品尺寸
-      avatarShowInfo.strSelectType === "MOVE" // 移动饰品位置
+      strSelectType === "BTN_RESIZE" || // 改变饰品尺寸
+      strSelectType === "MOVE" // 移动饰品位置
     ) {
-      // console.log('handleCanvasTouchMove', e)
       const point = e.touches[0];
-      setTouchPoint({
+      const objTouchPointTmp = {
         ...objTouchPoint,
         nTouchStartX_offset: point.x - objTouchPoint.nTouchStartX,
         nTouchStartY_offset: point.y - objTouchPoint.nTouchStartY,
-      });
+      };
+      // console.log("handleCanvasTouchMove", objTouchPointTmp);
+      setTouchPoint(objTouchPointTmp);
     }
-  };
+  }, 100);
 
   // Canvas触碰停止
   const handleCanvasTouchEnd = (e) => {
     // console.log('handleCanvasTouchEnd', e)
     // 移动饰品位置
-    if (avatarShowInfo.strSelectType === "MOVE") {
+    if (strSelectType === "MOVE") {
       const objSelectJewelryTmp = {
         ...avatarShowInfo.objSelectJewelry,
         rect: {
@@ -152,7 +158,7 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
       updateAvatarJewelry(objSelectJewelryTmp);
     }
     // 改变饰品尺寸
-    else if (avatarShowInfo.strSelectType === "BTN_RESIZE") {
+    else if (strSelectType === "BTN_RESIZE") {
       const nMaxOffsett =
         objTouchPoint.nTouchStartX_offset > objTouchPoint.nTouchStartY_offset
           ? objTouchPoint.nTouchStartX_offset
@@ -190,9 +196,9 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
           canvasId="canvas"
           disableScroll
           style={
-            `${false ? "position: fixed; " : ""}` +
-            `${false ? "top: -9999px; " : ""}` +
-            `${false ? "left: -9999px; " : ""}` +
+            // `${isShowPanelShare ? "position: fixed; " : ""}` +
+            `${isShowPanelShare ? "top: -9999px; " : ""}` +
+            `${isShowPanelShare ? "left: -9999px; " : ""}` +
             `width: ${CANVAS_WIDTH}px; ` +
             `height: ${CANVAS_HEIGHT}px; `
           }

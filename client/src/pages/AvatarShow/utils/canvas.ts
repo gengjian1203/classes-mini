@@ -1,5 +1,4 @@
 import ResourceManager from "@/services/ResourceManager";
-// import * as imagesLocal from '@/services/ResourceImage'
 import Utils from "@/utils";
 
 import {
@@ -7,6 +6,7 @@ import {
   CANVAS_HEIGHT,
   BORDER_COLOR,
   BORDER_BUTTON_SIZE,
+  arrBorderButtonList,
 } from "../config";
 
 /**
@@ -84,7 +84,7 @@ const drawAvatarJewelry = async (
   objSelectJewelry,
   objTouchPoint
 ) => {
-  console.log("drawAvatarJewelry", arrAvatarJewelry);
+  // console.log("drawAvatarJewelry", arrAvatarJewelry);
   // 绘制
   for (let item of arrAvatarJewelry) {
     const rectJewelryBase = {
@@ -103,7 +103,12 @@ const drawAvatarJewelry = async (
       rectJewelryBase,
       rectJewelryExtend
     );
-    // console.log('drawAvatarJewelry', rectJewelryResult)
+    // console.log(
+    //   "drawAvatarJewelry rectJewelryResult",
+    //   rectJewelryResult,
+    //   rectJewelryBase,
+    //   rectJewelryExtend
+    // );
 
     switch (item.type) {
       case "TEXT":
@@ -146,39 +151,41 @@ const drawSelectBorderButton = (canvas, rectBorder, type) => {
     y: 10,
   };
   let strButtonUrl = "";
+  const nIndexButton = arrBorderButtonList.findIndex((item) => {
+    return item.type === type;
+  });
+  if (nIndexButton >= 0) {
+    const url = arrBorderButtonList[nIndexButton].url;
+    strButtonUrl = ResourceManager.getStaticUrl(url);
+  }
   switch (type) {
     case "FLIP":
       ptButtonPosition = {
         x: rectBorder.x - nRadius,
         y: rectBorder.y - nRadius,
       };
-      // strButtonUrl = imagesLocal.strUrlImageAvatarButtonFlip;
       break;
     case "ADD":
       ptButtonPosition = {
         x: rectBorder.x - nRadius,
         y: rectBorder.y + rectBorder.height - nRadius,
       };
-      // strButtonUrl = imagesLocal.strUrlImageAvatarButtonAdd;
       break;
     case "DELETE":
       ptButtonPosition = {
         x: rectBorder.x + rectBorder.width - nRadius,
         y: rectBorder.y - nRadius,
       };
-      // strButtonUrl = imagesLocal.strUrlImageAvatarButtonDelete;
       break;
     case "RESIZE":
       ptButtonPosition = {
         x: rectBorder.x + rectBorder.width - nRadius,
         y: rectBorder.y + rectBorder.height - nRadius,
       };
-      // strButtonUrl = imagesLocal.strUrlImageAvatarButtonResize;
       break;
     default:
       return;
   }
-  strButtonUrl = ResourceManager.getStaticUrl(strButtonUrl);
   // console.log(
   // 	'drawSelectBorderButton',
   // 	strButtonUrl,
@@ -275,21 +282,25 @@ const drawSelectBorder = (
 /**
  * 绘制canvas主函数
  * @param canvas
+ * @param strSelectType
  * @param avatarShowInfo
  * @param objTouchPoint
  */
 export const drawMainCanvas = (
   canvas: any,
+  strSelectType: string,
   avatarShowInfo: any,
   objTouchPoint?: any
 ) => {
-  console.log("drawMainCanvas.", canvas, avatarShowInfo, objTouchPoint);
-  const {
-    strAvatarImage = "",
-    arrAvatarJewelry = [],
-    objSelectJewelry = {},
-    strSelectType = "",
-  } = avatarShowInfo || {};
+  console.log(
+    "drawMainCanvas.",
+    canvas,
+    strSelectType,
+    avatarShowInfo,
+    objTouchPoint
+  );
+  const { strAvatarImage = "", arrAvatarJewelry = [], objSelectJewelry = {} } =
+    avatarShowInfo || {};
 
   if (canvas) {
     // 绘制头像底图
@@ -312,7 +323,7 @@ export const drawMainCanvas = (
       canvas.draw();
     }
   } else {
-    console.error("drawMainCanvas canvas is null.");
+    console.warn("drawMainCanvas canvas is null.");
   }
 };
 

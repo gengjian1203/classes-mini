@@ -1,6 +1,10 @@
 import Utils from "@/utils";
 
-import { BORDER_BUTTON_SIZE, BORDER_BUTTON_RADIUS } from "../config";
+import {
+  BORDER_BUTTON_SIZE,
+  BORDER_BUTTON_RADIUS,
+  LIMIE_AVATAR_SHOW_LIST,
+} from "../config";
 
 /**
  * 校验是否点击边框按钮上
@@ -119,6 +123,45 @@ export const getSelectType = (point, avatarShowInfo) => {
   return {};
 };
 
+/**
+ * 新建操作记录
+ * @param draft
+ */
+export const newAvatarShow = (arrAvatarShowList, nAvatarShowListPoint) => {
+  // 清除废弃分支操作
+  arrAvatarShowList.splice(nAvatarShowListPoint + 1, 9999);
+  // 新建操作记录
+  const objAvatarShowNew = Utils.deepClone(
+    arrAvatarShowList[nAvatarShowListPoint]
+  );
+  arrAvatarShowList.push(objAvatarShowNew);
+  nAvatarShowListPoint++;
+  // 超出列表最大限制则弹出最古老操作记录
+  if (arrAvatarShowList.length > LIMIE_AVATAR_SHOW_LIST) {
+    arrAvatarShowList.shift();
+    nAvatarShowListPoint--;
+  }
+  return Utils.deepClone({
+    arrAvatarShowListClone: arrAvatarShowList,
+    nAvatarShowListPointClone: nAvatarShowListPoint,
+  });
+};
+
+/**
+ * 清除头像为空的脏数据操作记录
+ * @param draft
+ */
+export const cleanAvatarShow = (draft) => {
+  if (draft.arrAvatarShowList.length >= 2) {
+    if (draft.arrAvatarShowList[0].strAvatarImage === "") {
+      draft.arrAvatarShowList.shift();
+      draft.nAvatarShowListPoint--;
+    }
+  }
+};
+
 export default {
   getSelectType,
+  newAvatarShow,
+  cleanAvatarShow,
 };

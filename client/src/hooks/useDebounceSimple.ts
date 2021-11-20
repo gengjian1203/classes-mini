@@ -25,8 +25,9 @@ export function useDebounceSimple(
   }, [funCallback]);
 
   return useCallback((...args) => {
-    if (current.handleTimeOut !== null) {
+    if (current.handleTimeOut) {
       clearTimeout(current.handleTimeOut);
+      current.handleTimeOut = null;
     }
     current.handleTimeOut = setTimeout(() => {
       current.funCallback.call(this, ...args);

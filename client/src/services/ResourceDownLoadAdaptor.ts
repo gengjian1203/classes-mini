@@ -106,7 +106,7 @@ class COtherAdaptor implements IResourceAdaptorType {
   };
   resolve = (strUrl: string) => {
     let strResult = strUrl;
-    console.error("COtherAdaptor", strResult);
+    console.warn("COtherAdaptor", strResult);
     return "url-unknown";
   };
 }
