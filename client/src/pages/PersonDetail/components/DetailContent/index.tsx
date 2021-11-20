@@ -69,24 +69,29 @@ export default function DetailContent(props: IDetailContentParam) {
 
   return (
     <View className="detail-content-wrap">
-      {arrContentList.map((item, index) => (
-        <View key={index} className="detail-content-item">
-          {
-            {
-              btntext: (
-                <DetailBtntext
-                  data={item.data}
-                  onBtnClick={() => handleBtntextBtnClick(item.data)}
-                />
-              ),
-              icontext: <DetailIcontext data={item.data} />,
-              info: <DetailInfo data={item.data} />,
-              form: <DetailForm data={item.data} />,
-              timeline: <DetailTimeline data={item.data} />,
-            }[item.type]
-          }
-        </View>
-      ))}
+      {arrContentList &&
+        arrContentList.map((item, index) => {
+          return (
+            item.show && (
+              <View key={index} className="detail-content-item">
+                {
+                  {
+                    btntext: (
+                      <DetailBtntext
+                        data={item.data}
+                        onBtnClick={() => handleBtntextBtnClick(item.data)}
+                      />
+                    ),
+                    icontext: <DetailIcontext data={item.data} />,
+                    info: <DetailInfo data={item.data} />,
+                    form: <DetailForm data={item.data} />,
+                    timeline: <DetailTimeline data={item.data} />,
+                  }[item.type]
+                }
+              </View>
+            )
+          );
+        })}
     </View>
   );
 }

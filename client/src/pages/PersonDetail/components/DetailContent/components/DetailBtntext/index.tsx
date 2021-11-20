@@ -24,6 +24,8 @@ export default function DetailBtntext(props: IDetailBtntextParam) {
     onBtnClick && onBtnClick(e);
   };
 
+  const isRippling = ["miniprogram", "webview"].includes(data?.type);
+
   return (
     <View className="detail-btntext-wrap">
       <View className="item-left">
@@ -32,6 +34,7 @@ export default function DetailBtntext(props: IDetailBtntextParam) {
           height={100}
           radius={100}
           value={icon}
+          isRippling={isRippling}
           onClick={handleIconClick}
         />
       </View>

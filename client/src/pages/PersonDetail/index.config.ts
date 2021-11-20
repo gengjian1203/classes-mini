@@ -1,5 +1,5 @@
 export default {
-  disableScroll: true,
+  // disableScroll: true,
   enablePullDownRefresh: false,
   enableShareAppMessage: false,
 };

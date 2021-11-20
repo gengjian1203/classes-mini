@@ -32,6 +32,10 @@ export default {
       pages: ["index"], // 首页
     },
     {
+      root: "pages/PageTest",
+      pages: ["index"], //  测试页面
+    },
+    {
       root: "pages/PersonDetail",
       pages: ["index"], // 个人详情页
     },

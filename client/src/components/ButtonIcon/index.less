@@ -1,14 +1,74 @@
 .button-icon-wrap {
+  overflow: visible;
+  position: relative;
   border: none;
   box-sizing: border-box;
-  display: block;
+  // display: block;
   padding: 0;
 
   .at-button__wxbutton::after {
     border: none;
   }
 
+  .rippling-circle {
+    box-sizing: border-box;
+    position: absolute;
+    &:nth-child(2) {
+      border-width: 2px;
+      animation: rippling 1s linear infinite;
+      -webkit-animation: rippling2 1s linear infinite;
+    }
+  }
+
+  @keyframes rippling {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    25%,
+    75% {
+      transform: scale(1.1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes rippling2 {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
+  }
+
+  .rippling-content {
+    animation: contentRippling 1s linear infinite;
+    -webkit-animation: contentRippling 1s linear infinite;
+  }
+  @keyframes contentRippling {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+  }
+
   .button-content {
+    overflow: hidden;
     position: relative;
     box-sizing: border-box;
     width: 100%;

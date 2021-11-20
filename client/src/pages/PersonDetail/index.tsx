@@ -75,6 +75,7 @@ export default function PersonDetail() {
   useEffect(() => {
     if (arrIconList && arrIconList.length > 0) {
       setNavigationTitle(arrIconList[nCurrentDetail]?.title);
+      Taro.pageScrollTo({ scrollTop: 0, duration: 100 });
     }
   }, [nCurrentDetail, arrIconList]);
 
@@ -115,10 +116,17 @@ export default function PersonDetail() {
     <PageContent
       isShowLeftIcon
       strNavigationTitle={strNavigationTitle}
-      customClass="personality-detail-wrap flex-center-v"
+      customClass="flex-start-v personality-detail-wrap"
     >
       {/* 渲染内容 */}
-      {renderDetailContent()}
+      {/* {renderDetailContent()} */}
+      <View className="detail-swiper-wrap">
+        <View className="flex-center-v detail-swiper-item">
+          {arrSwiperList[nCurrentDetail]?.content && (
+            <DetailContent content={arrSwiperList[nCurrentDetail]?.content} />
+          )}
+        </View>
+      </View>
       {/* 底部小组件面板 */}
       <BottomWidget
         isLoadComplete={isLoadComplete}
