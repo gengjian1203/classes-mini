@@ -45,6 +45,7 @@ export default function BottomWidget(props: IBottomWidgetParam) {
               customStyle={{
                 padding: "var(--padding-xs)",
               }}
+              isRippling
               onClick={() => handleIconClick(item, index)}
             />
           ))

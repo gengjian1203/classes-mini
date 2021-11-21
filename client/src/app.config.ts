@@ -54,4 +54,8 @@ export default {
     onReachBottomDistance: 200, // 触发上拉刷新
     enablePullDownRefresh: false, // 开启下拉刷新
   },
+  usingComponents: {
+    "ec-canvas": "./componentsWx/ec-canvas/ec-canvas",
+    "image-cropper": "./componentsWx/image-cropper/image-cropper",
+  },
 };

@@ -63,7 +63,7 @@ export default function VpArticleList(props: IVpArticleListParam) {
             articleId: info._id,
           };
           const res = await Api.cloud.fetchArticleInfo.deleteZhiHu(params);
-          Taro.hideToast({});
+          Taro.hideToast();
           if (res) {
             onArticleListUpdate && onArticleListUpdate();
             Taro.showToast({

@@ -166,7 +166,7 @@ export default function VpGroup(props: IVpGroupParam) {
             articleId: info._id,
           };
           const res = await Api.cloud.fetchArticleInfo.deleteNotice(params);
-          Taro.hideToast({});
+          Taro.hideToast();
           if (res) {
             onTabListUpdate && onTabListUpdate();
             Taro.showToast({

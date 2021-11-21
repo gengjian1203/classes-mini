@@ -162,7 +162,7 @@ export default function Main() {
             setArticleList(list, () => {
               setLoadComplete(true);
               setShowArticleListLoadingTip(false);
-              Taro.hideLoading();
+              Taro.hideToast();
             });
             break;
           }
@@ -184,7 +184,7 @@ export default function Main() {
               }),
               () => {
                 setTabListLoadComplete(true);
-                Taro.hideLoading();
+                Taro.hideToast();
               }
             );
             break;
@@ -211,7 +211,7 @@ export default function Main() {
               }),
               () => {
                 setLoadComplete(true);
-                Taro.hideLoading();
+                Taro.hideToast();
               }
             );
             break;
@@ -236,7 +236,7 @@ export default function Main() {
           case "RESULT": {
             setStoryList(list, () => {
               setLoadComplete(true);
-              Taro.hideLoading();
+              Taro.hideToast();
             });
             break;
           }
@@ -256,7 +256,7 @@ export default function Main() {
             setWeatherArticleList(list, () => {
               setLoadComplete(true);
               setShowWeatherArticleListLoadingTip(false);
-              Taro.hideLoading();
+              Taro.hideToast();
             });
             break;
           }

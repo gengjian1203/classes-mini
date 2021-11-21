@@ -1,0 +1,26 @@
+.panel-image-cropper-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+
+  .panel-image-cropper-footer {
+    padding: var(--padding-md) 0;
+    width: 100%;
+
+    .panel-image-cropper-footer-up {
+      width: 100%;
+      .panel-image-cropper-tip {
+        z-index: inherit;
+        margin-bottom: var(--margin-md);
+        font-size: var(--font-size-md);
+        color: var(--color-text-primary);
+      }
+    }
+    .panel-image-cropper-footer-down {
+      width: 100%;
+    }
+  }
+}

@@ -5,6 +5,7 @@ import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
   BORDER_COLOR,
+  BORDER_COLOR_CORE,
   BORDER_BUTTON_SIZE,
   arrBorderButtonList,
 } from "../config";
@@ -192,6 +193,18 @@ const drawSelectBorderButton = (canvas, rectBorder, type) => {
   // 	ptButtonPosition,
   // 	BORDER_BUTTON_SIZE
   // )
+  // 绘制按钮边框
+  canvas.strokeStyle = BORDER_COLOR_CORE;
+  canvas.beginPath();
+  canvas.arc(
+    ptButtonPosition.x + nRadius,
+    ptButtonPosition.y + nRadius,
+    nRadius + 1,
+    0,
+    2 * Math.PI
+  );
+  canvas.stroke();
+  // 绘制按钮图案
   canvas.drawImage(
     strButtonUrl,
     ptButtonPosition.x,
@@ -265,13 +278,26 @@ const drawSelectBorder = (
   // 边框最终属性
   const rectBorderResult = Utils.mergeObject(rectBorderBase, rectBorderExtend);
 
-  // 绘制
-  canvas.strokeStyle = BORDER_COLOR;
+  // 绘制边框 以及 边框阴影
+  canvas.strokeStyle = BORDER_COLOR_CORE;
   canvas.strokeRect(
     rectBorderResult.x,
     rectBorderResult.y,
     rectBorderResult.width,
     rectBorderResult.height
+  );
+  canvas.strokeStyle = BORDER_COLOR;
+  canvas.strokeRect(
+    rectBorderResult.x - 1,
+    rectBorderResult.y - 1,
+    rectBorderResult.width + 2,
+    rectBorderResult.height + 2
+  );
+  canvas.strokeRect(
+    rectBorderResult.x + 1,
+    rectBorderResult.y + 1,
+    rectBorderResult.width - 2,
+    rectBorderResult.height - 2
   );
   // 绘制按钮
   for (let item of arrButtonList) {
@@ -292,13 +318,13 @@ export const drawMainCanvas = (
   avatarShowInfo: any,
   objTouchPoint?: any
 ) => {
-  console.log(
-    "drawMainCanvas.",
-    canvas,
-    strSelectType,
-    avatarShowInfo,
-    objTouchPoint
-  );
+  // console.log(
+  //   "drawMainCanvas.",
+  //   canvas,
+  //   strSelectType,
+  //   avatarShowInfo,
+  //   objTouchPoint
+  // );
   const { strAvatarImage = "", arrAvatarJewelry = [], objSelectJewelry = {} } =
     avatarShowInfo || {};
 

@@ -12,6 +12,7 @@ import "./index.less";
 
 interface IModuleCanvasProps {
   canvas: any;
+  isShowPanelImageCropper: boolean;
   strSelectType: string;
   avatarShowInfo: any;
   setSelectType: (any?: any) => any;
@@ -24,6 +25,7 @@ interface IModuleCanvasProps {
 export default function ModuleCanvas(props: IModuleCanvasProps) {
   const {
     canvas,
+    isShowPanelImageCropper,
     strSelectType,
     avatarShowInfo,
     setSelectType,
@@ -41,6 +43,8 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
     nTouchStartY: 0, // 触摸点Y起始坐标
     nTouchStartY_offset: 0, // 触摸点Y偏移
   });
+
+  const isHideCanvas = isShowPanelImageCropper || isShowPanelShare; // 是否隐藏主Canvas组件 （Canvas层级过高）
 
   const addSameAvatarJewelry = async (objJewelry) => {
     const objJewelryTmp = {
@@ -197,8 +201,8 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
           disableScroll
           style={
             // `${isShowPanelShare ? "position: fixed; " : ""}` +
-            `${isShowPanelShare ? "top: -9999px; " : ""}` +
-            `${isShowPanelShare ? "left: -9999px; " : ""}` +
+            `${isHideCanvas ? "top: -9999px; " : ""}` +
+            `${isHideCanvas ? "left: -9999px; " : ""}` +
             `width: ${CANVAS_WIDTH}px; ` +
             `height: ${CANVAS_HEIGHT}px; `
           }

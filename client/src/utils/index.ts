@@ -1,3 +1,4 @@
+import asyncDelayBoolean from "./base/asyncDelayBoolean";
 import checkObjectEmpty from "./base/checkObjectEmpty";
 import checkObjectEqual from "./base/checkObjectEqual";
 import deepClone from "./base/deepClone";
@@ -24,6 +25,7 @@ import uploadImage from "./upload/uploadImage";
 
 export default {
   shareType,
+  asyncDelayBoolean,
   checkObjectEmpty,
   checkObjectEqual,
   deepClone,

@@ -12,8 +12,11 @@ export const chooseImage = (
       sizeType: ["original", "compressed"],
       sourceType: [sourceType],
       success: async (resChoose) => {
-        Taro.showLoading({
-          title: "加载中...",
+        Taro.showToast({
+          title: "加载中",
+          icon: "loading",
+          mask: true,
+          duration: 20000,
         });
         console.log("funToggleCamera", resChoose);
         if (
@@ -29,7 +32,8 @@ export const chooseImage = (
         const strTempPath = resChoose.tempFilePaths[0];
         const res = await Utils.uploadImage(strTempPath, "temp/");
         console.log("uploadImage", res);
-        Taro.hideLoading();
+        Taro.hideToast();
+
         if (res === "") {
           Taro.showToast({
             title: "图片上传失败，请重新上传",

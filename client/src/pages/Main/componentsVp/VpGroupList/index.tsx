@@ -27,7 +27,12 @@ export default function VpGroup(props: IVpGroupParam) {
   // 确认搜索
   const handleSearchActionClick = async (e) => {
     console.log("handleSearchActionClick", e);
-    Taro.showLoading();
+    Taro.showToast({
+      title: "搜索中",
+      icon: "loading",
+      mask: true,
+      duration: 20000,
+    });
     const params = {
       keyTitle: valueSearch.current,
     };

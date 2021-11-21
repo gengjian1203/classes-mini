@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
 import PageContent from "@/components/PageContent";
 import PanelBottom from "@/components/PanelBottom";
+import PanelImageCropper from "@/components/PanelImageCropper";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
 import ResourceManager from "@/services/ResourceManager";
 import Utils from "@/utils";
@@ -16,11 +17,11 @@ import { arrBorderButtonList, arrJewelryList } from "./config";
 import { newAvatarShow, cleanAvatarShow } from "./utils";
 
 import "./index.less";
+import { View } from "@tarojs/components";
 
 interface IAvatarInfoType {
   strAvatarImage: string; // '', // 头像底图
   arrAvatarJewelry: Array<any>; // [], // 饰品列表(有序)
-  // strSelectType: string; // '', // 操作状态 // 'BTN_FLIP' - 翻转 'BTN_DELETE' - 删除 'BTN_ADD' - 复制 'BTN_RESIZE' - 调整尺寸 'MOVE' - 拖动
   objSelectJewelry: any; // {}; // 选中饰品对象
 }
 
@@ -30,10 +31,12 @@ export default function AvatarShow() {
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
+  const [isShowPanelImageCropper, setShowPanelImageCropper] = useState(false);
+  const [strSrcImageCropper, setSrcImageCropper] = useState("");
   const avatarUrlNow = useRef<string>("");
   const [canvas, setCanvas] = useState<any>(null);
   const [canvasSave, setCanvasSave] = useState<any>(null);
-  const [strSelectType, setSelectType] = useState<string>("");
+  const [strSelectType, setSelectType] = useState<string>(""); // 操作状态 // 'BTN_FLIP' - 翻转 'BTN_DELETE' - 删除 'BTN_ADD' - 复制 'BTN_RESIZE' - 调整尺寸 'MOVE' - 拖动
   const [nAvatarShowListPoint, setAvatarShowListPoint] = useState(0);
   const [arrAvatarShowList, setAvatarShowList] = useState<
     Array<IAvatarInfoType | never>
@@ -49,10 +52,9 @@ export default function AvatarShow() {
         Utils.getHDAvatarUrl(avatarUrlNow.current)
       ), // 头像底图
       arrAvatarJewelry: [], // 饰品列表(有序)
-      // strSelectType: "", // 操作状态 // 'BTN_FLIP'-翻转 'BTN_DELETE'-删除 'BTN_ADD'-复制 'BTN_RESIZE'-调整尺寸 'MOVE'-拖动
       objSelectJewelry: {}, // 选中饰品对象
     };
-    console.log("initAvatarInfo", avatarShowInfo);
+    // console.log("initAvatarInfo", avatarShowInfo);
     const arrAvatarShowListTmp = [avatarShowInfo];
 
     setAvatarShowListPoint(0);
@@ -61,7 +63,7 @@ export default function AvatarShow() {
 
   // 初始化选中边框按钮
   const initBorderButton = async () => {
-    console.log("initBorderButton");
+    // console.log("initBorderButton");
     const arrPromiseList: Array<Promise<string>> = [];
     arrBorderButtonList.map((itemButton, indexButton) => {
       arrPromiseList.push(
@@ -70,12 +72,12 @@ export default function AvatarShow() {
     });
 
     const res = await Promise.all(arrPromiseList);
-    console.log("initBorderButton res", res);
+    // console.log("initBorderButton res", res);
   };
 
   // 初始化饰品相关信息
   const initJewelryList = async () => {
-    console.log("initJewelryList");
+    // console.log("initJewelryList");
     const arrPromiseList: Array<Promise<string>> = [];
     arrJewelryList.map((itemTab, indexTab) => {
       if (itemTab?.list?.length > 0) {
@@ -87,7 +89,7 @@ export default function AvatarShow() {
       }
     });
     const res = await Promise.all(arrPromiseList);
-    console.log("initJewelryList res", res);
+    // console.log("initJewelryList res", res);
   };
 
   // 初始化头像秀信息
@@ -97,13 +99,13 @@ export default function AvatarShow() {
 
   // 设置当前操作类型
   const handleSetSelectType = (strSelectTypeTmp) => {
-    console.log("handleSetSelectType", strSelectTypeTmp);
+    // console.log("handleSetSelectType", strSelectTypeTmp);
     setSelectType(strSelectTypeTmp);
   };
 
   // 设置选中的挂件
   const handleSetSelectJewelry = (objJewelryTmp) => {
-    console.log("handleSetSelectJewelry", objJewelryTmp);
+    // console.log("handleSetSelectJewelry", objJewelryTmp);
     const arrAvatarShowListClone = Utils.deepClone(arrAvatarShowList);
     arrAvatarShowListClone[
       nAvatarShowListPoint
@@ -114,7 +116,7 @@ export default function AvatarShow() {
 
   // 新增头像秀挂件
   const handleAddAvatarJewelry = (objJewelryTmp) => {
-    console.log("handleAddAvatarJewelry", objJewelryTmp);
+    // console.log("handleAddAvatarJewelry", objJewelryTmp);
     const { arrAvatarShowListClone, nAvatarShowListPointClone } = newAvatarShow(
       arrAvatarShowList,
       nAvatarShowListPoint
@@ -143,7 +145,6 @@ export default function AvatarShow() {
       return item.id === objJewelryTmp.id;
     });
     if (nIndex >= 0) {
-      // objNewAvatarShow.strSelectType = "";
       objNewAvatarShow.objSelectJewelry = {};
       objNewAvatarShow.arrAvatarJewelry.splice(nIndex, 1);
     }
@@ -154,7 +155,7 @@ export default function AvatarShow() {
 
   // 更新头像秀挂件
   const handleUpdateAvatarJewelry = (objJewelryTmp) => {
-    console.log("handleUpdateAvatarJewelry");
+    // console.log("handleUpdateAvatarJewelry");
     const { arrAvatarShowListClone, nAvatarShowListPointClone } = newAvatarShow(
       arrAvatarShowList,
       nAvatarShowListPoint
@@ -173,7 +174,13 @@ export default function AvatarShow() {
     setAvatarShowListPoint(nAvatarShowListPointClone);
   };
 
-  // 设置头像底片
+  // 通过相册设置头像底片
+  const handleAvatarChange = async (avatarUrl) => {
+    setShowPanelImageCropper(true);
+    setSrcImageCropper(avatarUrl);
+  };
+
+  // 通过自身头像设置头像底片
   const handleSetAvatarImage = async (avatarUrl) => {
     initAvatarInfo(avatarUrl);
   };
@@ -182,6 +189,16 @@ export default function AvatarShow() {
   const handleSetAvatarShowListPoint = (nAvatarShowListPointTmp) => {
     console.log("handleSetAvatarShowListPoint");
     setAvatarShowListPoint(nAvatarShowListPointTmp);
+  };
+
+  // 裁切图片面板关闭
+  const handleImageCropperClose = () => {
+    setShowPanelImageCropper(false);
+  };
+
+  // 裁切图片面板保存图片
+  const handleImageCropperSave = (url) => {
+    initAvatarInfo(url);
   };
 
   const onLoad = async () => {
@@ -207,6 +224,7 @@ export default function AvatarShow() {
       {/* 头像主页面 */}
       <ModuleCanvas
         canvas={canvas}
+        isShowPanelImageCropper={isShowPanelImageCropper}
         strSelectType={strSelectType}
         avatarShowInfo={arrAvatarShowList[nAvatarShowListPoint]}
         setSelectType={handleSetSelectType}
@@ -215,6 +233,8 @@ export default function AvatarShow() {
         removeAvatarJewelry={handleRemoveAvatarJewelry}
         updateAvatarJewelry={handleUpdateAvatarJewelry}
       />
+      {/* 分隔栏 */}
+      <View className="avatar-show-block" />
       {/* 饰品栏 */}
       <ModuleJewelry
         nAvatarShowListPoint={nAvatarShowListPoint}
@@ -228,6 +248,7 @@ export default function AvatarShow() {
         <ModuleButton
           canvasSave={canvasSave}
           avatarShowInfo={arrAvatarShowList[nAvatarShowListPoint]}
+          onAvatarChange={handleAvatarChange}
           setAvatarImage={handleSetAvatarImage}
           setSelectJewelry={handleSetSelectJewelry}
         />
@@ -235,6 +256,17 @@ export default function AvatarShow() {
 
       {/* 屏外绘制保存的图片 */}
       <ModuleCanvasSave />
+      {/* 切图组件 */}
+      {isShowPanelImageCropper && (
+        <PanelImageCropper
+          imgSrc={strSrcImageCropper}
+          width={300}
+          height={300}
+          disableRatio
+          onImageCropperSave={handleImageCropperSave}
+          onImageCropperClose={handleImageCropperClose}
+        />
+      )}
     </PageContent>
   );
 }

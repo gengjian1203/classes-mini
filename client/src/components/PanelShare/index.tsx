@@ -83,7 +83,7 @@ export default function PanelShare(props: IPanelShareProps) {
       2
     );
     canvasShare.draw(true, () => {
-      // Taro.hideLoading();
+      // Taro.hideToast();
       Taro.canvasToTempFilePath({
         x: 0,
         y: 0,

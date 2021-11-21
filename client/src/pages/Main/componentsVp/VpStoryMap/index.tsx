@@ -69,7 +69,7 @@ export default function VpStoryMap(props: IVpStoryMapParam) {
             articleId: info._id,
           };
           const res = await Api.cloud.fetchArticleInfo.deleteNotice(params);
-          Taro.hideToast({});
+          Taro.hideToast();
           if (res) {
             onStoryMapUpdate && onStoryMapUpdate();
             Taro.showToast({

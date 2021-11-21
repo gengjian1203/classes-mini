@@ -10,6 +10,7 @@ export const SIZE_TEXT = 50; // 文字尺寸
 export const SIZE_IMAGE = 128; // 图片尺寸
 
 export const BORDER_COLOR = "#ffffff";
+export const BORDER_COLOR_CORE = "#000000";
 export const BORDER_BUTTON_SIZE = 20; // 选中框按钮尺寸
 export const BORDER_BUTTON_RADIUS = BORDER_BUTTON_SIZE / 2;
 

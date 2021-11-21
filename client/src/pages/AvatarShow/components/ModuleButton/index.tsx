@@ -26,6 +26,7 @@ import "./index.less";
 interface IModuleBottomProps {
   canvasSave?: any;
   avatarShowInfo?: any;
+  onAvatarChange?: (any?: any) => any;
   setAvatarImage?: (any?: any) => any;
   setSelectJewelry?: (any?: any) => any;
 }
@@ -34,6 +35,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
   const {
     canvasSave,
     avatarShowInfo,
+    onAvatarChange,
     setAvatarImage,
     setSelectJewelry,
   } = props;
@@ -49,8 +51,11 @@ export default function ModuleButton(props: IModuleBottomProps) {
       shareType: Utils.getShareTypeName("POPULARIZE"),
       sharePath: "/pages/Main/index",
     });
-    Taro.showLoading({
-      title: "保存中...",
+    Taro.showToast({
+      title: "保存中",
+      icon: "loading",
+      mask: true,
+      duration: 20000,
     });
     drawMainCanvas(canvasSave, "", avatarShowInfo);
     canvasSave.draw(true, () => {
@@ -127,19 +132,20 @@ export default function ModuleButton(props: IModuleBottomProps) {
 
   // 点击拍照
   const funToggleCamera = async () => {
-    setAvatarImage && setAvatarImage(await Utils.chooseImage("camera", 1));
+    onAvatarChange && onAvatarChange(await Utils.chooseImage("camera", 1));
   };
 
   // 从手机相册选择
   const funToggleAlbum = async () => {
-    setAvatarImage && setAvatarImage(await Utils.chooseImage("album", 1));
+    onAvatarChange && onAvatarChange(await Utils.chooseImage("album", 1));
   };
 
   useEffect(() => {}, []);
 
   // 授权回调，无论是否同意都弹出弹窗
-  const handleGetUserInfo = useThrottleSimple(
+  const handleButtonChangeImageClick = useThrottleSimple(
     useCheckLogin(() => {
+      setSelectJewelry && setSelectJewelry({});
       setShowActionSheet(true);
     })
   );
@@ -149,6 +155,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
     useCheckLogin(
       useCheckAuthorize("scope.writePhotosAlbum", () => {
         console.log("handleButtonSaveClick");
+        setSelectJewelry && setSelectJewelry({});
         saveAndExportAvatar();
       })
     )
@@ -162,7 +169,6 @@ export default function ModuleButton(props: IModuleBottomProps) {
 
   // 底部弹窗项的点击事件
   const handleActionSheetItemClick = (item) => {
-    setSelectJewelry && setSelectJewelry({});
     console.log("handleActionSheetItemClick", item);
     switch (item.code) {
       case "toggle-avatar":
@@ -186,9 +192,9 @@ export default function ModuleButton(props: IModuleBottomProps) {
         <AtButton
           className="bottom-button"
           type="secondary"
-          openType="getUserInfo"
+          // openType="getUserInfo"
           circle
-          onClick={handleGetUserInfo}
+          onClick={handleButtonChangeImageClick}
         >
           更换图片
         </AtButton>

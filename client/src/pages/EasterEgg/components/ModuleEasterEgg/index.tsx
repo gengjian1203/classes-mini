@@ -37,7 +37,7 @@ export default function ModuleEasterEgg(props: IModuleEasterEggParam) {
       enable: value,
     };
     const res = await Api.cloud.fetchAppInfo.updateAppTabBar(params);
-    Taro.hideToast({});
+    Taro.hideToast();
     console.log("handleTabBarEnableChange", res);
     if (res) {
       Taro.showToast({
