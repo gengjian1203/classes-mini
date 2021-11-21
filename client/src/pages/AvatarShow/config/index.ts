@@ -16,6 +16,11 @@ export const BORDER_BUTTON_RADIUS = BORDER_BUTTON_SIZE / 2;
 
 export const LIMIE_AVATAR_SHOW_LIST = 10; // 操作记录存储上线
 
+// 默认头像
+export const strAvatarDefaultUrl = CloudFileManager.getCloudUrl(
+  "avatar/default.png"
+);
+
 // 选中边框按钮列表
 export const arrBorderButtonList = [
   {
@@ -413,6 +418,7 @@ export default {
   BORDER_BUTTON_SIZE,
   BORDER_BUTTON_RADIUS,
   LIMIE_AVATAR_SHOW_LIST,
+  strAvatarDefaultUrl,
   arrBorderButtonList,
   arrJewelryList,
   arrActionSheetList,

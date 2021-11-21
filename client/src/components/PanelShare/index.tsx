@@ -36,9 +36,10 @@ interface IPanelShareProps {}
 export default function PanelShare(props: IPanelShareProps) {
   const {} = props;
 
+  const refCropperCanvasShare = useRef<any>(null);
+
   const [isShowBtnRefresh, setShowBtnRefresh] = useState<boolean>(false);
   const [strSharePhotoUrl, setSharePhotoUrl] = useState<string>("");
-  const [canvasShare, setCanvasShare] = useState<any>(null);
 
   const {
     configInfo: {
@@ -48,7 +49,6 @@ export default function PanelShare(props: IPanelShareProps) {
       sharePosterText,
     },
   } = useSelector((state) => state.appInfo);
-
   const {
     isShowPanelShare,
     strShareCardImage,
@@ -57,15 +57,42 @@ export default function PanelShare(props: IPanelShareProps) {
     strSharePosterText,
     objShareParam,
   } = useSelector((state) => state.shareInfo);
+
   const { setShareInfo } = useActions(shareInfoActions);
 
   const objMemberInfo = StorageManager.getStorageSync("memberInfo");
 
   const onLoad = () => {
     // 设置 canvas 对象
-    setCanvasShare(Taro.createCanvasContext("canvas-share"));
+    getCanvasShareComplete();
   };
 
+  // 等待 CanvasShare 实例绑定成功，不然无法绘制（模拟器第二次无法进入draw的回调函数内，真机可以）
+  const getCanvasShareComplete = async () => {
+    let result: any = null;
+    for (let index = 0; index < 30; index++) {
+      if (!refCropperCanvasShare.current) {
+        refCropperCanvasShare.current = Taro.createCanvasContext(
+          "canvas-share"
+        );
+      }
+      if (
+        await Utils.asyncDelayBoolean(Boolean(refCropperCanvasShare.current))
+      ) {
+        result = refCropperCanvasShare.current;
+        // console.log("getCanvasShareComplete bind success.", refCropper.current);
+        break;
+      } else {
+        console.warn(
+          "getCanvasShareComplete bind fail.",
+          refCropperCanvasShare.current
+        );
+      }
+    }
+    return result;
+  };
+
+  // 更新Canvas海报内容
   const updateCanvasShare = async () => {
     setShowBtnRefresh(false);
     const [srcQRCode, strShareContentUrlTmp] = await Promise.all([
@@ -74,7 +101,13 @@ export default function PanelShare(props: IPanelShareProps) {
         CloudFileManager.getCloudUrl(strSharePosterImage || sharePosterImage[0])
       ),
     ]);
-    console.log("updateCanvasShare", srcQRCode, strShareContentUrlTmp);
+    const canvasShare = await getCanvasShareComplete();
+    console.log(
+      "updateCanvasShare1",
+      canvasShare,
+      srcQRCode,
+      strShareContentUrlTmp
+    );
     await drawCanvasShare(
       canvasShare,
       strShareContentUrlTmp,
@@ -82,8 +115,9 @@ export default function PanelShare(props: IPanelShareProps) {
       strSharePosterText || sharePosterText,
       2
     );
-    canvasShare.draw(true, () => {
-      // Taro.hideToast();
+    console.log("updateCanvasShare2");
+    canvasShare.draw(false, () => {
+      console.log("updateCanvasShare3");
       Taro.canvasToTempFilePath({
         x: 0,
         y: 0,
@@ -102,13 +136,16 @@ export default function PanelShare(props: IPanelShareProps) {
           setShowBtnRefresh(true);
           Taro.showToast({ title: "生成海报失败", icon: "none" });
         },
+        // complete: () => {
+        //   refCropperCanvasShare.current = null;
+        // },
       });
     });
   };
 
   useEffect(() => {
     onLoad();
-  }, []);
+  });
 
   useEffect(() => {
     // console.log("PanelShare", isShowPanelShare);
@@ -201,6 +238,8 @@ export default function PanelShare(props: IPanelShareProps) {
   // 关闭分享
   const handlePanelShareClose = () => {
     setShareInfo({ isShowPanelShare: false });
+    setShowBtnRefresh(false);
+    setSharePhotoUrl("");
   };
 
   return (

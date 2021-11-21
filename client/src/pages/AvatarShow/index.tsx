@@ -13,7 +13,11 @@ import ModuleCanvas from "./components/ModuleCanvas";
 import ModuleCanvasSave from "./components/ModuleCanvasSave";
 import ModuleJewelry from "./components/ModuleJewelry";
 
-import { arrBorderButtonList, arrJewelryList } from "./config";
+import {
+  strAvatarDefaultUrl,
+  arrBorderButtonList,
+  arrJewelryList,
+} from "./config";
 import { newAvatarShow, cleanAvatarShow } from "./utils";
 
 import "./index.less";
@@ -31,9 +35,7 @@ export default function AvatarShow() {
 
   const memberInfo = useSelector((state) => state.memberInfo);
 
-  const [isShowPanelImageCropper, setShowPanelImageCropper] = useState(false);
-  const [strSrcImageCropper, setSrcImageCropper] = useState("");
-  const avatarUrlNow = useRef<string>("");
+  const avatarUrlNow = useRef<string>(strAvatarDefaultUrl);
   const [canvas, setCanvas] = useState<any>(null);
   const [canvasSave, setCanvasSave] = useState<any>(null);
   const [strSelectType, setSelectType] = useState<string>(""); // 操作状态 // 'BTN_FLIP' - 翻转 'BTN_DELETE' - 删除 'BTN_ADD' - 复制 'BTN_RESIZE' - 调整尺寸 'MOVE' - 拖动
@@ -41,6 +43,8 @@ export default function AvatarShow() {
   const [arrAvatarShowList, setAvatarShowList] = useState<
     Array<IAvatarInfoType | never>
   >([]);
+  const [isShowPanelImageCropper, setShowPanelImageCropper] = useState(false);
+  const [strSrcImageCropper, setSrcImageCropper] = useState("");
 
   // 初始化头像相关信息
   const initAvatarInfo = async (avatarUrl) => {

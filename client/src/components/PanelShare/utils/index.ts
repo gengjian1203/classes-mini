@@ -172,7 +172,7 @@ export const drawCanvasShare = async (
   sharePosterText: string = "",
   index: number = 0
 ) => {
-  // console.log("drawCanvasShare.");
+  // console.log("drawCanvasShare.", canvas);
   const config = CanvasShareConfig[index % CanvasShareConfig.length];
 
   if (canvas) {

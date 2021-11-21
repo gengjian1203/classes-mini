@@ -58,7 +58,7 @@ export default function ModuleButton(props: IModuleBottomProps) {
       duration: 20000,
     });
     drawMainCanvas(canvasSave, "", avatarShowInfo);
-    canvasSave.draw(true, () => {
+    canvasSave.draw(false, () => {
       Taro.canvasToTempFilePath({
         x: 0,
         y: 0,

@@ -119,17 +119,16 @@ export default function VpGroup(props: IVpGroupParam) {
   // 点击菜单项
   const handleMenuItemClick = (item) => {
     console.log("handleMenuItemClick", item);
-    const urlPath =
-      item.url ||
-      ConfigMenuRouter[item.type]?.url ||
-      ConfigMenuRouter["default"]?.url;
+    const urlPath = item.url || ConfigMenuRouter[item.type]?.url;
 
-    const url = Utils.routerAppendParams(urlPath, {
-      title: item.title,
-    });
-    Taro.navigateTo({
-      url: url,
-    });
+    if (urlPath) {
+      const url = Utils.routerAppendParams(urlPath, {
+        title: item.title,
+      });
+      Taro.navigateTo({
+        url: url,
+      });
+    }
   };
 
   // 点击tab列表项目
