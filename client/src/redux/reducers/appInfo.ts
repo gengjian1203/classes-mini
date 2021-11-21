@@ -19,6 +19,7 @@ const INITIAL_STATE = {
       },
     ],
     tabListSource: [],
+    arrAdminList: [],
     nTabListCurrent: 0,
     colorPrimary: "",
     shareCardImage: "",

@@ -96,6 +96,7 @@ export default function Loading() {
     if (resQueryConfig) {
       const {
         arrTabbarList = [],
+        arrAdminList = [],
         colorPrimary = "#60b968",
         shareCardImage = "",
         shareCardTitle = "",
@@ -117,6 +118,7 @@ export default function Loading() {
         setAppConfigInfo({
           tabList: arrTabbarListTmp,
           tabListSource: arrTabbarList,
+          arrAdminList: arrAdminList,
           nTabListCurrent: 0,
           colorPrimary: colorPrimary,
           shareCardImage: shareCardImage,

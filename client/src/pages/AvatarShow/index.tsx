@@ -264,8 +264,8 @@ export default function AvatarShow() {
       {isShowPanelImageCropper && (
         <PanelImageCropper
           imgSrc={strSrcImageCropper}
-          width={300}
-          height={300}
+          width={200}
+          height={200}
           disableRatio
           onImageCropperSave={handleImageCropperSave}
           onImageCropperClose={handleImageCropperClose}

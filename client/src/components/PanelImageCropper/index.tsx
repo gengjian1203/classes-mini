@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { AtButton } from "taro-ui";
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
+import Config from "@/config";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
 import PanelBottom from "@/components/PanelBottom";
 import Utils from "@/utils";
@@ -18,6 +19,8 @@ interface IPanelImageCropperParam {
   disableHeight?: boolean; // 锁定裁剪框高度
   disableRatio?: boolean; // 锁定裁剪框比例
   exportScale?: number; // 输出图片的比例(相对于裁剪框尺寸)
+  imgWidth?: number; // 图片宽度
+  imgHeight?: number; // 图片高度
   onImageCropperSave: (any?: any) => any;
   onImageCropperClose: (any?: any) => any;
 }
@@ -32,7 +35,9 @@ export default function PanelImageCropper(props: IPanelImageCropperParam) {
     disableWidth = false,
     disableHeight = false,
     disableRatio = false,
-    exportScale = 6,
+    exportScale = 3,
+    imgWidth,
+    imgHeight,
     onImageCropperSave,
     onImageCropperClose,
   } = props;
@@ -84,7 +89,7 @@ export default function PanelImageCropper(props: IPanelImageCropperParam) {
 
   // 点击裁剪区域
   const handleCropperCut = (e) => {
-    // console.log("handleCropperCut", e);
+    console.log("handleCropperCut", e);
     const { url = "" } = e?.detail || {};
     Taro.previewImage({
       current: url,
@@ -136,6 +141,8 @@ export default function PanelImageCropper(props: IPanelImageCropperParam) {
         disable_height={disableHeight}
         disable_ratio={disableRatio}
         export_scale={exportScale}
+        img_width={imgWidth}
+        img_height={imgHeight}
         onload={handleCropperLoad}
         onimageload={handleCropperImageLoad}
         ontapcut={handleCropperCut}

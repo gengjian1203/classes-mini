@@ -29,7 +29,7 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
 
   const systemInfo = Config.SYSTEM_INFO;
   const isMemberChecked = memberInfo?.appBindWorkerId;
-  const { isEasterEgg } = useSelector((state) => state.appInfo);
+  const { isEasterEgg, configInfo } = useSelector((state) => state.appInfo);
   const { setAppEasterEgg } = useActions(appInfoActions);
   const { setMemberInfo } = useActions(memberInfoActions);
   const nEasterEggCount = useRef<number>(0);
@@ -84,24 +84,27 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
 
   // 点击昵称名称
   const handleNickNameClick = () => {
-    console.log("handleNickNameClick");
+    console.log(
+      "handleNickNameClick",
+      configInfo?.arrAdminList,
+      memberInfo?._id
+    );
     nEasterEggCount.current = ++nEasterEggCount.current % 10;
     if (nEasterEggCount.current === 0) {
-      setAppEasterEgg(!isEasterEgg);
-      if (!isEasterEgg) {
-        Taro.showToast({
-          title: "开启彩蛋模式",
-          icon: "none",
-        });
-      } else {
-        Taro.showToast({
-          title: "关闭彩蛋模式",
-          icon: "none",
-        });
+      if (configInfo?.arrAdminList.includes(memberInfo?._id)) {
+        setAppEasterEgg(!isEasterEgg);
+        if (!isEasterEgg) {
+          Taro.showToast({
+            title: "开启彩蛋模式",
+            icon: "none",
+          });
+        } else {
+          Taro.showToast({
+            title: "关闭彩蛋模式",
+            icon: "none",
+          });
+        }
       }
-      // Taro.navigateTo({
-      //   url: "/pages/EasterEgg/index",
-      // });
     }
   };
 
@@ -134,7 +137,7 @@ export default function MineModuleHeader(props: IMineModuleHeaderParam) {
             onClick={handleUpdateClick}
           >
             <Image
-              src={memberInfo?.userAvatarUrl}
+              src={memberInfo?.userAvatarUrl || ""}
               mode="scaleToFill"
               className="module-header-left-logo"
             />
