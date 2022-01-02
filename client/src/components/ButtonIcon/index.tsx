@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import { AtButton } from "taro-ui";
-import { View, Image } from "@tarojs/components";
+import { Block, View, Image } from "@tarojs/components";
 import "./index.less";
 
 interface IButtonIconParam {
@@ -20,6 +20,14 @@ interface IButtonIconParam {
   onClick?: (e?: any) => void; // 按钮点击事件回调
 }
 
+/**
+ * 图标按钮
+ * 如value是icon开头，则取iconfont
+ * 如value不是icon开头，则取为图片链接，图片未加载则取系统背景色兜底图标，图片加载整个则也可以取color字段为背景色
+ *
+ * @param props
+ * @returns
+ */
 export default function ButtonIcon(props: IButtonIconParam) {
   const {
     value = "",
@@ -44,12 +52,12 @@ export default function ButtonIcon(props: IButtonIconParam) {
   };
 
   const handleImageLoad = (e) => {
-    // console.log("handleImageLoad", e, value);
+    console.log("handleImageLoad", e, value);
     setLoadImageSuccess(true);
   };
 
   const handleImageError = (e) => {
-    // console.log("handleImageError", e, value);
+    console.log("handleImageError", e, value);
     setLoadImageSuccess(false);
   };
 
@@ -67,12 +75,14 @@ export default function ButtonIcon(props: IButtonIconParam) {
       customStyle={styleContent}
       onClick={handleIconClick}
     >
+      {/* 一道波纹 */}
       {isRippling && (
         <View
           className="rippling-circle"
           style={{ ...styleContent, border: `2px solid ${colorRippling}` }}
         />
       )}
+      {/* 一道波纹 */}
       {isRippling && (
         <View
           className="rippling-circle"
@@ -91,12 +101,6 @@ export default function ButtonIcon(props: IButtonIconParam) {
           ...customButtonStyle,
         }}
       >
-        <View
-          className={`button-content-bg ` + `iconfont ` + `iconpicture `}
-          style={{
-            lineHeight: `${Taro.pxTransform(height)}`,
-          }}
-        />
         {value.includes("icon") ? (
           <View
             className={
@@ -113,21 +117,31 @@ export default function ButtonIcon(props: IButtonIconParam) {
             }}
           />
         ) : (
-          <Image
-            src={value}
-            className={`button-real ` + `button-iconimg-content `}
-            style={
-              isLoadImageSuccess
-                ? {
-                    backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
-                    ...customStyle,
-                  }
-                : {}
-            }
-            mode="aspectFill"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-          />
+          <Block>
+            <Image
+              src={value}
+              className={`button-real ` + `button-iconimg-content `}
+              style={{
+                backgroundImage: isLoadImageSuccess
+                  ? `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`
+                  : `none`,
+                ...customStyle,
+              }}
+              mode="aspectFill"
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+            {!isLoadImageSuccess && (
+              <View
+                className={`button-content-bg ` + `iconfont ` + `iconpicture `}
+                style={{
+                  // backgroundImage: `linear-gradient(135deg, ${color}, 80%, var(--color-white, #ffffff))`,
+                  lineHeight: `${Taro.pxTransform(height)}`,
+                  ...customStyle,
+                }}
+              />
+            )}
+          </Block>
         )}
       </View>
     </AtButton>
