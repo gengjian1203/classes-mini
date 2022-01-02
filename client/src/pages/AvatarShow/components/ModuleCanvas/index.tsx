@@ -138,7 +138,7 @@ export default function ModuleCanvas(props: IModuleCanvasProps) {
       // console.log("handleCanvasTouchMove", objTouchPointTmp);
       setTouchPoint(objTouchPointTmp);
     }
-  }, 100);
+  }, 50);
 
   // Canvas触碰停止
   const handleCanvasTouchEnd = (e) => {

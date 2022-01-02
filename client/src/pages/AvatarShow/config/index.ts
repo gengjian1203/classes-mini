@@ -131,6 +131,49 @@ export const arrJewelryList = [
     ],
   },
   {
+    title: "圣诞",
+    list: [
+      {
+        type: "IMAGE",
+        value: CloudFileManager.getCloudUrl(
+          "avatar/jewelry/shengdanlaoren.png"
+        ),
+        valueEG: CloudFileManager.getCloudUrl(""),
+        rect: {
+          width: SIZE_IMAGE,
+          height: SIZE_IMAGE,
+        },
+      },
+      {
+        type: "IMAGE",
+        value: CloudFileManager.getCloudUrl("avatar/jewelry/shengdanmao.png"),
+        valueEG: CloudFileManager.getCloudUrl(""),
+        rect: {
+          width: SIZE_IMAGE,
+          height: SIZE_IMAGE,
+        },
+      },
+      {
+        type: "IMAGE",
+        value: CloudFileManager.getCloudUrl("avatar/jewelry/shengdanshu.png"),
+        valueEG: CloudFileManager.getCloudUrl(""),
+        rect: {
+          width: SIZE_IMAGE,
+          height: SIZE_IMAGE,
+        },
+      },
+      {
+        type: "IMAGE",
+        value: CloudFileManager.getCloudUrl("avatar/jewelry/xueren.png"),
+        valueEG: CloudFileManager.getCloudUrl(""),
+        rect: {
+          width: SIZE_IMAGE,
+          height: SIZE_IMAGE,
+        },
+      },
+    ],
+  },
+  {
     title: "贴纸",
     list: [
       {
@@ -150,6 +193,17 @@ export const arrJewelryList = [
         valueEG: CloudFileManager.getCloudUrl("avatar/eg/shanchu.jpg"),
         rect: {
           x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
+      },
+      {
+        type: "IMAGE",
+        value: CloudFileManager.getCloudUrl("avatar/jewelry/princess.png"),
+        valueEG: CloudFileManager.getCloudUrl("avatar/eg/princess.png"),
+        rect: {
+          x: CANVAS_WIDTH - 180,
           y: 0,
           width: 100,
           height: 100,
@@ -240,11 +294,6 @@ export const arrJewelryList = [
           height: SIZE_TEXT,
         },
       },
-    ],
-  },
-  {
-    title: "生肖",
-    list: [
       {
         type: "TEXT",
         value: "🐭",
@@ -339,49 +388,6 @@ export const arrJewelryList = [
         rect: {
           width: SIZE_TEXT,
           height: SIZE_TEXT,
-        },
-      },
-    ],
-  },
-  {
-    title: "圣诞",
-    list: [
-      {
-        type: "IMAGE",
-        value: CloudFileManager.getCloudUrl(
-          "avatar/jewelry/shengdanlaoren.png"
-        ),
-        valueEG: CloudFileManager.getCloudUrl(""),
-        rect: {
-          width: SIZE_IMAGE,
-          height: SIZE_IMAGE,
-        },
-      },
-      {
-        type: "IMAGE",
-        value: CloudFileManager.getCloudUrl("avatar/jewelry/shengdanmao.png"),
-        valueEG: CloudFileManager.getCloudUrl(""),
-        rect: {
-          width: SIZE_IMAGE,
-          height: SIZE_IMAGE,
-        },
-      },
-      {
-        type: "IMAGE",
-        value: CloudFileManager.getCloudUrl("avatar/jewelry/shengdanshu.png"),
-        valueEG: CloudFileManager.getCloudUrl(""),
-        rect: {
-          width: SIZE_IMAGE,
-          height: SIZE_IMAGE,
-        },
-      },
-      {
-        type: "IMAGE",
-        value: CloudFileManager.getCloudUrl("avatar/jewelry/xueren.png"),
-        valueEG: CloudFileManager.getCloudUrl(""),
-        rect: {
-          width: SIZE_IMAGE,
-          height: SIZE_IMAGE,
         },
       },
     ],
