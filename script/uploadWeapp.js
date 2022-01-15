@@ -6,11 +6,19 @@ const strGitHead = fs.readFileSync("./.git/HEAD", "utf8").trim() || "";
 const strGitCommit =
   fs.readFileSync("./.git/COMMIT_EDITMSG", "utf8").trim() || "";
 
-const nBranchIndex = strGitHead.indexOf("br-");
-const branch = nBranchIndex >= 0 ? strGitHead.substring(nBranchIndex) : "0.0.1";
-const nVersionIndex = branch.indexOf("br-");
+const strBranchSign = "refs/heads/";
+const nBranchIndex = strGitHead.indexOf(strBranchSign);
+const branch =
+  nBranchIndex >= 0
+    ? strGitHead.substring(nBranchIndex + strBranchSign.length)
+    : strGitHead;
+
+const strVersionSign = "br-";
+const nVersionIndex = branch.indexOf(strVersionSign);
 const version =
-  nVersionIndex >= 0 ? branch.substring(nVersionIndex + 3) : "0.0.1";
+  nVersionIndex >= 0
+    ? branch.substring(nVersionIndex + strVersionSign.length)
+    : "0.0.1";
 
 // console.log("app version", strGitCommit);
 
