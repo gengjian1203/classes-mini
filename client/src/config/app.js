@@ -1,4 +1,4 @@
-const cloud = {
+const app = {
   wx821aadcd431646f9: {
     appName: "即将放飞理想的工具箱",
     prod: {
@@ -87,4 +87,5 @@ const cloud = {
   },
 };
 
-export default cloud;
+// export default app;
+module.exports = app;

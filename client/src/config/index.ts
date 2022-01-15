@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import cloud from "./cloud";
+import app from "./app";
 
 const env = "prod"; // 'prod' - 生产环境 'dev' - 开发环境 'test' - 测试环境
 const resSystemInfo = Taro.getSystemInfoSync();
@@ -8,7 +8,7 @@ const resAccountInfo = Taro.getAccountInfoSync();
 const { miniProgram } = resAccountInfo || {};
 const { appId = "", envVersion = "", version = "" } = miniProgram || {};
 
-const cloudInfo = cloud[appId] ? cloud[appId] : cloud["default"];
+const cloudInfo = app[appId] ? app[appId] : app["default"];
 const cloudEnv = cloudInfo[env];
 
 const config = {
