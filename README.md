@@ -1,16 +1,16 @@
 # classes-mini
 
-《气象台历》小程序端
+《工具箱》小程序端
 
 ## 项目文档
 
 ### 环境搭建
 
-1. npm install -g @tarojs/cli
+1. yarn global add @tarojs/cli
    安装 Taro
-2. npm i  
+2. yarn install  
    安装依赖库
-3. npm run dev:weapp
+3. yarn dev:weapp
    编译项目
 
 ### 项目结构
