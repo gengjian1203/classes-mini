@@ -35,7 +35,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
     height = 120,
     radius = 20,
     size = 80,
-    color = "var(--color-primary)",
+    color = "var(--color-white)", //"var(--color-primary)",
     colorRippling = "var(--color-shadow)",
     openType = "",
     disabled = false,

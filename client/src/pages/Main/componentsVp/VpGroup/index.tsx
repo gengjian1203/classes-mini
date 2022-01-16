@@ -6,7 +6,6 @@ import Api from "@/api";
 import Banner from "@/components/Banner";
 import Menu from "@/components/Menu";
 import Tab from "@/components/Tab";
-import ConfigMenuRouter from "@/config/menuRouter";
 import GroupInfo from "@/pages/Main/components/GroupInfo";
 import CloudFileManager from "@/services/CloudFileManager";
 import Utils from "@/utils";
@@ -119,15 +118,26 @@ export default function VpGroup(props: IVpGroupParam) {
   // 点击菜单项
   const handleMenuItemClick = (item) => {
     console.log("handleMenuItemClick", item);
-    const urlPath = item.url || ConfigMenuRouter[item.type]?.url;
+    const { appId = "", path = "", type = "", title = "" } = item || {};
 
-    if (urlPath) {
-      const url = Utils.routerAppendParams(urlPath, {
-        title: item.title,
-      });
-      Taro.navigateTo({
-        url: url,
-      });
+    switch (type) {
+      case "MENU_PAGE": {
+        const url = Utils.routerAppendParams(path, { title: title });
+        Taro.navigateTo({ url: url });
+        break;
+      }
+      case "MENU_MINIPROGRAM": {
+        Taro.navigateToMiniProgram({
+          appId: appId,
+          path: path,
+        });
+        break;
+      }
+      default: {
+        const url = Utils.routerAppendParams(path, { title: title });
+        Taro.navigateTo({ url: url });
+        break;
+      }
     }
   };
 
