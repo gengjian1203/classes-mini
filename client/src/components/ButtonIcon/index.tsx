@@ -52,7 +52,7 @@ export default function ButtonIcon(props: IButtonIconParam) {
   };
 
   const handleImageLoad = (e) => {
-    console.log("handleImageLoad", e, value);
+    // console.log("handleImageLoad", e, value);
     setLoadImageSuccess(true);
   };
 

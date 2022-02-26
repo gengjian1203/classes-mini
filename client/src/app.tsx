@@ -5,6 +5,7 @@ import configStore from "@/redux/store";
 import AppService from "@/services/AppService";
 import GlobalManager from "@/services/GlobalManager";
 
+import "@/less/common.less";
 import "@/less/iconfont.less";
 import "./app.scss";
 

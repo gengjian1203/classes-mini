@@ -17,7 +17,6 @@ project.private.config.json
 **/node_modules/**
 **/false/**
 **/src/utils/test/**
-resource/**
 
 #忽略上传的文件
 **/yarn.lock

@@ -18,11 +18,78 @@ interface IDetailContentParam {
 export default function DetailContent(props: IDetailContentParam) {
   const { content = [] } = props;
 
+  const [nCurrentFlash, setCurrentFlash] = useState(-1);
   const [arrContentList, setContentList] = useState<Array<any>>([]);
 
   useEffect(() => {
     setContentList(content);
   }, [content]);
+
+  // 闪烁指定项
+  const flashItem = (index = -1, count = 0) => {
+    setTimeout(() => {
+      if (count > 0) {
+        setCurrentFlash(index);
+        setTimeout(() => {
+          setCurrentFlash(-1);
+          flashItem(index, count - 1);
+        }, 1000);
+      }
+    }, 0);
+  };
+
+  const handleDetailContentItemLongPress = (item, index) => {
+    console.log("handleDetailContentItemLongPress", item);
+    let strData = "";
+
+    switch (item?.type) {
+      case "info": {
+        strData += `姓名：${item?.data?.name}\n`;
+        strData += `职位：${item?.data?.job}\n`;
+        break;
+      }
+      case "form": {
+        item?.data.forEach((itemData) => {
+          strData += `${itemData?.name}：${itemData?.value}\n`;
+        });
+        break;
+      }
+      case "icontext": {
+        strData += `【${item?.data?.title}】\n`;
+        item?.data?.content?.forEach((itemContent) => {
+          strData += `${itemContent}\n`;
+        });
+        break;
+      }
+      case "timeline": {
+        item?.data.forEach((itemData) => {
+          strData += `【${itemData?.title}】\n`;
+          itemData?.content?.forEach((itemContent) => {
+            strData += `${itemContent}\n`;
+          });
+          strData += "\n";
+        });
+        break;
+      }
+      case "btntext": {
+        strData += `【${item?.data?.title}】\n`;
+        item?.data?.content?.forEach((itemContent) => {
+          strData += `${itemContent}\n`;
+        });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Taro.setClipboardData({
+      data: strData,
+      success: () => {
+        flashItem(index, 2);
+      },
+    });
+  };
 
   const handleBtntextBtnClick = (data) => {
     console.log("handleBtntextBtnClick", data);
@@ -73,7 +140,15 @@ export default function DetailContent(props: IDetailContentParam) {
         arrContentList.map((item, index) => {
           return (
             item.show && (
-              <View key={index} className="detail-content-item">
+              <View
+                key={index}
+                className={`detail-content-item ${
+                  nCurrentFlash === index ? "item-flash " : ""
+                }`}
+                onLongPress={() =>
+                  handleDetailContentItemLongPress(item, index)
+                }
+              >
                 {
                   {
                     btntext: (
