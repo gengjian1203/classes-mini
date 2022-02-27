@@ -6,7 +6,6 @@ import Utils from "@/utils";
 import DetailBtntext from "./components/DetailBtntext";
 import DetailIcontext from "./components/DetailIcontext";
 import DetailInfo from "./components/DetailInfo";
-import DetailForm from "./components/DetailForm";
 import DetailTimeline from "./components/DetailTimeline";
 
 import "./index.less";
@@ -44,11 +43,6 @@ export default function DetailContent(props: IDetailContentParam) {
 
     switch (item?.type) {
       case "info": {
-        strData += `姓名：${item?.data?.name}\n`;
-        strData += `职位：${item?.data?.job}\n`;
-        break;
-      }
-      case "form": {
         item?.data.forEach((itemData) => {
           strData += `${itemData?.name}：${itemData?.value}\n`;
         });
@@ -159,7 +153,6 @@ export default function DetailContent(props: IDetailContentParam) {
                     ),
                     icontext: <DetailIcontext data={item.data} />,
                     info: <DetailInfo data={item.data} />,
-                    form: <DetailForm data={item.data} />,
                     timeline: <DetailTimeline data={item.data} />,
                   }[item.type]
                 }

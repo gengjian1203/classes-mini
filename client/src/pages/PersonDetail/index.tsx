@@ -4,7 +4,6 @@ import { ScrollView, View, Swiper, SwiperItem } from "@tarojs/components";
 import Api from "@/api";
 import Config from "@/config";
 import PageContent from "@/components/PageContent";
-import useCheckLogin from "@/hooks/useCheckLogin";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
 
 import BottomWidget from "./components/BottomWidget";
@@ -86,10 +85,6 @@ export default function PersonDetail() {
           <Swiper
             className="detail-swiper-wrap"
             current={nCurrentDetail}
-            // indicatorColor="var(--color-shadow)"
-            // indicatorActiveColor="var(--color-primary)"
-            // circular
-            // indicatorDots
             onChange={handleDetailChange}
           >
             {arrSwiperList.map((item, index) => (
