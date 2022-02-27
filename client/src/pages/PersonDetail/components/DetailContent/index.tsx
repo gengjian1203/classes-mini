@@ -44,7 +44,10 @@ export default function DetailContent(props: IDetailContentParam) {
     switch (item?.type) {
       case "info": {
         item?.data.forEach((itemData) => {
-          strData += `${itemData?.name}：${itemData?.value}\n`;
+          // 黑名单列表类型不做复制
+          if (!["avatar"].includes(itemData?.type)) {
+            strData += `${itemData?.name}：${itemData?.value}\n`;
+          }
         });
         break;
       }
