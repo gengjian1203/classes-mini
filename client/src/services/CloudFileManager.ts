@@ -12,7 +12,7 @@ class CloudFileManager {
   }
 
   // 处理cloud链接
-  getCloudUrl = (strUrl: string) => {
+  getCloudUrl = (strUrl: string = "") => {
     if (
       strUrl === "" ||
       strUrl.startsWith("cloud://") ||

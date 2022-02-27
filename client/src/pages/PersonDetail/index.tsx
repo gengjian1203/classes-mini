@@ -4,7 +4,10 @@ import { ScrollView, View, Swiper, SwiperItem } from "@tarojs/components";
 import Api from "@/api";
 import Config from "@/config";
 import PageContent from "@/components/PageContent";
+import useActions from "@/hooks/useActions";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
+import shareInfoActions from "@/redux/actions/shareInfo";
+import Utils from "@/utils";
 
 import BottomWidget from "./components/BottomWidget";
 import DetailContent from "./components/DetailContent";
@@ -13,16 +16,17 @@ import SkeletonContent from "./components/SkeletonContent";
 import "./index.less";
 
 export default function PersonDetail() {
-  const {
-    path,
-    params: { persionId },
-  } = useDecodeRouter();
+  const { path, params } = useDecodeRouter();
+
+  const { persionId } = params;
 
   const [isLoadComplete, setLoadComplete] = useState<boolean>(false); // 是否加载完毕
   const [strNavigationTitle, setNavigationTitle] = useState<string>("");
   const [arrSwiperList, setSwiperList] = useState<Array<any>>([]);
   const [arrIconList, setIconList] = useState<Array<any>>([]);
   const [nCurrentDetail, setCurrentDetail] = useState<number>(0);
+
+  const { setShareInfo } = useActions(shareInfoActions);
 
   const onLoad = async () => {
     Taro.showToast({
@@ -32,6 +36,8 @@ export default function PersonDetail() {
       duration: 20000,
     });
     setLoadComplete(false);
+    let strShareCardTitle = "";
+    let strShareCardImage = "";
     const jsonUrl =
       `${Config.cloudDownLoad}person/${persionId}.json` +
       `?t=${new Date().getTime()}`;
@@ -40,6 +46,10 @@ export default function PersonDetail() {
     console.log("PersonDetail onLoad", jsonUrl, res);
     if (res) {
       const arrIconListTmp = res?.map((item) => {
+        if (item?.type === "base") {
+          strShareCardTitle = item?.strShareCardTitle;
+          strShareCardImage = item?.strShareCardImage;
+        }
         return {
           icon: item.icon,
           color: item.color,
@@ -49,6 +59,18 @@ export default function PersonDetail() {
       // console.log("arrIconListTmp", arrIconListTmp);
       setSwiperList(res);
       setIconList(arrIconListTmp);
+      // 设置分享信息
+      const objShareParam = Utils.processSharePath({
+        shareType: Utils.getShareTypeName("POPULARIZE"),
+        sharePath: path,
+        ...params,
+      });
+      setShareInfo({
+        isShowPanelShare: false,
+        strShareCardTitle: strShareCardTitle,
+        strShareCardImage: strShareCardImage,
+        objShareParam: objShareParam,
+      });
     } else {
       Taro.showToast({
         title: "未找到相关信息",
@@ -67,7 +89,7 @@ export default function PersonDetail() {
   };
 
   useEffect(() => {
-    Taro.hideShareMenu();
+    // Taro.hideShareMenu();
     onLoad();
   }, []);
 

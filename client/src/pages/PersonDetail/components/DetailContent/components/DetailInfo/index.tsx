@@ -51,7 +51,7 @@ export default function DetailInfo(props: IDetailInfoParam) {
         return <View className="info-item info-name">{item?.value}</View>;
       }
       case "job": {
-        return <View className="info-item info-job">{data.job}</View>;
+        return <View className="info-item info-job">{item?.value}</View>;
       }
       default: {
         return (
