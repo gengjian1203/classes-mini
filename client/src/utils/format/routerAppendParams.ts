@@ -10,13 +10,11 @@ import router2Params from "./router2Params";
  * } objExtend 拓展功能对象
  * @returns 追加参数后的路由字符串
  */
-export const routerAppendParams = (
-  strPath: string,
-  objParams?: any,
-  objExtend?: any
-) => {
+export const routerAppendParams = (strPath, objParams, objExtend) => {
   const { order = "append", encode = true } = objExtend || {};
-  const { path: sourcePath, params: sourceParams } = router2Params(strPath);
+  const { path: sourcePath = "", params: sourceParams = {} } = router2Params(
+    strPath
+  );
   // console.log("routerAppendParams", sourcePath, sourceParams);
   let strResult = sourcePath;
   let mergeParams =
@@ -30,7 +28,7 @@ export const routerAppendParams = (
           ...sourceParams, // 以原路由携带参数优先级更高
         };
 
-  if (sourcePath && mergeParams && JSON.stringify(mergeParams) !== "{}") {
+  if (mergeParams && JSON.stringify(mergeParams) !== "{}") {
     let isFirstParam = !sourcePath.includes("?");
     Object.keys(mergeParams).forEach((key) => {
       if (isFirstParam) {
