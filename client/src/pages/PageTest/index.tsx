@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { View, Image } from "@tarojs/components";
 import ButtonIcon from "@/components/ButtonIcon";
+import CanvasDraw from "@/components/CanvasDraw";
 import PageContent from "@/components/PageContent";
 import PanelImageCropper from "@/components/PanelImageCropper";
 import useDecodeRouter from "@/hooks/useDecodeRouter";
@@ -55,6 +56,38 @@ export default function PageTest() {
         value={"sjsj"}
         isRippling
         onClick={handleIconClick}
+      />
+
+      <CanvasDraw
+        canvasId="canvasDraw"
+        canvasWidth={750}
+        canvasHeight={350}
+        canvasBGColor="#fff"
+        canvasQuality={0.92}
+        canvasScale={1}
+        canvasConfig={[
+          {
+            type: "text",
+            text: "超超超超",
+            textAlign: "left",
+            textBaseline: "bottom",
+            color: "#ee0000",
+            size: 20,
+            x: 30,
+            y: 30,
+          },
+          {
+            type: "text",
+            text: "休息休息吧",
+            textAlign: "left",
+            textBaseline: "bottom",
+            color: "#eeee00",
+            size: 26,
+            x: 60,
+            y: 70,
+          },
+        ]}
+        onCanvasDrawComplete={() => {}}
       />
 
       <Image src={urlImage} mode="widthFix" />

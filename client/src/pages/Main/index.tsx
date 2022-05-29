@@ -328,6 +328,10 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnTestClick = async () => {
+    // 跳转测试页面
+    // Taro.navigateTo({
+    //   url: `/pages/PageTest/index`,
+    // });
     // 跳转Web页面
     // Taro.navigateTo({
     //   url:
