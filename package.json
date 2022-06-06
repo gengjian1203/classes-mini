@@ -9,9 +9,10 @@
   "author": "gengjian1203 <gengjian1203@foxmail.com>",
   "license": "MIT",
   "scripts": {
+    "buildInfo": "node ./script/getBuildInfo.js",
     "upload": "node ./script/uploadWeapp.js",
-    "dev:weapp": "cd client && yarn dev:weapp",
-    "build:weapp": "cd client && yarn build:weapp",
+    "dev:weapp": "yarn buildInfo && cd client && yarn dev:weapp",
+    "build:weapp": "yarn buildInfo && cd client && yarn build:weapp",
     "build:weapp:upload": "yarn build:weapp && yarn upload"
   }
 }

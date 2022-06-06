@@ -2,7 +2,7 @@
   "name": "classes-mini",
   "version": "1.0.0",
   "private": true,
-  "description": "《气象台历》小程序端",
+  "description": "即将放飞理想的工具箱",
   "templateInfo": {
     "name": "taro-ui",
     "typescript": true,

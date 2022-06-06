@@ -25,6 +25,8 @@ project.private.config.json
 **/yarn-error.log
 **/custom.json
 **/uploadinfo.json
+client/src/config/buildInfo.json
+# **/buildInfo.json
 
 #IDE
 **/*.iml
