@@ -322,7 +322,8 @@ export default function Main() {
 
   // 测试按钮
   const handleBtnSpiderClick = useCheckLogin(async () => {
-    const res = await Api.cloud.fetchSpiderInfo.spiderWeatherInfo({});
+    // const res = await Api.cloud.fetchSpiderInfo.spiderWeatherInfo({});
+    const res = await Api.cloud.fetchSpiderInfo.jobRobot({});
     console.log("handleBtnSpiderClick", res);
   });
 
@@ -518,12 +519,12 @@ export default function Main() {
       {/* 渲染对应内容 */}
       {renderVPage()}
       {/* 测试内容 */}
-      {/* <View>测试</View>
+      <View>测试</View>
       <ButtonIcon
         value="http://pic.51yuansu.com/pic3/cover/01/66/10/5957f0b51c503_610.jpg"
         color="var(--color-primary)"
         onClick={handleBtnSpiderClick}
-      /> */}
+      />
       {/* <View>测试</View>
       <ButtonIcon
         value="iconselect"

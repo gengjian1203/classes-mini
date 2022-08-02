@@ -2,23 +2,23 @@ const fs = require("fs");
 const ci = require("miniprogram-ci");
 const app = require("../client/src/config/app.js");
 
-const strGitHead = fs.readFileSync("./.git/HEAD", "utf8").trim() || "";
-const strGitCommit =
-  fs.readFileSync("./.git/COMMIT_EDITMSG", "utf8").trim() || "";
+// const strGitHead = fs.readFileSync("./.git/HEAD", "utf8").trim() || "";
+// const strGitCommit =
+//   fs.readFileSync("./.git/COMMIT_EDITMSG", "utf8").trim() || "";
 
-const strBranchSign = "refs/heads/";
-const nBranchIndex = strGitHead.indexOf(strBranchSign);
-const branch =
-  nBranchIndex >= 0
-    ? strGitHead.substring(nBranchIndex + strBranchSign.length)
-    : strGitHead;
+// const strBranchSign = "refs/heads/";
+// const nBranchIndex = strGitHead.indexOf(strBranchSign);
+// const branch =
+//   nBranchIndex >= 0
+//     ? strGitHead.substring(nBranchIndex + strBranchSign.length)
+//     : strGitHead;
 
-const strVersionSign = "br-";
-const nVersionIndex = branch.indexOf(strVersionSign);
-const version =
-  nVersionIndex >= 0
-    ? branch.substring(nVersionIndex + strVersionSign.length)
-    : "0.0.1";
+// const strVersionSign = "br-";
+// const nVersionIndex = branch.indexOf(strVersionSign);
+// const version =
+//   nVersionIndex >= 0
+//     ? branch.substring(nVersionIndex + strVersionSign.length)
+//     : "0.0.1";
 
 // console.log("app version", strGitCommit);
 

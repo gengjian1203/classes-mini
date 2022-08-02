@@ -46,9 +46,17 @@ const getStringDate = (date = new Date()) => {
 
 // 获取git信息
 const getGitInfo = () => {
-  let res = {};
+  let resBranch = "";
+  let resCommit = {};
+
   try {
-    res = JSON.parse(
+    resBranch = execSync(`git rev-parse --abbrev-ref HEAD`, {
+      encoding: "utf8",
+    }).replace(/\n/g, "");
+  } catch (e) {}
+
+  try {
+    resCommit = JSON.parse(
       execSync(
         `git log -1 --pretty=format:"{\\"hash\\":\\"%H\\",\\"author\\":\\"%an\\",\\"date\\":\\"%ad\\",\\"commit\\":\\"%s\\"}"`,
         { encoding: "utf8" }
@@ -56,7 +64,12 @@ const getGitInfo = () => {
     );
   } catch (e) {}
 
-  return res;
+  console.log("getGitInfo", resBranch);
+
+  return {
+    branch: resBranch,
+    ...resCommit,
+  };
 };
 
 // 获取时间戳信息

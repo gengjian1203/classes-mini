@@ -33,8 +33,19 @@ const spiderWeatherInfo = async (objParams: any = {}) => {
   return res.data;
 };
 
+/**
+ * 测试爬取天气数据
+ */
+const jobRobot = async (objParams: any = {}) => {
+  const params = {};
+  const res = await CloudFetch.callFunction("jobRobot", params);
+  console.log("jobRobot", res);
+  return res.data;
+};
+
 export default {
   spiderArticleZhiHu,
   spiderArticleWeiXin,
   spiderWeatherInfo,
+  jobRobot,
 };
